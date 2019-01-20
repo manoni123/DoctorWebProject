@@ -54,16 +54,16 @@ namespace DoctorWeb.PageObjects
             try {
                 VisitReason.SendKeys(Keys.ArrowDown);
                 var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
-                SearchBtn.ClickWait(500);
-                FirstFreeTime.ClickOn();
+                SearchBtn.ClickOn(Constant.Click);
+                FirstFreeTime.ClickOn(Constant.Click + " FreeTime");
                 softAssert.VerifyElementPresentInsideWindow(AvailbleTimeGoBackBtn, CloseWindow);
-                FirstFreeTimeSetMeeting.ClickWait(500);
+                FirstFreeTimeSetMeeting.ClickOn(Constant.Click + " Set");
                 softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
                 softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
             } catch(ElementNotInteractableException)
             {
-                Pages.Home_Page.PopupButtonOk.ClickOn();
-                CloseWindow.ClickOn();
+                Pages.Home_Page.PopupButtonOk.ClickOn("Popup-OK");
+                CloseWindow.ClickOn("CloseWindow");
             }
             
         }

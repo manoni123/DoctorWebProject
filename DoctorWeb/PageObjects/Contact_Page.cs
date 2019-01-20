@@ -47,18 +47,18 @@ namespace DoctorWeb.PageObjects
         {
             try
             {
-                Pages.Home_Page.OpenEntityDropdown.ClickOn();
-                Pages.Home_Page.CreateNewContact.ClickOn();
+                Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
+                Pages.Home_Page.CreateNewContact.ClickOn(Constant.Create);
                 ContactName.SendKeys("1");
-                ContactSaveButton.ClickOn();
+                ContactSaveButton.ClickOn(Constant.Save);
                 softAssert.VerifyElementIsPresent(NameValidation);
-                ContactName.EnterClearText(Constant.contactName, "ContactName");
-                ContactLastName.EnterClearText(Constant.contactName, "ContactLastName");
-                ContactPhone.EnterClearText(Constant.contactPhone, "ContactPhone");
-                ContactSaveButton.Click();
+                ContactName.EnterClearText(Constant.contactName);
+                ContactLastName.EnterClearText(Constant.contactName);
+                ContactPhone.EnterClearText(Constant.contactPhone);
+                ContactSaveButton.ClickOn(Constant.Save);
                 softAssert.VerifySuccessMsg();
 
-                ContactCloseTab.Click();
+                ContactCloseTab.ClickOn(Constant.CloseWindow);
             }   catch (Exception) {
                 Log.Debug("contact Create Failed");
             }

@@ -58,25 +58,25 @@ namespace DoctorWeb
         [Test, Category("Patient")]
         public void PatientCreateNewMultiple()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickWait(1500);
+            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
+            Pages.Home_Page.CreateNewPatient.ClickWait("Crate Patient");
             softAssert.VerifyElementIsPresent(Pages.Patient_Page.PatientName);
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickOn();
+            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
+            Pages.Home_Page.CreateNewPatient.ClickOn("NewPatient");
             softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.PopupButtonOk, Pages.Home_Page.PopupClose);
-            Pages.Home_Page.PopupButtonOk.ClickOn();
+            Pages.Home_Page.PopupButtonOk.ClickOn("Popup-OK");
         }
 
         [Test, Category("Patient")]
         public void PatientCloseTabBeforeSave()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickWait(2000);
+            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
+            Pages.Home_Page.CreateNewPatient.ClickOn("NewPatient");
             softAssert.VerifyElementIsPresent(Pages.Patient_Page.PatientName);
             Pages.Patient_Page.PatientName.SendKeys(Constant.patientName);
-            Pages.Home_Page.CloseTab.ClickOn();
+            Pages.Home_Page.CloseTab.ClickOn("CloseTab");
             softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.PopupButtonOk, Pages.Home_Page.PopupButtonCancel);
-            Pages.Home_Page.PopupButtonOk.ClickOn();
+            Pages.Home_Page.PopupButtonOk.ClickOn("Popup-OK");
         }
         //+++++++++++++Medical Tab Tests++++++++++++++++++//
 
@@ -272,7 +272,7 @@ namespace DoctorWeb
             Pages.Business_Page.CheckDepartmentIsNull();
             Pages.Business_Page.EnterDepaertmentWindow();
             Pages.Business_Page.CreateDepartmentApplication();
-            Pages.Business_Page.DepartmentCloseButton.Click();
+            Pages.Business_Page.DepartmentCloseButton.ClickOn();
         }
 
         [Test, Category("Settings")]
@@ -307,7 +307,7 @@ namespace DoctorWeb
             Pages.PriceList_Page.EnterPriceListScreen();
             Pages.PriceList_Page.OpenCategoryManager();
             Pages.PriceList_Page.CreateCategoryApplication();
-            Pages.PriceList_Page.CategoryCloseWindow.Click();
+            Pages.PriceList_Page.CategoryCloseWindow.ClickOn();
         }
 
         [Test, Category("Settings")]
@@ -478,28 +478,28 @@ namespace DoctorWeb
         public void ReportDailyTest()
         {
             Pages.Scheduler_Page.EnterDailyReportScreen();
-            Pages.Scheduler_Page.SchedulerEventPrintCancel.ClickOn();
+            Pages.Scheduler_Page.SchedulerEventPrintCancel.ClickOn("PrintCancel");
         }
 
         [Test, Category("Scheduler")]
         public void ReportCancelledMeetingTest()
         {
             Pages.Scheduler_Page.EnterCancelledMeetingWindow();
-            Pages.CancelledMeeting_Page.CloseWindow.ClickOn();
+            Pages.CancelledMeeting_Page.CloseWindow.ClickOn("CloseWindow");
         }
 
         [Test, Category("Scheduler")]
         public void OpenBlockListWindowTest()
         {
             Pages.Scheduler_Page.EnterOpenBlockWindow();
-            Pages.BlockOpen_Page.CloseWindow.ClickOn();
+            Pages.BlockOpen_Page.CloseWindow.ClickOn("CloseWindow");
         }
 
         [Test, Category("Scheduler")]
         public void StandbyListWindowTest()
         {
             Pages.Scheduler_Page.EnterStanbyWindow();
-            Pages.StandbyList_Page.CloseWindow.ClickOn();
+            Pages.StandbyList_Page.CloseWindow.ClickOn("CloseWindow");
         }
 
         [Test, Category("Scheduler")]
@@ -518,7 +518,7 @@ namespace DoctorWeb
         public void MeetingCreateTest()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.ClosePatientTab.ClickWait(500);
+            Pages.Patient_Page.ClosePatientTab.ClickOn("ClosePatient");
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
             Pages.Meeting_Page.CreateMeetingApplication();
         }
@@ -527,7 +527,7 @@ namespace DoctorWeb
         public void StandbyCreateTest()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Patient_Page.ClosePatientTab.ClickOn("ClosePatient");
             Pages.Standby_Page.CreateStandbyApplication();
         }
 
@@ -535,7 +535,7 @@ namespace DoctorWeb
         public void AvailbleTimeTest()
         {
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
-            Pages.Meeting_Page.CancelMeeting.ClickOn();
+            Pages.Meeting_Page.CancelMeeting.ClickOn("CancelMeeting");
         }
 
         [Ignore("no ready")]
@@ -569,7 +569,7 @@ namespace DoctorWeb
             Pages.PatientMedical_Page.CreateNewMedicineApplication();
             Pages.PatientMedical_Page.EnterNoteTable();
             Pages.PatientMedical_Page.CreateNewNoteApplication();
-            Pages.Home_Page.CloseTab.ClickOn();
+            Pages.Home_Page.CloseTab.ClickOn("CloseTab");
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
             Pages.Meeting_Page.CreateMeetingApplication();
         }
@@ -579,17 +579,17 @@ namespace DoctorWeb
         {
             try
             {
-                Pages.Home_Page.SettingScreen.ClickWait(1500);
+                Pages.Home_Page.SettingScreen.ClickWait("Setting");
                 softAssert.VerifyElementIsPresent(Pages.Home_Page.UserManagementScreen);
-                Pages.Home_Page.UserManagementScreen.ClickWait(1500);
+                Pages.Home_Page.UserManagementScreen.ClickWait("UserManagement");
                 softAssert.VerifyElementIsPresent(Pages.UsersManagement_Page.PracticesManagerButton);
-                Pages.Home_Page.UserAuthorizationScreen.ClickWait(1500);
+                Pages.Home_Page.UserAuthorizationScreen.ClickWait("Authorization");
                 softAssert.VerifyElementIsPresent(Pages.Authorization_Page.GroupCreate);
-                Pages.Home_Page.GeneralScreen.ClickWait(1500);
+                Pages.Home_Page.GeneralScreen.ClickWait("General");
                 Pages.Patient_Page.NewPatientApplication();
-                Pages.Patient_Page.ClosePatientTab.ClickOn();
-                Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
-                Pages.Home_Page.PopupClose.ClickOn();
+                Pages.Patient_Page.ClosePatientTab.ClickOn("ClosePatient");
+                Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn("AvailbleTime");
+                Pages.Home_Page.PopupClose.ClickOn("Popup Close");
             }
 
             catch (AssertionException e)

@@ -1,4 +1,5 @@
 ﻿using DoctorWeb.Utility;
+using log4net;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -14,6 +15,7 @@ namespace DoctorWeb
     public class AssertionExtent
     {
         private StringBuilder verificationErrors;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private int _time = 300;
 
         public AssertionExtent()
@@ -46,11 +48,13 @@ namespace DoctorWeb
         {
             try
             {
-                Assert.IsTrue(element.Displayed, Constant.stackTraceTrue);
+                Assert.IsTrue(element.Displayed, Constant.stackTraceFalse);
+                Log.Info("Element : " + element.Text + " IS Present");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
+                Log.Error("Element : " + element.Text + " IS NOT Present");
                 Debug.WriteLine(e);
             }
         }
@@ -88,11 +92,14 @@ namespace DoctorWeb
             {
                 Assert.IsTrue(element.Displayed);
                 Thread.Sleep(_time);
+                Log.Info("Verify " + element.Text + " is present");
+                
             }
             catch (AssertionException e)
             {
                 CloseWindowssIfDisplayed(_window);
                 Debug.WriteLine(e + Constant.stackTraceTrue);
+                Log.Error("Verify " + element.Text + " is NOT present");
             }
         }
 
@@ -101,11 +108,13 @@ namespace DoctorWeb
             try
             {
                 Assert.IsTrue(element.Displayed);
+                Log.Info("Verify " + element.Text + " IS present inside window");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
                 CloseWindowsForPopupInWindow(_popup, _window);
+                Log.Info("Verify " + element.Text + " IS NOT present inside window");
                 Debug.WriteLine(e + Constant.stackTraceTrue);
             }
         }
@@ -114,9 +123,11 @@ namespace DoctorWeb
             try
             {
                 Assert.AreEqual(element, str);
+                Log.Info("Verify " + element + " Has Equal");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e) {
+                Log.Info("Verify " + element + " DOES NOT Has Equal");
                 Debug.WriteLine(e);
             }
         }
@@ -125,11 +136,13 @@ namespace DoctorWeb
         {
             try
             {
+                Log.Info("Verify " + element + " Has No Equal");
                 Assert.AreNotEqual(element, str);
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
+                Log.Info("Verify " + element + " Has Equal - Fail");
                 Debug.WriteLine(e);
 
             }
@@ -194,7 +207,7 @@ namespace DoctorWeb
         public void CloseWindowssIfDisplayed(IWebElement element)
         {
             if (element.Displayed) {
-                element.Click();
+                element.ClickOn(element.Text);
             }
         }
 
@@ -202,8 +215,8 @@ namespace DoctorWeb
         {
             if (popup.Displayed)
             {
-                window.ClickOn();
-                popup.ClickOn();
+                window.ClickOn(Constant.Click);
+                popup.ClickOn(Constant.PopupSave);
             }
         }
     }

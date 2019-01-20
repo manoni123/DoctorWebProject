@@ -58,33 +58,33 @@ namespace DoctorWeb.PageObjects
 
         public void EnterCancelReason() {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait(1500);
-            Pages.Home_Page.GeneralScreen.ClickWait(2000);
-            CancelReasonPage.ClickOn();
+            Pages.Home_Page.SettingScreen.ClickWait("Setting");
+            Pages.Home_Page.GeneralScreen.ClickWait("General");
+            CancelReasonPage.ClickOn(Constant.Click);
         }
 
         public void CreateCancelReasonApplication() {
-            CreateNewCancelReason.ClickOn();
-            SaveCancelReason.ClickOn();
+            CreateNewCancelReason.ClickOn(Constant.Create);
+            SaveCancelReason.ClickOn(Constant.Save);
             softAssert.VerifyErrorMsg();
-            CreateNewCancelReason.ClickOn();
+            CreateNewCancelReason.ClickOn(Constant.Create);
             CancelReasonName.SendKeys(Constant.CancelReason);
-            SaveCancelReason.ClickOn();
+            SaveCancelReason.ClickOn(Constant.Save);
         }
 
         public void EditCancelReasonApplicaiton() {
-            EditCancelReason.ClickOn();
+            EditCancelReason.ClickOn(Constant.Edit);
             CancelReasonName.Clear();
-            SaveCancelReason.ClickOn();
+            SaveCancelReason.ClickOn(Constant.Save);
             softAssert.VerifyErrorMsg();
-            EditCancelReason.ClickOn();
-            CancelReasonName.EnterClearText("Tester", "Test");
+            EditCancelReason.ClickOn(Constant.Edit);
+            CancelReasonName.EnterClearText("Tester");
         }
 
         public void DeleteCancelReasonApplicaiton() {
-            DeleteCancelReason.ClickOn();
+            DeleteCancelReason.ClickOn(Constant.Delete);
             softAssert.VerifyElementPresentInsideWindow(ApprovePopup, CancelPopup);
-            ApprovePopup.ClickOn();
+            ApprovePopup.ClickOn(Constant.PopupSave);
         }
     }
 }

@@ -75,29 +75,29 @@ namespace DoctorWeb.PageObjects
 
             //call Home Page to create supplier
             //open entity list and press the new supplier
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewSupplier.ClickOn();
+            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
+            Pages.Home_Page.CreateNewSupplier.ClickOn("Supplier Create");
             SupplierName.SendKeys("1");
-            SupplierSave.ClickOn();
+            SupplierSave.ClickOn("Save Supplier");
             softAsserts.VerifyElementIsPresent(supplierNameValidate);
-            SupplierName.EnterClearText(Constant.supplierName, "SupplierName");
-            SupplierSave.ClickOn();
-            SupplierContactTab.ClickWait(500);
+            SupplierName.EnterClearText(Constant.supplierName);
+            SupplierSave.ClickOn("Save Supplier");
+            SupplierContactTab.ClickOn("SupploerContact");
             softAsserts.VerifyElementIsPresent(CreateSupplierContact);
         }
 
         //create new supplier contact
         public void NewSupplierContactApplication()
         {
-            CreateSupplierContact.Click();
+            CreateSupplierContact.ClickOn(Constant.Create);
             softAsserts.VerifyElementIsPresent(SuppContName);
             SuppContName.SendKeys("1");
-            SaveNewSupplierContact.ClickOn();
+            SaveNewSupplierContact.ClickOn("SaveSupplier");
             softAsserts.VerifyElementIsPresent(supplierContactNameValidate);
-            SuppContName.EnterClearText(Constant.suppContactName, "SuppName");
-            SuppContLast.EnterClearText(Constant.suppContactLast, "SuppLastName");
-            SuppContPhone.EnterClearText(Constant.suppContactPhone, "SuppPhone");
-            SaveNewSupplierContact.ClickOn();
+            SuppContName.EnterClearText(Constant.suppContactName);
+            SuppContLast.EnterClearText(Constant.suppContactLast);
+            SuppContPhone.EnterClearText(Constant.suppContactPhone);
+            SaveNewSupplierContact.ClickOn("SaveSupplier");
             softAsserts.VerifyElementIsPresent(SupplierContactEdit);
            
         }

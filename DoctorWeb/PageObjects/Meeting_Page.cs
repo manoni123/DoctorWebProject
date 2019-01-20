@@ -60,7 +60,7 @@ namespace DoctorWeb.PageObjects
 
         public void CreateMeetingApplication() {
             Thread.Sleep(500);
-            ApproveMeeting.ClickOn();
+            ApproveMeeting.ClickOn(Constant.Approve);
  //           softAssert.VerifyErrorMsg();
             SearchPatient.Clear();
             SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
@@ -71,9 +71,9 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             SearchPatient.SendKeys(Keys.Tab);
             Thread.Sleep(500);
-            VisitReason.ClickOn();
-            SelectFirstPriceList.ClickWait(500);
-            ApproveMeeting.ClickWait(500);
+            VisitReason.ClickOn(Constant.Click);
+            SelectFirstPriceList.ClickOn(Constant.Dropdown);
+            ApproveMeeting.ClickOn(Constant.Approve);
         }
     }
 }

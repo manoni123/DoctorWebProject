@@ -100,8 +100,8 @@ namespace DoctorWeb.PageObjects
         //create or fill method to call to use in tests
         public void NewPatientApplication()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickOn();
+            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
+            Pages.Home_Page.CreateNewPatient.ClickOn("NewPatient");
             PatientExecute();
         }
 
@@ -109,19 +109,19 @@ namespace DoctorWeb.PageObjects
         public void PatientExecute()
         {
             PatientName.SendKeys("1");
-            SaveButton.ClickOn();
+            SaveButton.ClickOn(Constant.Save);
             softAssert.VerifyElementIsPresent(PatientValidation);
-            PatientName.EnterClearText(PatientUseName, "patient name");
-            PatientLastame.SendKeys(Constant.patientLastname);
+            PatientName.EnterClearText(PatientUseName);
+            PatientLastame.EnterClearText(Constant.patientLastname);
             PatientId.SendKeys(RandomNumber.smallNumber());
-            PatientIDType.ClickOn();
+            PatientIDType.ClickOn(Constant.Dropdown);
             PatientIDType.SendKeys(Keys.ArrowDown);
-            SaveButton.ClickWait(500);
+            SaveButton.ClickOn(Constant.Save);
             softAssert.VerifyElementIsPresent(PatientEditButton);
         }
 
         public void CloseCloseTab() {
-            ClosePatientTab.ClickOn();
+            ClosePatientTab.ClickOn("ClosePatient");
         }
 
 
@@ -131,7 +131,7 @@ namespace DoctorWeb.PageObjects
             //call home_Page to use in the patient applicaitn
 
             //open entity list and press on create new patient
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
+            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
             Thread.Sleep(500);
             //press create new patient causes the drop down to close
             //needed to create a JS press command (not human) in order to click the list for it to work propertly
@@ -147,7 +147,7 @@ namespace DoctorWeb.PageObjects
             {
                 Thread.Sleep(500);
                 Log.Info("select business window has opened");
-                Browser.Driver.FindElement(By.XPath("//*[@id=\"windowPopup0\"]/div/div[2]/ul/li[1]")).Click();
+                Browser.Driver.FindElement(By.XPath("//*[@id=\"windowPopup0\"]/div/div[2]/ul/li[1]")).ClickOn(Constant.Click);
                 BlockedPatientCreate();
             }
             else
@@ -155,18 +155,18 @@ namespace DoctorWeb.PageObjects
                 Log.Info("No business found to select");
                 BlockedPatientCreate();
                 Thread.Sleep(500);
-                Pages.Home_Page.ProfileList.ClickOn();
-                Pages.Home_Page.LogoutButton.ClickOn();
+                Pages.Home_Page.ProfileList.ClickOn("");
+                Pages.Home_Page.LogoutButton.ClickOn(Constant.Click);
             }
         }
 
         public void BlockedPatientCreate() {
             try
             {
-                PatientName.EnterClearText(PatientUseName, "PatientName");
-                PatientLastame.EnterClearText(Constant.patientLastname, "PatientLastName");
-                PatientConfidential.ClickOn();
-                SaveButton.ClickOn();
+                PatientName.EnterClearText(PatientUseName);
+                PatientLastame.EnterClearText(Constant.patientLastname);
+                PatientConfidential.ClickOn(Constant.Click);
+                SaveButton.ClickOn(Constant.Save);
 
             }
             catch (Exception)
@@ -177,19 +177,19 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPatientDocument()
         {
-            PatientDocument.ClickWait(1500);
+            PatientDocument.ClickWait("PatientDocuments");
             softAssert.VerifyElementIsPresent(Pages.Document_Page.OpenUpload);
         }
 
         public void EnterPatientVisits()
         {
-            PatientVisits.ClickWait(1500);
+            PatientVisits.ClickWait("PatientVisits");
             softAssert.VerifyElementIsPresent(Pages.Visits_Page.TherapistDropdown);
         }
 
         public void EnterPatientMessages()
         {
-            PatientMessages.ClickWait(1500);
+            PatientMessages.ClickWait("PatientMessages");
             softAssert.VerifyElementIsPresent(Pages.Messages_Page.PatientValidation);
         }
     }

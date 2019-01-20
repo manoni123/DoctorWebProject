@@ -90,5 +90,21 @@ namespace DoctorWeb.Utility
 
         public static string closeTabBeforeSave = "לא שמרת את נתוני המטופל החדש והנך עומד לסגור את טאב המטופל, האם לסגור את הטאב?";
 
+        public static string CloseTable = "CloseTable";
+        public static string OpenTable = "OpenTable";
+        public static string Save = "Save";
+        public static string Edit = "Edit";
+        public static string PopupSave = "PopupSave";
+        public static string PopupCancel = "PopupCancel";
+        public static string Delete = "Delete";
+        public static string Approve = "Approve";
+        public static string Create = "CreateNew";
+        public static string Checkbox = "Mark Checkbox";
+        public static string Dropdown = "Select Dropdown";
+        public static string Click = "Button";
+        public static string CloseWindow = "CloseWindow";
+        public static string Select = "Selected From List";
+
+
     }
 }

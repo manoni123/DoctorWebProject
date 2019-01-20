@@ -197,7 +197,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterMedicalTab() {
             try {
-                Pages.Patient_Page.OpenMedicalTab.ClickOn();
+                Pages.Patient_Page.OpenMedicalTab.ClickOn("MedicalTab");
             } catch (Exception) {
                 Log.Error("could not Enter Medical Tab successfuly");
             }
@@ -205,7 +205,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterMedicineTable() {
             Thread.Sleep(500);
-            OpenMedicineTable.ClickOn();
+            OpenMedicineTable.ClickOn("MedicineTable");
             softAssert.VerifyElementIsPresent(SaveMedicineTable);
 
         }
@@ -217,34 +217,34 @@ namespace DoctorWeb.PageObjects
             {
                 string MedicienNewName = "Med" + RandomNumber.smallNumber();
                 var disButton = SaveMedicineTable.GetAttribute("disabled");
-                CreateNewMedicine.ClickOn();
-                CreateNewMedicine.ClickWait(500);
+                CreateNewMedicine.ClickOn("CreateMedicine");
+                CreateNewMedicine.ClickOn("CreateMedicine");
                 softAssert.VerifyElementPresentInsideWindow(NameValidationError, CancelMedicineTable);
-                MedicalName.EnterClearText(Constant.medicineName + RandomNumber.smallNumber(), "MedicineName");
-                MedicalDescription.EnterClearText(Constant.medicineName, "MedicineDesc");
+                MedicalName.EnterClearText(Constant.medicineName + RandomNumber.smallNumber());
+                MedicalDescription.EnterClearText(Constant.medicineName);
                 Thread.Sleep(500);
-                ConfirmCreateMedicine.ClickOn();
+                ConfirmCreateMedicine.ClickOn("Confirm");
                 Thread.Sleep(500);
                 softAssert.VerifyElementPresentInsideWindow(DeleteMedicine, CancelMedicineTable);
                 Thread.Sleep(500);
-                CheckMedicineActive.ClickOn();
+                CheckMedicineActive.ClickOn("Check");
                 Thread.Sleep(500);
-                SaveMedicineTable.Click();
+                SaveMedicineTable.ClickOn(Constant.Save);
                 Constant.medicineName = MedicienNewName;
             }
             catch (Exception) {
-                CancelMedicineTable.ClickOn();
+                CancelMedicineTable.ClickOn("CloseTable");
             }
         }
 
         //edit medicine
         public void EditMedicineApplication()
         {
-            EditMedicine.Click();
-            MedicalName.EnterClearText("MedEdit", "MedicineName");
-            ConfirmCreateMedicine.ClickOn();
+            EditMedicine.ClickOn(Constant.Edit);
+            MedicalName.EnterClearText("MedEdit");
+            ConfirmCreateMedicine.ClickOn("Confirm");
             softAssert.VerifySuccessMsg();
-            CancelMedicineTable.Click();
+            CancelMedicineTable.ClickOn(Constant.CloseWindow);
         }
 
         //delete medicine
@@ -252,13 +252,13 @@ namespace DoctorWeb.PageObjects
 
             if (DeleteMedicine.IsDisplayed("delete medicine"))
             {
-                DeleteMedicine.ClickOn();
+                DeleteMedicine.ClickOn("DeleteMed");
                 softAssert.VerifyElementIsPresent(ConfirmDelete);
-                ConfirmDelete.ClickOn();
+                ConfirmDelete.ClickOn("ApproveDelete");
                 Thread.Sleep(500);
-                CancelMedicineTable.Click();
+                CancelMedicineTable.ClickOn(Constant.CloseWindow);
             } else {
-                CancelMedicineTable.Click();
+                CancelMedicineTable.ClickOn(Constant.CloseWindow);
             }
             
         }
@@ -266,7 +266,7 @@ namespace DoctorWeb.PageObjects
         public void EnterAnamnezaTable()
         {
             Thread.Sleep(500);
-            OpenAnamnezaTable.ClickOn();
+            OpenAnamnezaTable.ClickOn("OpenAnamTable");
             softAssert.VerifyElementIsPresent(CloseAnamnezaTable);
         }
 
@@ -277,78 +277,76 @@ namespace DoctorWeb.PageObjects
             string anamnezaNewName = "Anam" + RandomNumber.smallNumber();
             //call patient page to enter medical Tab
 
-            CreateNewAnamneza.ClickOn();
-            AnamnezaName.EnterClearText(Constant.anamnezaName, "MedicineName");
-            AnamnezaDescription.EnterClearText(Constant.anamnezaName + RandomNumber.smallNumber(), "MedicineDesc");
-            CheckAnamnezaWarning.ClickOn();
-            ConfirmCreateAnamneza.ClickOn();
+            CreateNewAnamneza.ClickOn("CreateAnamneza");
+            AnamnezaName.EnterClearText(Constant.anamnezaName);
+            AnamnezaDescription.EnterClearText(Constant.anamnezaName + RandomNumber.smallNumber());
+            CheckAnamnezaWarning.ClickOn("CheckWarning");
+            ConfirmCreateAnamneza.ClickOn("ConfirmCreate");
             softAssert.VerifyElementPresentInsideWindow(DeleteAnamneza, CloseAnamnezaTable);
             softAssert.VerifySuccessMsg();
             Thread.Sleep(500);
-           // CheckAnamnezaActive.ClickWait(500);
-            CloseAnamnezaTable.Click();
-
-            Constant.anamnezaName = anamnezaNewName;
-
-            
+           // CheckAnamnezaActive.ClickOn();
+            CloseAnamnezaTable.ClickOn(Constant.CloseWindow);
+ 
+            Constant.anamnezaName = anamnezaNewName;         
         }
 
         public void CreateNewAnamnezaWhenSaveApplication()
         {
             var disButton = SaveAnamnezaTable.GetAttribute("disabled");
             //call patient page to enter medical Tab
-            CreateNewAnamneza.ClickOn();
-            SaveAnamnezaTable.ClickOn();
+            CreateNewAnamneza.ClickOn("CreateAnamneza");
+            SaveAnamnezaTable.ClickOn(Constant.Save);
             softAssert.VerifyElementIsNotNull(disButton, CloseAnamnezaTable);
-            AnamnezaName.EnterClearText(Constant.anamnezaName + RandomNumber.smallNumber(), "MedicineName");
-            AnamnezaDescription.EnterClearText(Constant.anamnezaName, "MedicineDesc");
-            CheckAnamnezaWarning.ClickOn();
-            ConfirmCreateAnamneza.ClickOn();
+            AnamnezaName.EnterClearText(Constant.anamnezaName + RandomNumber.smallNumber());
+            AnamnezaDescription.EnterClearText(Constant.anamnezaName);
+            CheckAnamnezaWarning.ClickOn(Constant.Checkbox);
+            ConfirmCreateAnamneza.ClickOn(Constant.Save);
             softAssert.VerifySuccessMsg();
             softAssert.VerifyElementPresentInsideWindow(DeleteAnamneza, CloseAnamnezaTable);
           //  CheckAnamnezaActive.ClickOn();
-            CloseAnamnezaTable.Click();
+            CloseAnamnezaTable.ClickOn(Constant.CloseWindow);
         }
 
         //edit new anamneza application
         public void EditNewAnamnezaApplication() {
-            EditAnamneza.ClickOn();
+            EditAnamneza.ClickOn(Constant.Edit);
             AnamnezaName.Clear();
-            ConfirmCreateAnamneza.ClickOn();
+            ConfirmCreateAnamneza.ClickOn(Constant.Save);
             softAssert.VerifyElementPresentInsideWindow(NameValidationError, CloseAnamnezaTable);
-            AnamnezaName.EnterClearText("Edit", "Anamneza Name");
-            ConfirmCreateAnamneza.ClickWait(600);
-            CloseAnamnezaTable.Click();
+            AnamnezaName.EnterClearText("Edit");
+            ConfirmCreateAnamneza.ClickOn(Constant.Save);
+            CloseAnamnezaTable.ClickOn(Constant.CloseWindow);
         }
 
         //delete new anamneza app
         public void DeleteNewAnamanezaApplication() {
             if (DeleteAnamneza.IsDisplayed("delete anamneza"))
             {
-                DeleteAnamneza.ClickOn();
+                DeleteAnamneza.ClickOn("Delete");
                 softAssert.VerifyElementIsPresent(ConfirmDelete);
-                ConfirmDelete.ClickOn();
-                CloseAnamnezaTable.ClickOn();
+                ConfirmDelete.ClickOn("ConfirmDelete");
+                CloseAnamnezaTable.ClickOn("CloseTable");
             }
             else {
-                CloseAnamnezaTable.Click();
+                CloseAnamnezaTable.ClickOn(Constant.CloseWindow);
             }
         }
 
         public void AddICDApplication() {
             try
             {
-                ICDWindow.ClickOn();
+                ICDWindow.ClickOn("ICD");
                 softAssert.VerifyElementInPopupOverWindow(ICDImport, ICDCancel, CloseAnamnezaTable);
                 ICDSearch.SendKeys(Constant.ICDData);
                 ICDSearch.SendKeys(Keys.Enter);
-                ICDImport.ClickOn();
-                CloseAnamnezaTable.ClickOn();
+                ICDImport.ClickOn("Import");
+                CloseAnamnezaTable.ClickOn("CloseTable");
             }
             catch (Exception)
             {
-                ICDCancel.ClickOn();
-                CloseAnamnezaTable.ClickOn();
+                ICDCancel.ClickOn("Cancel");
+                CloseAnamnezaTable.ClickOn("CloseTable");
             }
 ;
         }
@@ -357,7 +355,7 @@ namespace DoctorWeb.PageObjects
         public void EnterNoteTable()
         {
             Thread.Sleep(500);
-            OpenNotesTable.ClickOn();
+            OpenNotesTable.ClickOn(Constant.OpenTable);
             softAssert.VerifyElementIsPresent(SaveNotesTable);
         }
 
@@ -366,29 +364,29 @@ namespace DoctorWeb.PageObjects
         {
             string NoteNewName = "note" + RandomNumber.smallNumber();
 
-            CreateNewNote.ClickOn();
+            CreateNewNote.ClickOn(Constant.Create);
             NoteDescription.SendKeys(Constant.noteName);
-            ConfirmCreateNote.ClickOn();
+            ConfirmCreateNote.ClickOn(Constant.Save);
             softAssert.VerifyElementPresentInsideWindow(DeleteNote, CloseNotesTable);
-            EditNote.ClickOn();
-            CheckNoteWarning.ClickOn();
-            ConfirmCreateNote.ClickOn();
+            EditNote.ClickOn(Constant.Edit);
+            CheckNoteWarning.ClickOn(Constant.Checkbox);
+            ConfirmCreateNote.ClickOn(Constant.Save);
             softAssert.VerifySuccessMsg();
-           // CheckNoteActive.ClickWait(500);
-            CloseNotesTable.Click();
+           // CheckNoteActive.ClickOn();
+            CloseNotesTable.ClickOn(Constant.CloseWindow);
 
             Constant.noteName = NoteNewName;
         }
         //edit desc
         public void EditNoteApplication()
         {
-            EditNote.ClickOn();
+            EditNote.ClickOn("EditNote");
             NoteDescription.Clear();
-            ConfirmCreateNote.ClickOn();
+            ConfirmCreateNote.ClickOn("ConfirmNote");
             softAssert.VerifyElementPresentInsideWindow(DescriptionValidationError, CloseNotesTable);
-            NoteDescription.EnterClearText("Note Edit", "Not Descritpion");
-            ConfirmCreateNote.ClickOn();
-            CloseNotesTable.ClickOn();
+            NoteDescription.EnterClearText("Note Edit");
+            ConfirmCreateNote.ClickOn("CreateNote");
+            CloseNotesTable.ClickOn("CloseTable");
             softAssert.VerifySuccessMsg();
         }
 
@@ -397,32 +395,32 @@ namespace DoctorWeb.PageObjects
         {
             if (DeleteNote.IsDisplayed("delete note"))
             {
-                DeleteNote.ClickOn();
+                DeleteNote.ClickOn("DeleteNote");
                 softAssert.VerifyElementIsPresent(ConfirmDelete);
-                ConfirmDelete.ClickOn();
-                CloseNotesTable.Click();
+                ConfirmDelete.ClickOn("ConfirmDelee");
+                CloseNotesTable.ClickOn(Constant.CloseWindow);
             }
             else
             {
-                CloseNotesTable.Click();
+                CloseNotesTable.ClickOn(Constant.CloseWindow);
             }
         }
 
         public void ValidateWarningIndicator() {
             try { 
             Thread.Sleep(500);
-            EditMedicineOnUser.ClickWait(500);
-            SelectYesMedicineOnUser.ClickOn();
+            EditMedicineOnUser.ClickOn("EditUserMedicine");
+            SelectYesMedicineOnUser.ClickOn("YesOnUser");
             SelectYesMedicineOnUser.SendKeys(Keys.ArrowUp);
             SelectYesMedicineOnUser.SendKeys(Keys.Enter);
             Thread.Sleep(500);
-            Pages.PatientMedical_Page.OpenMedicineTable.ClickOn();
-            Pages.PatientMedical_Page.CancelMedicineTable.ClickOn();
+            Pages.PatientMedical_Page.OpenMedicineTable.ClickOn("MedicineTable");
+            Pages.PatientMedical_Page.CancelMedicineTable.ClickOn("CloseTable");
             softAssert.VerifyElementIsPresent(MedicalWarningIcon);
             }
             catch (Exception)
             {
-                CancelMedicineTable.ClickOn();
+                CancelMedicineTable.ClickOn("CloseTable");
             }
         }
     } 

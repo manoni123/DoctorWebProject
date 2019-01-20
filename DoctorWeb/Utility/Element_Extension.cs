@@ -37,29 +37,31 @@ namespace DoctorWeb.Utility
         }
 
         //enter Text method with log
-        public static void EnterClearText(this IWebElement element, string text, string elementName)
+        public static void EnterClearText(this IWebElement element, string text)
         {
             element.Clear();
             element.SendKeys(text);
             Thread.Sleep(_time);
-            log.Info(text + " is entered in the " + elementName + " Field");
+            log.Info(text + " is entered in the " + element.Text);
         }
 
         //Time in Miliseconds for user actionss
-        public static void ClickOn(this IWebElement element) {
+        public static void ClickOn(this IWebElement element, string name) {
             try {
                 element.Click();
                 Thread.Sleep(_time);
+                log.Info("Click On : " + name);
             } catch (Exception e) {
                 Debug.WriteLine(e);
             }
         }
 
         //self determine the wait time
-        public static void ClickWait(this IWebElement element, int sleepTime)
+        public static void ClickWait(this IWebElement element, string name)
         {
             element.Click();
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(1500);
+            log.Info("GO TO : " + name);
         }
 
         //isDisplayd Method with log

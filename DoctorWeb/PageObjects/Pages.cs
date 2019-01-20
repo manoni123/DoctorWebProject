@@ -1,4 +1,5 @@
 ﻿using DoctorWeb.PageObjects;
+using log4net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.PageObjects;
@@ -7,8 +8,7 @@ namespace DoctorWeb
 {
     public static class Pages
     {
-
-       // private static IWebDriver webDriver = new ChromeDriver();
+        // private static IWebDriver webDriver = new ChromeDriver();
 
         private static T GetPage<T>() where T : new()
         {
@@ -19,7 +19,7 @@ namespace DoctorWeb
 
         public static Login_Page Login_Page
         {
-            get { return GetPage<Login_Page>(); }
+            get { return GetPage<Login_Page>();}
         }
 
         public static Home_Page Home_Page

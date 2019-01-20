@@ -49,7 +49,7 @@ namespace DoctorWeb.PageObjects
             try {
                 Pages.Scheduler_Page.EnterStandBySchedulerList();
                 string  standbyListCount =  Browser.Driver.FindElement(By.XPath("//*[@id='waitListPanelBar']/li/span/span[3]")).Text;
-                Pages.Scheduler_Page.StanByCreate.ClickOn();
+                Pages.Scheduler_Page.StanByCreate.ClickOn("Standby Create");
                 softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
                 Thread.Sleep(500);
                 StandbySearch.EnterText(Pages.Patient_Page.PatientUseName);
@@ -58,12 +58,12 @@ namespace DoctorWeb.PageObjects
                 Thread.Sleep(500);
                 StandbySearch.EnterText(Keys.Enter);
                 Thread.Sleep(500);
-                CreateStandby.ClickOn();
+                CreateStandby.ClickOn("CreateStandby");
                 softAssert.VerifyErrorMsg();
                 TherapistSearch.SendKeys(Keys.ArrowDown);
                 Thread.Sleep(500);
                 TherapistSearch.SendKeys(Keys.Enter);
-                CreateStandby.ClickWait(1500);
+                CreateStandby.ClickOn("CreateStandby");
                 string standbyListCountAfter = Browser.Driver.FindElement(By.XPath("//*[@id='waitListPanelBar']/li/span/span[3]")).Text;
                 Assert.AreNotEqual(standbyListCount, standbyListCountAfter);
             } catch (Exception) {

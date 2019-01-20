@@ -145,7 +145,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterReportScreen() {
             Thread.Sleep(500);
-            Pages.Home_Page.ReportScreen.ClickWait(1500);
+            Pages.Home_Page.ReportScreen.ClickWait("ReportScreen");
         }
 
         public void PatientReportApplication()
@@ -153,33 +153,33 @@ namespace DoctorWeb.PageObjects
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
-            PatientReportFromDate.EnterClearText(Constant.dateMinusMonth, "Patient report");
+            PatientReportFromDate.EnterClearText(Constant.dateMinusMonth);
 
             try
             {
-                PatientReportExcel.ClickWait(2000);
+                PatientReportExcel.ClickOn(Constant.Click + " Excel");
              //   PatientReportPdf.ClickWait(2000);
-                PatientReportShow.ClickWait(1500);
+                PatientReportShow.ClickOn(Constant.Click + " Show");
                 softAssert.VerifyElementIsPresent(PatientOutputName);
 
             } catch(Exception) {
-                PopupButton.ClickOn();
+                PopupButton.ClickOn("Popup");
             }
         } 
         public void ContactReportApplication()
         {
             Thread.Sleep(500);
-            ContactReportTab.ClickOn();
+            ContactReportTab.ClickOn("ContactReport");
             try
             {
-                ContactReportExcel.ClickWait(2000);
+                ContactReportExcel.ClickOn("ContactExcel");
        //         ContactReportPDF.ClickWait(2000);
-                ContactReportShow.ClickWait(1500);
+                ContactReportShow.ClickOn("ContactShow");
                 softAssert.VerifyElementIsPresent(ContactOutputName);
             }
             catch (Exception)
             {
-                PopupButton.ClickOn();
+                PopupButton.ClickOn("Popup");
             }
         }
 
@@ -188,13 +188,13 @@ namespace DoctorWeb.PageObjects
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
-            MeetingReportTab.ClickOn();
-            MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth, "meetin report");
+            MeetingReportTab.ClickOn("MeetingReport");
+            MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth);
             try
             {
-                MeetingReportExcel.ClickWait(2000);
+                MeetingReportExcel.ClickOn("MeetingReport");
         //        MeetingReportPdf.ClickWait(2000);
-                MeetingReportShow.ClickWait(1500);
+                MeetingReportShow.ClickOn("Reportshow");
                 softAssert.VerifyElementIsPresent(MeetingReportOutput);
 
                 if (tabs.Count > 1)
@@ -206,25 +206,25 @@ namespace DoctorWeb.PageObjects
             }
             catch (Exception)
             {
-                PopupButton.ClickOn();
+                PopupButton.ClickOn("Popup");
             }
         }
 
         public void NotificationReportApplication()
         {
             Thread.Sleep(500);
-            NotificationReportTab.ClickOn();
-            NotificationDateFrom.EnterClearText(Constant.dateMinusMonth, "meetin report");
+            NotificationReportTab.ClickOn("Notification");
+            NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
             try
             {
-                NotificationReportExcel.ClickWait(2000);
+                NotificationReportExcel.ClickOn("Notification Excel");
          //       NotificationReportPDF.ClickWait(2000);
-                NotficationReportShow.ClickWait(1500);
+                NotficationReportShow.ClickOn("Notification Show");
                 softAssert.VerifyElementIsPresent(NotificationOutput);
             }
             catch (Exception)
             {
-                PopupButton.ClickOn();
+                PopupButton.ClickOn("Popup");
             }
         }
 
@@ -233,11 +233,11 @@ namespace DoctorWeb.PageObjects
             try
             {
                 Thread.Sleep(500);
-                AuditReportTab.ClickOn();
-                ShowAuditReport.ClickOn();
+                AuditReportTab.ClickOn("Audit");
+                ShowAuditReport.ClickOn("Audit Report");
                 if (Pages.Home_Page.CloseTab.Displayed)
                 {
-                    Pages.Home_Page.CloseTab.Click();
+                    Pages.Home_Page.CloseTab.ClickOn(Constant.Click);
                 }
                 else
                 {

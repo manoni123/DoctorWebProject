@@ -45,10 +45,10 @@ namespace DoctorWeb.PageObjects
 
             //open that patiant family tab
             Thread.Sleep(500);
-            Pages.Patient_Page.RelationFamilyTab.ClickOn();
+            Pages.Patient_Page.RelationFamilyTab.ClickOn(Constant.Click);
 
             //open the family relation window and add new patiant as family member
-            OpenFamilyWindow.ClickOn();
+            OpenFamilyWindow.ClickOn(Constant.Click);
             PatientSearchBar.SendKeys(Pages.Patient_Page.PatientUseName);
             Thread.Sleep(500);
             //click on the dropdown cell to enbable the dropdown
@@ -60,9 +60,9 @@ namespace DoctorWeb.PageObjects
             Actions actions = new Actions(Browser.chromebDriver);
             actions.KeyDown(Keys.Control).SendKeys(Keys.ArrowDown).Perform();
             Log.Info("press on relative type");
-            SelectPatientFamily.Click();
+            SelectPatientFamily.ClickOn();
             Log.Info("selected the patient");
-            SaveFamilyRelation.Click();
+            SaveFamilyRelation.ClickOn();
             Log.Info("saved patient ");
         }
     }

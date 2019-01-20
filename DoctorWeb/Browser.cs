@@ -1,4 +1,5 @@
 ﻿using DoctorWeb.Utility;
+using log4net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -12,6 +13,8 @@ namespace DoctorWeb
 {
     public static class Browser
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static readonly string BaseUrl = Constant.drWebUrl;
         private static readonly string TestUrl = Constant.drWebTestUrl;
         public static IWebDriver chromebDriver = new ChromeDriver();
@@ -19,6 +22,7 @@ namespace DoctorWeb
         // public static IWebDriver firefoxDriver = new FirefoxDriver();
         public static void Initialize()
         {
+            Log.Info("Driver Used is:" + Driver.ToString());
             Goto("");
             chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             chromebDriver.Manage().Window.Maximize();
@@ -31,7 +35,8 @@ namespace DoctorWeb
 
         public static ISearchContext Driver
         {
-            get { return chromebDriver; }
+            get {return chromebDriver;}
+            
         }
 
         public static void Goto(string url)
@@ -41,11 +46,13 @@ namespace DoctorWeb
             switch (selectEnviornment) {
                 case 1:
                      chromebDriver.Url = BaseUrl + url;
+                     Log.Info("URL Used for Testing is: " + BaseUrl + Environment.NewLine);
                 break;
 
                 case 2:
                     chromebDriver.Url = TestUrl + url;
-                break;
+                    Log.Info("URL Used for Testing is: " + TestUrl + Environment.NewLine);
+                    break;
             }
         }
 

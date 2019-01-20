@@ -59,18 +59,18 @@ namespace DoctorWeb.PageObjects
         public void EnterPriceLisTypeScreen()
         {
             Pages.Home_Page.EntePriceListTab();
-            PriceListTypeScreen.ClickOn();
+            PriceListTypeScreen.ClickWait("PriceListScreen");
             softAssert.VerifyElementIsPresent(PriceListTypeCreate);
         }
 
         public void PriceListTypeCreateApplication()
         {
             int priceListCount = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
-            PriceListTypeCreate.Click();
-            PriceListTypeApprove.ClickOn();
+            PriceListTypeCreate.ClickOn(Constant.Create);
+            PriceListTypeApprove.ClickOn("TypeApprove");
             softAssert.VerifyElementIsPresent(NameErrorMsg);
             PriceListTypeName.EnterText(Constant.priceListName);
-            PriceListTypeApprove.ClickWait(1000);
+            PriceListTypeApprove.ClickOn("TypeApprove");
             int priceListCountAfter = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             Thread.Sleep(500);
             Assert.AreNotEqual(priceListCount, priceListCountAfter);
@@ -79,8 +79,8 @@ namespace DoctorWeb.PageObjects
         public void PriceListTypeDeleteApplication()
         {
             int priceListCount = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
-            PriceListTypeDelete.ClickOn();
-            DeleteApprove.ClickOn();
+            PriceListTypeDelete.ClickOn("TypeDelete");
+            DeleteApprove.ClickOn("DeleteApprove");
             int priceListCountAfter = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             Assert.AreNotEqual(priceListCount, priceListCountAfter);
 
@@ -88,9 +88,9 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTypeEditApplication()
         {
-            PriceListTypeEdit.Click();
-            PriceListTypeName.EnterClearText("Edit", "edit");
-            PriceListTypeApprove.ClickOn();
+            PriceListTypeEdit.ClickOn(Constant.Edit);
+            PriceListTypeName.EnterClearText("Edit");
+            PriceListTypeApprove.ClickOn("TypeApprove");
             softAssert.VerifyElementIsPresent(Pages.Home_Page.SuccessPopup);
         }
     }

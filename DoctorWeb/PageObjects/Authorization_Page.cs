@@ -75,34 +75,34 @@ namespace DoctorWeb.PageObjects
         {
             //call homepage to enter setting window
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait(1500);
-            Pages.Home_Page.UserAuthorizationScreen.ClickWait(1500);
+            Pages.Home_Page.SettingScreen.ClickWait("Setting");
+            Pages.Home_Page.UserAuthorizationScreen.ClickWait("Authorization");
             softAssert.VerifyElementIsPresent(GroupCreate);
         }
 
         //create new permission group
         public void CreateGroupApplication()
         {
-            GroupCreate.ClickOn();
+            GroupCreate.ClickOn(Constant.Create);
             softAssert.VerifyElementPresentInsideWindow(GroupCancel, GroupCancel);
-            GroupName.EnterClearText("11", "group name");
-            GroupSave.ClickWait(500);
+            GroupName.EnterClearText("11");
+            GroupSave.ClickOn(Constant.Save);
             softAssert.VerifyElementPresentInsideWindow(GroupNameError, GroupCancel);
-            GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber(), "Group Name");
+            GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber());
             Thread.Sleep(500);
-            GroupSave.ClickOn();
+            GroupSave.ClickOn(Constant.Save);
            // softAssert.VerifyElementNotPresent(GroupCancel);
         }
 
         public void EditGroupApplication()
         {
             softAssert.VerifyElementPresentInsideWindow(GroupeEdit, GroupCancel);
-            GroupeEdit.ClickOn();
-            GroupName.EnterClearText("11", "enter used name");
-            GroupEditSave.ClickOn();
+            GroupeEdit.ClickOn(Constant.Edit);
+            GroupName.EnterClearText("11");
+            GroupEditSave.ClickOn(Constant.Save);
             softAssert.VerifyElementPresentInsideWindow(GroupNameError, GroupCancel);
-            GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber(), "Group Name edit");
-            GroupEditSave.Click();
+            GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber());
+            GroupEditSave.ClickOn(Constant.Save);
            // softAssert.VerifyElementNotPresent(GroupCancel);
         }
 
@@ -111,9 +111,9 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(DeleteLastGroup, GroupCancel);
             try
             {
-                DeleteLastGroup.ClickOn();
+                DeleteLastGroup.ClickOn(Constant.Delete);
                 softAssert.VerifyElementPresentInsideWindow(ApproveDelete, GroupCancel);
-                ApproveDelete.Click();
+                ApproveDelete.ClickOn(Constant.Approve);
             }
             catch (Exception)
             {
@@ -124,11 +124,11 @@ namespace DoctorWeb.PageObjects
         public void ImportUsersToGroupApplication()
         {
             Thread.Sleep(500);
-            SelectSecondGroup.Click();
-            ImportToGroup.ClickOn();
-            SelectFirstUserOnList.Click();
-            ConfirmUserImport.Click();
-            Browser.Driver.FindElement(By.XPath("//*[@id=\"panelGroup\"]/div/div/ul/li[4]/span[5]")).Click();
+            SelectSecondGroup.ClickOn(Constant.Click);
+            ImportToGroup.ClickOn(Constant.Click);
+            SelectFirstUserOnList.ClickOn(Constant.Click);
+            ConfirmUserImport.ClickOn(Constant.Approve);
+            Browser.Driver.FindElement(By.XPath("//*[@id=\"panelGroup\"]/div/div/ul/li[4]/span[5]")).ClickOn(Constant.Click);
             if (ApproveDelete.IsDisplayed("approve shown"))
             {
                 Assert.Fail();

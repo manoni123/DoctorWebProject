@@ -36,7 +36,7 @@ namespace DoctorWeb.PageObjects
         public void EnterPriceLisUpdateScreen()
         {
             Pages.Home_Page.EntePriceListTab();
-            PriceListUpdateScreen.ClickOn();
+            PriceListUpdateScreen.ClickWait("UpdateScreen");
             softAssert.VerifyElementIsPresent(ChangePriceByTax);
         }
     }
