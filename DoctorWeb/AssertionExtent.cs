@@ -41,6 +41,7 @@ namespace DoctorWeb
             catch (AssertionException e)
             {
                 Debug.WriteLine(e);
+                Assert.Fail();
             }
         }
 
@@ -92,14 +93,14 @@ namespace DoctorWeb
             {
                 Assert.IsTrue(element.Displayed);
                 Thread.Sleep(_time);
-                Log.Info("Verify " + element.Text + " is present");
+                Log.Info("Verify " + element.GetAttribute("name") + " is present");
                 
             }
             catch (AssertionException e)
             {
                 CloseWindowssIfDisplayed(_window);
                 Debug.WriteLine(e + Constant.stackTraceTrue);
-                Log.Error("Verify " + element.Text + " is NOT present");
+                Log.Error("Verify " + element.GetAttribute("name") + " is NOT present");
             }
         }
 
@@ -207,7 +208,7 @@ namespace DoctorWeb
         public void CloseWindowssIfDisplayed(IWebElement element)
         {
             if (element.Displayed) {
-                element.ClickOn(element.Text);
+                element.ClickOn();
             }
         }
 
@@ -215,8 +216,8 @@ namespace DoctorWeb
         {
             if (popup.Displayed)
             {
-                window.ClickOn(Constant.Click);
-                popup.ClickOn(Constant.PopupSave);
+                window.ClickOn();
+                popup.ClickOn();
             }
         }
     }

@@ -28,14 +28,14 @@ namespace DoctorWeb.PageObjects
 
         public void PatientVisitsApplication()
         {
-            Pages.Patient_Page.PatientMeetingCreate.ClickOn("CreatePatientMeeting");
+            Pages.Patient_Page.PatientMeetingCreate.ClickOn();
             IWebElement patientAvailbleTime = Browser.Driver.FindElement(By.Id("tab3_newAppointmentContextMenu"));
-            patientAvailbleTime.FindElements(By.TagName("li")).ElementAt(0).ClickOn(Constant.Dropdown);
+            patientAvailbleTime.FindElements(By.TagName("li")).ElementAt(0).ClickOn();
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
             Pages.Meeting_Page.CreateMeetingApplication();
             Thread.Sleep(500);
             Pages.Patient_Page.EnterPatientVisits();
-            Pages.Patient_Page.PatientVisits.ClickOn("PatientVisits");
+            Pages.Patient_Page.PatientVisits.ClickOn();
             var meetingTable = Browser.Driver.FindElements(By.XPath("//*[@id='tab3_gridCustomerEvents']/div[2]/div[1]/table/tbody")).Count;
             if (meetingTable == 0) {
                 Assert.Fail(); 

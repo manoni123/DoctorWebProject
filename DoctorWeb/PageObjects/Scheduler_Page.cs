@@ -86,55 +86,55 @@ namespace DoctorWeb.PageObjects
             int yearCount = 0;
             //select the the 2099 year of calendar
             while (yearCount <= 4) {
-                CalandarMonthHeader.ClickOn("CalendarMonth");
+                CalandarMonthHeader.ClickOn();
                 yearCount++;
             }
             //select specific date
-            CalanderSelectDate.ClickOn("CalendarSelectDate");
-            CalanderSelectDate.ClickOn("CalendarSelectDate");
+            CalanderSelectDate.ClickOn();
+            CalanderSelectDate.ClickOn();
         }
 
         public void EnterDailyReportScreen() {
 
-            SchedulerMenuList.ClickOn("Schduler Menu");
+            SchedulerMenuList.ClickOn();
             IWebElement SchedulerList = Browser.Driver.FindElement(By.Id("schedulerHeaderMenu"));
-            SchedulerList.FindElements(By.TagName("li")).ElementAt(0).ClickOn("SchedulerList - 0");
+            SchedulerList.FindElements(By.TagName("li")).ElementAt(0).ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Reports_Page.PrintDailyMeetingWindow);
         }
 
         public void EnterCancelledMeetingWindow()
         {
-            SchedulerMenuList.ClickOn("Schduler Menu");
+            SchedulerMenuList.ClickOn();
             IWebElement SchedulerList = Browser.Driver.FindElement(By.Id("schedulerHeaderMenu"));
-            SchedulerList.FindElements(By.TagName("li")).ElementAt(1).ClickOn("SchedulerList - 1");
+            SchedulerList.FindElements(By.TagName("li")).ElementAt(1).ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.CancelledMeeting_Page.CancelledMeetingSearch, Pages.CancelledMeeting_Page.CloseWindow);
         }
 
         public void EnterOpenBlockWindow()
         {
-            SchedulerMenuList.ClickOn("Schduler Menu");
+            SchedulerMenuList.ClickOn();
             IWebElement SchedulerList = Browser.Driver.FindElement(By.Id("schedulerHeaderMenu"));
-            SchedulerList.FindElements(By.TagName("li")).ElementAt(2).ClickOn("SchedulerList - 2");
+            SchedulerList.FindElements(By.TagName("li")).ElementAt(2).ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.BlockOpen_Page.CreateNewSlot, Pages.BlockOpen_Page.CloseWindow);
         }
 
         public void EnterStanbyWindow()
         {
-            SchedulerMenuList.ClickOn("Schduler Menu");
+            SchedulerMenuList.ClickOn();
             IWebElement SchedulerList = Browser.Driver.FindElement(By.Id("schedulerHeaderMenu"));
-            SchedulerList.FindElements(By.TagName("li")).ElementAt(3).ClickOn("SchedulerList - 3");
+            SchedulerList.FindElements(By.TagName("li")).ElementAt(3).ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.StandbyList_Page.CreateStandby, Pages.StandbyList_Page.CloseWindow);
         }
 
         public void EnterStandBySchedulerList() {
             Thread.Sleep(500);
-            StandBySchedulerList.ClickOn("StanbyList");
+            StandBySchedulerList.ClickOn();
         }
 
         public void EnterAvailbleTime()
         {
             Thread.Sleep(500);
-            AvailbleTime_Btn.ClickOn("AvailbleTime");
+            AvailbleTime_Btn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.AvailbleTime_Page.SearchBtn, Pages.AvailbleTime_Page.CloseWindow);
         }
     }

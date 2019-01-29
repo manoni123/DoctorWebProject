@@ -60,32 +60,32 @@ namespace DoctorWeb.PageObjects
 
         public void EnterAdditionalFieldsScreen() {
             //call home page to enter general setting
-            Pages.Home_Page.SettingScreen.ClickWait("setting");
-            Pages.Home_Page.GeneralScreen.ClickWait("General");
-            AdditionalFieldsScreen.ClickWait("AdditionalField");
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.GeneralScreen.ClickWait();
+            AdditionalFieldsScreen.ClickWait();
         }
 
         public void DevEnterAdditionalFieldsScreen()
         {
-            Pages.Home_Page.SettingScreen.ClickWait("setting");
-            Pages.Home_Page.DevGeneralScreen.ClickWait("General");
-            AdditionalFieldsScreen.ClickWait("AdditionalField");
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.DevGeneralScreen.ClickWait();
+            AdditionalFieldsScreen.ClickWait();
         }
 
         public void OpenFieldsManager() {
-            OpenFieldManager.ClickOn("FieldManager");
+            OpenFieldManager.ClickOn();
         }
 
         public void AdditionalFieldApplication()
         {
             softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
-            CreateNewField.ClickOn("CreateFeild");
-            FieldSave.ClickOn("FieldSave");
+            CreateNewField.ClickOn();
+            FieldSave.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(FieldName, CloseFieldWindow);
-            FieldName.EnterClearText(Constant.fieldName);
-            FieldSave.ClickOn("FieldSave");
+            FieldName.EnterClearText("Field Name");
+            FieldSave.ClickOn();
            // softAssert.VerifyElementNotPresent(FieldSave);
-            CloseFieldWindow.ClickOn(Constant.CloseWindow);            
+            CloseFieldWindow.ClickOn();           
         }
     }
 }

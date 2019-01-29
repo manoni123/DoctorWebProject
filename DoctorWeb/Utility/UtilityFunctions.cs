@@ -36,5 +36,11 @@ namespace DoctorWeb.Utility
                 return expressionBody.Member.Name;
             }
         }
+
+        public decimal PricelistTaxCal(decimal price, decimal tax)
+        {
+            decimal ResultAfterPercentage = (tax / 100) * price + price;
+            return ResultAfterPercentage;
+        }
     }
 }

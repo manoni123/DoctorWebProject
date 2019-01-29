@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,9 +40,13 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement GroupCancel { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"panelGroup\"]/div/div/ul/li[2]")]
+        [FindsBy(How = How.CssSelector, Using = "#panelGroup > div > div > div > ul > li:nth-child(2)")]
         [CacheLookup]
-        public IWebElement SelectSecondGroup { get; set; }
+        public IWebElement SelectSecretaryGroup { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#panelGroup > div > div > div > ul > li:nth-child(3)")]
+        [CacheLookup]
+        public IWebElement SelectTerapistGroup { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='panelGroup']/div/div/div/ul/li[4]/span[6]")]
         [CacheLookup]
@@ -71,38 +76,38 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ApproveDelete { get; set; }
 
+
         public void EnterAuthorizationScreen()
         {
-            //call homepage to enter setting window
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait("Setting");
-            Pages.Home_Page.UserAuthorizationScreen.ClickWait("Authorization");
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.UserAuthorizationScreen.ClickWait();
             softAssert.VerifyElementIsPresent(GroupCreate);
         }
 
         //create new permission group
         public void CreateGroupApplication()
         {
-            GroupCreate.ClickOn(Constant.Create);
+            GroupCreate.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(GroupCancel, GroupCancel);
             GroupName.EnterClearText("11");
-            GroupSave.ClickOn(Constant.Save);
+            GroupSave.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(GroupNameError, GroupCancel);
             GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber());
             Thread.Sleep(500);
-            GroupSave.ClickOn(Constant.Save);
+            GroupSave.ClickOn();
            // softAssert.VerifyElementNotPresent(GroupCancel);
         }
 
         public void EditGroupApplication()
         {
             softAssert.VerifyElementPresentInsideWindow(GroupeEdit, GroupCancel);
-            GroupeEdit.ClickOn(Constant.Edit);
+            GroupeEdit.ClickOn();
             GroupName.EnterClearText("11");
-            GroupEditSave.ClickOn(Constant.Save);
+            GroupEditSave.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(GroupNameError, GroupCancel);
             GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber());
-            GroupEditSave.ClickOn(Constant.Save);
+            GroupEditSave.ClickOn();
            // softAssert.VerifyElementNotPresent(GroupCancel);
         }
 
@@ -111,9 +116,9 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(DeleteLastGroup, GroupCancel);
             try
             {
-                DeleteLastGroup.ClickOn(Constant.Delete);
+                DeleteLastGroup.ClickOn();
                 softAssert.VerifyElementPresentInsideWindow(ApproveDelete, GroupCancel);
-                ApproveDelete.ClickOn(Constant.Approve);
+                ApproveDelete.ClickOn();
             }
             catch (Exception)
             {
@@ -121,18 +126,33 @@ namespace DoctorWeb.PageObjects
             }
         }
 
-        public void ImportUsersToGroupApplication()
+        public void SecretaryPermissionApplication() {
+            try
+            {
+                Pages.Patient_Page.NewConfidentialPatientApplication();
+                Pages.Home_Page.LogoutApplication();
+                Pages.Login_Page.LoginMiddleTest(Constant.groupUser, Constant.loginPassword);
+                Pages.Home_Page.SearchBox.EnterClearText(Pages.Patient_Page.PatientUseName);
+                Pages.Home_Page.SearchBox.SendKeys(Keys.ArrowDown);
+                Thread.Sleep(500);
+                Pages.Home_Page.SearchBox.SendKeys(Keys.Enter);
+                softAssert.VerifyErrorMsg();
+            }
+            catch (Exception e)
+            {
+               
+            }
+        }
+
+        public void ImportUsersToSecretaryGroupApplication()
         {
             Thread.Sleep(500);
-            SelectSecondGroup.ClickOn(Constant.Click);
-            ImportToGroup.ClickOn(Constant.Click);
-            SelectFirstUserOnList.ClickOn(Constant.Click);
-            ConfirmUserImport.ClickOn(Constant.Approve);
-            Browser.Driver.FindElement(By.XPath("//*[@id=\"panelGroup\"]/div/div/ul/li[4]/span[5]")).ClickOn(Constant.Click);
-            if (ApproveDelete.IsDisplayed("approve shown"))
-            {
-                Assert.Fail();
-            }
+            SelectSecretaryGroup.ClickOn();
+            ImportToGroup.ClickOn();
+            Thread.Sleep(500);
+            IWebElement reutName = Browser.Driver.FindElement(By.XPath("//*[@id='frmSelectUsersForClaim']/div[2]/div[2]/table/tbody/tr[1]/td[1]"));
+            reutName.ClickOn();
+            ConfirmUserImport.ClickOn();
         }
     }
 }

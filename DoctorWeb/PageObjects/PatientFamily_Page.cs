@@ -45,10 +45,10 @@ namespace DoctorWeb.PageObjects
 
             //open that patiant family tab
             Thread.Sleep(500);
-            Pages.Patient_Page.RelationFamilyTab.ClickOn(Constant.Click);
+            Pages.Patient_Page.RelationFamilyTab.ClickOn();
 
             //open the family relation window and add new patiant as family member
-            OpenFamilyWindow.ClickOn(Constant.Click);
+            OpenFamilyWindow.ClickOn();
             PatientSearchBar.SendKeys(Pages.Patient_Page.PatientUseName);
             Thread.Sleep(500);
             //click on the dropdown cell to enbable the dropdown

@@ -15,12 +15,17 @@ namespace DoctorWeb.Utility
 {
     public static class Element_Extension
     {
-
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static int _time = 300;
 
 
         //enter Text method with log
+        public static void WaitForElement(this IWebElement element, int time)
+        {
+            Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(time);
+            element.Click();
+        }
+
         public static void EnterText(this IWebElement element, string text)
         {
             element.SendKeys(text);
@@ -46,22 +51,58 @@ namespace DoctorWeb.Utility
         }
 
         //Time in Miliseconds for user actionss
-        public static void ClickOn(this IWebElement element, string name) {
+        public static void ClickOn(this IWebElement element) {
             try {
                 element.Click();
                 Thread.Sleep(_time);
-                log.Info("Click On : " + name);
+                string valueName = element.GetAttribute("name");
+                string valueID = element.GetAttribute("id");
+                var valueText = element.Text;
+                if (valueName != null)
+                {
+                    log.Info("Click On : " + element.GetAttribute("name"));
+                }
+                else if (valueID != null)
+                {
+                    log.Info("Click On : " + element.GetAttribute("id"));
+                }
+                else if (valueText != null)
+                {
+                    log.Info("Click On : " + valueText);
+                }
+                else if (valueText == null && valueName == null && valueID == null)
+                {
+                    log.Info("Click On : Icon (element has no name)");
+                }
             } catch (Exception e) {
                 Debug.WriteLine(e);
             }
         }
 
         //self determine the wait time
-        public static void ClickWait(this IWebElement element, string name)
+        public static void ClickWait(this IWebElement element)
         {
             element.Click();
             Thread.Sleep(1500);
-            log.Info("GO TO : " + name);
+            string valueName = element.GetAttribute("name");
+            string valueID = element.GetAttribute("id");
+            var valueText = element.Text;
+            if (valueName != null)
+            {
+                log.Info("Click On : " + element.GetAttribute("name"));
+            }
+            else if (valueID != null)
+            {
+                log.Info("Click On : " + element.GetAttribute("id"));
+            }
+            else if (valueText != null)
+            {
+                log.Info("Click On : " + valueText);
+            }
+            else if (valueText == null && valueName == null && valueID == null)
+            {
+                log.Info("Click On : Icon (element has no name)");
+            }
         }
 
         //isDisplayd Method with log

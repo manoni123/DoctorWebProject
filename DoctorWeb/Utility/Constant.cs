@@ -10,18 +10,15 @@ namespace DoctorWeb.Utility
 
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
-        public static string user1 = "rona@doctorwin.co.il";
+        public static string groupUser = "reut@doctorwin.co.il";
         public static string adminUser = "test@doctorwin.co.il";
         public static string loginPassword = "zxcv1234";
 
         public static string therapistUser = "therapist@doctorwin.co.il";
-        public static string therapistPassword = "zxcv1234";
 
         public static string clerkUser = "clerk@doctorwin.co.il";
-        public static string clerkPassword = "zxcv1234";
 
         public static string unauthorizedUserName = "test02@test02.co.il";
-        public static string unauthorizedPassword = "zxcv1234";
 
         public static string patientName = "selenium" + RandomNumber.smallNumber();
         public static string patientLastname = "test";
@@ -81,6 +78,8 @@ namespace DoctorWeb.Utility
         public static string stackTraceTrue = "Test Failed for False statement";
         public static string stackTraceNotNull = "Test Failed for Startment was null";
         public static string stackTraceNull = "Test Failed for Startment was Not null";
+
+        public static string WarningMsg = "Test failed due to step invalid";
 
         public static string uploadDocument = "importtest01.csv";
 

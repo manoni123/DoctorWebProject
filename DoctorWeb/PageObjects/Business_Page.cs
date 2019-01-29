@@ -142,21 +142,21 @@ namespace DoctorWeb.PageObjects
 
 
         public void CheckDepartmentIsNull() {
-            Pages.Home_Page.SettingScreen.ClickWait("Setting");
+            Pages.Home_Page.SettingScreen.ClickWait();
             //enter inside etting window and mark one business
-            SelectBusinessFromList.ClickOn(Constant.Dropdown);
+            SelectBusinessFromList.ClickOn();
             var disButton = DepartmentManagement.GetAttribute("disabled");
           //  softAssert.VerifyElementIsNull(disButton);
         }
 
         public void EnterDepaertmentWindow() {
             Thread.Sleep(500);
-            DepartmentManagement.ClickOn(Constant.Click);
+            DepartmentManagement.ClickOn();
             softAssert.VerifyElementIsPresent(DepartmentCloseButton);
         }
 
         public void EnterSettingScreen() {
-            Pages.Home_Page.SettingScreen.ClickWait("Setting Screen");
+            Pages.Home_Page.SettingScreen.ClickWait();
             softAssert.VerifyElementIsPresent(BusinessCreate);
         }
 
@@ -165,10 +165,10 @@ namespace DoctorWeb.PageObjects
         {
             //call home page to enter inside setting window
             Thread.Sleep(500);
-            BusinessCreate.ClickOn(Constant.Create);
+            BusinessCreate.ClickOn();
             softAssert.VerifyElementIsPresent(BusinessName);
         //    BusinessName.EnterClearText("1", "name test");
-            BusinessSavebutton.ClickOn(Constant.Save);
+            BusinessSavebutton.ClickOn();
             softAssert.VerifyElementIsPresent(BusinessEmail);
             BusinessName.EnterClearText(Constant.businessName);
             BusinessPractinerNum.EnterClearText(Constant.businessNum);
@@ -176,56 +176,56 @@ namespace DoctorWeb.PageObjects
             BusinessCity.EnterClearText(Constant.businessAddress);
             BusinessPhone.EnterClearText(Constant.businessNum);
             BusinessEmail.EnterClearText(Constant.businessEmail);
-            BusinessSavebutton.ClickOn(Constant.Save);
+            BusinessSavebutton.ClickOn();
         }
 
         public void CreateBranchApplication()
         {
             Thread.Sleep(500);
-            SelectBusinessFromList.ClickOn(Constant.Dropdown);
-            BranchCreate.ClickOn(Constant.Create);
+            SelectBusinessFromList.ClickOn();
+            BranchCreate.ClickOn();
             softAssert.VerifyElementIsPresent(BranchCancelButton);
          //   BranchAddress.SendKeys("1");
-            BranchSaveButton.ClickOn(Constant.Save);
+            BranchSaveButton.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(BranchEmail, BusinessClose);
             BranchAddress.EnterClearText(Constant.branchAddress);
             BranchCity.EnterText("Rishon");
             BranchPhone.EnterClearText(Constant.userPhone);
             BranchEmail.EnterClearText(Constant.userEmail);
             Thread.Sleep(500);
-            BranchSaveButton.ClickOn(Constant.Save);
+            BranchSaveButton.ClickOn();
          //   softAssert.VerifyElementNotPresent(BranchSaveButton);
         }
 
         public void CreateDepartmentApplication()
         {
             //call home page enter inside setting window and create department
-            DepartmentCreate.ClickOn(Constant.Create);
-            DepartmentConfirm.ClickOn(Constant.Approve);
+            DepartmentCreate.ClickOn();
+            DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepNameValidationPopup, DepartmentCloseButton);
             DepartmentName.EnterClearText(Constant.departmentName + RandomNumber.smallNumber());
-            DepartmentConfirm.ClickOn(Constant.Approve);
+            DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
         }
 
         public void DeleteDepartmentApplication() {
             Thread.Sleep(500);
             softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
-            DepartmentDelete.ClickOn(Constant.Delete);
+            DepartmentDelete.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(BtnApproveDelete, BusinessClose);
-            BtnApproveDelete.ClickOn(Constant.Click);
-            DepartmentCloseButton.ClickOn(Constant.CloseWindow);
+            BtnApproveDelete.ClickOn();
+            DepartmentCloseButton.ClickOn();
         }
 
         public void DeleteActiveDepartmentApplication()
         {
 
-            DepartmentCloseButton.ClickOn(Constant.CloseWindow);
-            SelectBusinessFromList.ClickOn(Constant.Dropdown);
+            DepartmentCloseButton.ClickOn();
+            SelectBusinessFromList.ClickOn();
             if (Browser.Driver.FindElement(By.XPath("//span[@class='k-switch km-switch k-widget km-widget k-switch-off km-switch-off']")).Displayed)
             {
-                DepartmentEnableMark.ClickOn(Constant.Checkbox);
-                DepartmentManagement.ClickOn(Constant.Click);
+                DepartmentEnableMark.ClickOn();
+                DepartmentManagement.ClickOn();
 
                 if (DepartmentDelete.IsDisplayed("department delete"))
                 {
@@ -236,14 +236,14 @@ namespace DoctorWeb.PageObjects
                 else
                 {
                     Thread.Sleep(500);
-                    Browser.Driver.FindElement(By.Id("btnDepartmentManagerCancel")).ClickOn(Constant.Click);
+                    Browser.Driver.FindElement(By.Id("btnDepartmentManagerCancel")).ClickOn();
                     Log.Info("Test Pass");
                    // Assert.Pass();
                 }
             }
             else if (Browser.Driver.FindElement(By.XPath("//span[@class='k-switch km-switch k-widget km-widget k-switch-off km-switch-on']")).Displayed)
             {
-                DepartmentManagement.ClickOn(Constant.Click);
+                DepartmentManagement.ClickOn();
                 if (DepartmentDelete.IsDisplayed("department delete"))
                 {
                     Log.Error("Delete is displayed on Active Department - FAIL");
@@ -251,23 +251,23 @@ namespace DoctorWeb.PageObjects
                 }
                 else
                 {
-                    DepartmentCloseButton.ClickOn(Constant.CloseWindow);
+                    DepartmentCloseButton.ClickOn();
                     Log.Info("Test Pass");
                     Assert.Pass();
                 }
             }
-            DepartmentCloseButton.ClickOn(Constant.CloseWindow);
+            DepartmentCloseButton.ClickOn();
         }
 
         public void EditDepartmentApplicaiton()
         {
-            DepartmentEdit.ClickOn(Constant.Edit);
+            DepartmentEdit.ClickOn();
             DepartmentName.Clear();
-            DepartmentConfirm.ClickOn(Constant.Approve);
+            DepartmentConfirm.ClickOn();
             softAssert.VerifyElementIsPresent(DepNameValidationPopup);
             DepartmentName.EnterClearText(Constant.departmentName + RandomNumber.smallNumber());
-            DepartmentConfirm.ClickOn(Constant.Approve);
-            DepartmentCloseButton.ClickOn(Constant.CloseWindow);
+            DepartmentConfirm.ClickOn();
+            DepartmentCloseButton.ClickOn();
         }
     }
 }

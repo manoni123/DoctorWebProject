@@ -1,5 +1,7 @@
-﻿using DoctorWeb.Utility;
+﻿using Data;
+using DoctorWeb.Utility;
 using log4net;
+using MySql.Data.MySqlClient;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
@@ -160,12 +162,12 @@ namespace DoctorWeb.PageObjects
 
         public void EnterManagementWindow()
         {
-            Pages.Home_Page.SettingScreen.ClickWait("Setting");
-            Pages.Home_Page.UserManagementScreen.ClickWait("UserManagement");
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.UserManagementScreen.ClickWait();
         }
 
         public void EnterCreateNewUser() {
-            CreateUser.ClickWait("Create User");
+            CreateUser.ClickWait();
         }
 
         //create a create user 
@@ -174,27 +176,47 @@ namespace DoctorWeb.PageObjects
 
             softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
             UserName.EnterClearText(Constant.userName);
-            UserContinueBtn.ClickOn("UserContinue");
+            UserContinueBtn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(UserEmailVerification, UserCancelBtn);
             UserLastname.EnterClearText(Constant.userLastName);
             UserEmail.EnterClearText(Constant.userEmail);
             UserMobile.EnterClearText(Constant.userPhone);
-            UserContinueBtn.ClickOn("UserContinue");
+            UserContinueBtn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(UserGoBack, UserCancelBtn);
-            UserContinueBtn.ClickOn("UserContinue");
-            SelectBusinessOnUserCreate.ClickOn("Select Busines");
-            //UserContinueBtn.ClickOn("UserContinue");
+            UserContinueBtn.ClickOn();
+            SelectBusinessOnUserCreate.ClickOn();
+            //UserContinueBtn.ClickOn();
             //softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.ErrorPopup, UserCancelBtn);
             //Thread.Sleep(500);
             var branchID = BranchIdOnUserCreate.GetAttribute("value");
-            Browser.Driver.FindElement(By.CssSelector("#branchID"+branchID+" > label")).ClickOn(Constant.Checkbox);
-            UserContinueBtn.ClickOn("UserContinue");
+            Browser.Driver.FindElement(By.CssSelector("#branchID"+branchID+" > label")).ClickOn();
+            UserContinueBtn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.ErrorPopup, UserCancelBtn);
-            SelectDepartmentOnUserCreate.ClickOn("SelectDepartment");
-            UserContinueBtn.ClickOn("UserContinue");
+            SelectDepartmentOnUserCreate.ClickOn();
+            UserContinueBtn.ClickOn();
             softAssert.VerifySuccessMsg();
-
             //wish to make an assert here on green toastg msg when successfull
+        }
+
+        public void UserPasswordDBSettUP() {
+            var dbCon = DBConnect.Instance();
+            dbCon.DatabaseName = "doctorweb";
+            if (dbCon.IsConnect())
+            {
+                //suppose col0 and col1 are defined as VARCHAR in the DB
+                string query = "SELECT Password " +
+                                 "FROM doctorweb" +
+                                 "Where Email = 'rona@doctorwin.co.il'";
+                var cmd = new MySqlCommand(query, dbCon.Connection);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string someStringFromColumnZero = reader.GetString(0);
+                    string someStringFromColumnOne = reader.GetString(1);
+                    Console.WriteLine(someStringFromColumnZero + "," + someStringFromColumnOne);
+                }
+                dbCon.Close();
+            }
         }
 
         //Application to edit user - change setting and save.
@@ -212,26 +234,26 @@ namespace DoctorWeb.PageObjects
             }
 
             //edit 2nd user on list
-                EditUSer.ClickOn("User Edit 1");
+                EditUSer.ClickOn();
                 UserName.EnterClearText(Constant.userName);
                 UserLastname.EnterClearText(Constant.userLastName);
                 UserEmail.EnterClearText(Constant.userEmail);
                 UserMobile.EnterClearText(Constant.userPhone);
 
                 //moves to determine setting
-                EditUserTab2.ClickOn("User Edit 2");
-                GroupSelect.ClickOn(Constant.Click);
+                EditUserTab2.ClickOn();
+                GroupSelect.ClickOn();
                 GroupSelect.SendKeys(Keys.ArrowDown);
-                GroupSelect.ClickOn(Constant.Click);
+                GroupSelect.ClickOn();
           
                 //moves to user activty screen
                 //select first business >>> first Branch >> marks all departments
-                EditUserTab3.ClickOn("User Edit 3");
-                SelectBusinessOnUserCreate.ClickOn(Constant.Select);
+                EditUserTab3.ClickOn();
+                SelectBusinessOnUserCreate.ClickOn();
                 //SelectBranchOnUserCreate.ClickOn();
 
                 //check if save without selecting department
-                UserContinueBtn.ClickOn("UserContinue");
+                UserContinueBtn.ClickOn();
                 if (!SelectBusinessOnUserCreate.IsDisplayed("check activity window"))
                 {
                     Log.Error("Test Failed - saved without select department");
@@ -239,20 +261,20 @@ namespace DoctorWeb.PageObjects
                 }
                 else
                 {
-                    SelectDepartmentOnUserCreate.ClickOn(Constant.Select);
-                    UserContinueBtn.ClickOn(Constant.Click);
+                    SelectDepartmentOnUserCreate.ClickOn();
+                    UserContinueBtn.ClickOn();
                 }
 
                 int minusCount = 6;
                 while (minusCount != 0)
                 {
-                    MinusClick.ClickOn(Constant.Click);
+                    MinusClick.ClickOn();
                     minusCount--;
                     Thread.Sleep(300);
                 }
 
                 Thread.Sleep(500);
-                UserContinueBtn.ClickOn("UserContinue");
+                UserContinueBtn.ClickOn();
                 if (!UserWindow.IsDisplayed("user window"))
                 {
                     Log.Error("Saved without branch select");
@@ -260,10 +282,10 @@ namespace DoctorWeb.PageObjects
                 }
                 else
                 {
-                    TherapistBranchList.ClickOn(Constant.Select);
+                    TherapistBranchList.ClickOn();
                 }
                 //save complete user - check if window closed
-                UserContinueBtn.ClickOn("UserContinue");
+                UserContinueBtn.ClickOn();
                 if (UserWindow.IsDisplayed("user window"))
                 {
                     Log.Error("Saved but didnt close window - fail");
@@ -272,9 +294,9 @@ namespace DoctorWeb.PageObjects
                 else {
 
                     //select department
-                    SelectDepartmentOnUserCreate.ClickOn(Constant.Select);
+                    SelectDepartmentOnUserCreate.ClickOn();
                     Log.Info("pressed on the first ");
-                    UserContinueBtn.ClickOn(Constant.Click);
+                    UserContinueBtn.ClickOn();
                 }
 
              }
@@ -287,59 +309,59 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPracticeWindow()
         {
-            PracticesManagerButton.ClickWait("PracticeManager");
+            PracticesManagerButton.ClickWait();
         }
 
         //create practice in usermanagement window
         public void CreatePracticeApplication()
         {
-            CreateNewPractice.ClickOn(Constant.Create);
-            PracticeApprove.ClickOn(Constant.Approve);
+            CreateNewPractice.ClickOn();
+            PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
             Thread.Sleep(500);
             PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
-            PracticeApprove.ClickOn(Constant.Approve);
+            PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeDelete, PracticeWindowClose);
-            PracticeWindowClose.ClickOn(Constant.CloseWindow);
+            PracticeWindowClose.ClickOn();
         }
 
         //edit practice name
         public void EditPracticeApplication()
         {
-            PracticeEdit.ClickOn(Constant.Edit);
+            PracticeEdit.ClickOn();
             PracticeName.Clear();
-            EditPracticeApprove.ClickOn(Constant.Approve);
+            EditPracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
             Thread.Sleep(500);
             PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
-            EditPracticeApprove.ClickOn(Constant.Approve);
-            PracticeWindowClose.ClickOn(Constant.CloseWindow);
+            EditPracticeApprove.ClickOn();
+            PracticeWindowClose.ClickOn();
         }
 
         public void DeletePracticeApplication()
         {
-            CreateNewPractice.ClickOn(Constant.Create);
+            CreateNewPractice.ClickOn();
             PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
-            PracticeApprove.ClickOn("Practice Approve");
+            PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeDelete, PracticeWindowClose);
-            PracticeDelete.ClickOn("Practice Delete");
-            DeletePopup.ClickOn(Constant.Delete);
+            PracticeDelete.ClickOn();
+            DeletePopup.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeWindowClose, PracticeWindowClose);
-            PracticeWindowClose.ClickOn(Constant.CloseWindow);
+            PracticeWindowClose.ClickOn();
         }
 
         public void DeleteActivePracticeApplication()
         {
             try
             {
-                PracticesManagerButton.ClickOn(Constant.Click);
+                PracticesManagerButton.ClickOn();
                 if (PracticeDelete.IsDisplayed("is delete icon displayed"))
                 {
                     Log.Error("delete is displayed after active - fail");
                 }
                 else
                 {
-                    PracticeWindowClose.ClickOn(Constant.CloseWindow);
+                    PracticeWindowClose.ClickOn();
                 }
             }
             catch (Exception)

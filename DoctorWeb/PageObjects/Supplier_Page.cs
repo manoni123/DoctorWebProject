@@ -75,29 +75,29 @@ namespace DoctorWeb.PageObjects
 
             //call Home Page to create supplier
             //open entity list and press the new supplier
-            Pages.Home_Page.OpenEntityDropdown.ClickOn("EntityDropdown");
-            Pages.Home_Page.CreateNewSupplier.ClickOn("Supplier Create");
+            Pages.Home_Page.OpenEntityDropdown.ClickOn();
+            Pages.Home_Page.CreateNewSupplier.ClickOn();
             SupplierName.SendKeys("1");
-            SupplierSave.ClickOn("Save Supplier");
+            SupplierSave.ClickOn();
             softAsserts.VerifyElementIsPresent(supplierNameValidate);
             SupplierName.EnterClearText(Constant.supplierName);
-            SupplierSave.ClickOn("Save Supplier");
-            SupplierContactTab.ClickOn("SupploerContact");
+            SupplierSave.ClickOn();
+            SupplierContactTab.ClickOn();
             softAsserts.VerifyElementIsPresent(CreateSupplierContact);
         }
 
         //create new supplier contact
         public void NewSupplierContactApplication()
         {
-            CreateSupplierContact.ClickOn(Constant.Create);
+            CreateSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(SuppContName);
             SuppContName.SendKeys("1");
-            SaveNewSupplierContact.ClickOn("SaveSupplier");
+            SaveNewSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(supplierContactNameValidate);
             SuppContName.EnterClearText(Constant.suppContactName);
             SuppContLast.EnterClearText(Constant.suppContactLast);
             SuppContPhone.EnterClearText(Constant.suppContactPhone);
-            SaveNewSupplierContact.ClickOn("SaveSupplier");
+            SaveNewSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(SupplierContactEdit);
            
         }

@@ -145,7 +145,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterReportScreen() {
             Thread.Sleep(500);
-            Pages.Home_Page.ReportScreen.ClickWait("ReportScreen");
+            Pages.Home_Page.ReportScreen.ClickWait();
         }
 
         public void PatientReportApplication()
@@ -157,29 +157,31 @@ namespace DoctorWeb.PageObjects
 
             try
             {
-                PatientReportExcel.ClickOn(Constant.Click + " Excel");
+                PatientReportExcel.ClickOn();
              //   PatientReportPdf.ClickWait(2000);
-                PatientReportShow.ClickOn(Constant.Click + " Show");
+                PatientReportShow.ClickOn();
+                Thread.Sleep(500);
                 softAssert.VerifyElementIsPresent(PatientOutputName);
 
             } catch(Exception) {
-                PopupButton.ClickOn("Popup");
+                PopupButton.ClickOn();
             }
         } 
         public void ContactReportApplication()
         {
             Thread.Sleep(500);
-            ContactReportTab.ClickOn("ContactReport");
+            ContactReportTab.ClickOn();
             try
             {
-                ContactReportExcel.ClickOn("ContactExcel");
+                ContactReportExcel.ClickOn();
        //         ContactReportPDF.ClickWait(2000);
-                ContactReportShow.ClickOn("ContactShow");
+                ContactReportShow.ClickOn();
+                Thread.Sleep(500);
                 softAssert.VerifyElementIsPresent(ContactOutputName);
             }
             catch (Exception)
             {
-                PopupButton.ClickOn("Popup");
+                PopupButton.ClickOn();
             }
         }
 
@@ -188,13 +190,13 @@ namespace DoctorWeb.PageObjects
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
-            MeetingReportTab.ClickOn("MeetingReport");
+            MeetingReportTab.ClickOn();
             MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth);
             try
             {
-                MeetingReportExcel.ClickOn("MeetingReport");
+                MeetingReportExcel.ClickOn();
         //        MeetingReportPdf.ClickWait(2000);
-                MeetingReportShow.ClickOn("Reportshow");
+                MeetingReportShow.ClickOn();
                 softAssert.VerifyElementIsPresent(MeetingReportOutput);
 
                 if (tabs.Count > 1)
@@ -206,25 +208,25 @@ namespace DoctorWeb.PageObjects
             }
             catch (Exception)
             {
-                PopupButton.ClickOn("Popup");
+                PopupButton.ClickOn();
             }
         }
 
         public void NotificationReportApplication()
         {
             Thread.Sleep(500);
-            NotificationReportTab.ClickOn("Notification");
+            NotificationReportTab.ClickOn();
             NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
             try
             {
-                NotificationReportExcel.ClickOn("Notification Excel");
+                NotificationReportExcel.ClickOn();
          //       NotificationReportPDF.ClickWait(2000);
-                NotficationReportShow.ClickOn("Notification Show");
+                NotficationReportShow.ClickOn();
                 softAssert.VerifyElementIsPresent(NotificationOutput);
             }
             catch (Exception)
             {
-                PopupButton.ClickOn("Popup");
+                PopupButton.ClickOn();
             }
         }
 
@@ -233,11 +235,11 @@ namespace DoctorWeb.PageObjects
             try
             {
                 Thread.Sleep(500);
-                AuditReportTab.ClickOn("Audit");
-                ShowAuditReport.ClickOn("Audit Report");
+                AuditReportTab.ClickOn();
+                ShowAuditReport.ClickOn();
                 if (Pages.Home_Page.CloseTab.Displayed)
                 {
-                    Pages.Home_Page.CloseTab.ClickOn(Constant.Click);
+                    Pages.Home_Page.CloseTab.ClickOn();
                 }
                 else
                 {

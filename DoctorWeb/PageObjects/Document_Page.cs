@@ -38,7 +38,7 @@ namespace DoctorWeb.PageObjects
         public IWebElement OpenUpload { get; set; }
 
         public void PatientUploadApplication() {
-            OpenUpload.ClickOn(Constant.Click);
+            OpenUpload.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(CreateUploadDate, CancelUpload);
         }
 

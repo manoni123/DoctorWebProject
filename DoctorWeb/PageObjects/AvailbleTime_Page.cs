@@ -1,5 +1,6 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
@@ -46,26 +47,26 @@ namespace DoctorWeb.PageObjects
         public IWebElement VisitReason { get; set; }
 
 
-        public void SearchAvailbleTimeApplication() {
+        public void SearchAvailbleTimeApplication()
+        {
+            try {       
             Thread.Sleep(500);
-            Pages.Home_Page.EnterAvailbleTime();
             ExpertiseSelect.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
-            try {
-                VisitReason.SendKeys(Keys.ArrowDown);
-                var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
-                SearchBtn.ClickOn(Constant.Click);
-                FirstFreeTime.ClickOn(Constant.Click + " FreeTime");
-                softAssert.VerifyElementPresentInsideWindow(AvailbleTimeGoBackBtn, CloseWindow);
-                FirstFreeTimeSetMeeting.ClickOn(Constant.Click + " Set");
-                softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
-                softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
+            VisitReason.SendKeys(Keys.ArrowDown);
+            var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
+            SearchBtn.ClickOn();
+            FirstFreeTime.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(AvailbleTimeGoBackBtn, CloseWindow);
+            FirstFreeTimeSetMeeting.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+            softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
             } catch(ElementNotInteractableException)
             {
-                Pages.Home_Page.PopupButtonOk.ClickOn("Popup-OK");
-                CloseWindow.ClickOn("CloseWindow");
+                CloseWindow.ClickOn();
+                Assert.Fail();
             }
-            
+
         }
     }
 }

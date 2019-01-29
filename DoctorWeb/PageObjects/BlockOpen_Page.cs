@@ -58,13 +58,13 @@ namespace DoctorWeb.PageObjects
 
         public void BlockCreateEmptyApplication() {
             Pages.Scheduler_Page.EnterOpenBlockWindow();
-            CreateNewSlot.ClickOn(Constant.Dropdown);
-            CreateNewBlock.ClickOn(Constant.Click);
+            CreateNewSlot.ClickOn();
+            CreateNewBlock.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(SaveAndClose, CancelOpenBlock);
             SaveAndClose.ClickOn();
             softAssert.VerifyErrorMsg();
-            CancelOpenBlock.ClickOn(Constant.PopupCancel);
-            CloseWindow.ClickOn("CloseWindow");
+            CancelOpenBlock.ClickOn();
+            CloseWindow.ClickOn();
         }
     }
 }

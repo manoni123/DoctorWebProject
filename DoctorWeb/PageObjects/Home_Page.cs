@@ -116,6 +116,26 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ProfileList { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"3\"]/span")]
+        [CacheLookup]
+        public IWebElement ChangePasswordScreen { get; set; }
+
+        [FindsBy(How = How.Id, Using = "OldPassword")]
+        [CacheLookup]
+        public IWebElement OldPassword { get; set; }
+
+        [FindsBy(How = How.Id, Using = "NewPassword")]
+        [CacheLookup]
+        public IWebElement NewPassword { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ConfirmPassword")]
+        [CacheLookup]
+        public IWebElement ConfirmPassword { get; set; }
+
+        [FindsBy(How = How.Id, Using = "changePassword")]
+        [CacheLookup]
+        public IWebElement changePasswordBtn { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//*[@id=\"2\"]/span")]
         [CacheLookup]
         public IWebElement LogoutButton { get; set; }
@@ -166,39 +186,49 @@ namespace DoctorWeb.PageObjects
 
         public void LogoutApplication() {
             Thread.Sleep(500);
-            ProfileList.ClickOn(Constant.Dropdown);
-            LogoutButton.ClickOn(Constant.Click + " Logout" + Environment.NewLine);
+            ProfileList.ClickOn();
+            LogoutButton.ClickOn();
+            var text = Environment.NewLine;
             Assert.IsTrue(Pages.Login_Page.LoginButton.Displayed);
         }
 
         public void LockApplication()
         {
             softAssert.VerifyElementIsPresent(LockScreen);
-            LockScreen.ClickOn(Constant.Click);
+            LockScreen.ClickOn();
             softAssert.VerifyElementIsPresent(LockScreenPassword);
             LockScreenPassword.SendKeys(Constant.loginPassword);
             Thread.Sleep(500);
-            LokcScreenEntryButton.ClickOn(Constant.Click);
+            LokcScreenEntryButton.ClickOn();
             softAssert.VerifyElementIsPresent(SchedularScreen);
+        }
+
+        public void ChangePassword() {
+            ProfileList.ClickOn();
+            ChangePasswordScreen.ClickOn();
+            OldPassword.EnterClearText(Constant.groupUser);
+            NewPassword.EnterClearText(Constant.loginPassword);
+            ConfirmPassword.EnterClearText(Constant.loginPassword);
+            changePasswordBtn.ClickOn();
         }
 
         public void EnterUserManagmentScreen() {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait("Setting");
-            Pages.Home_Page.UserManagementScreen.ClickWait("UserManagement");
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.UserManagementScreen.ClickWait();
         }
 
         public void EntePriceListTab()
         {
-            Pages.Home_Page.SettingScreen.ClickWait("Setting");
-            Pages.Home_Page.DevPricelistScreen.ClickWait("PriceList");
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.DevPricelistScreen.ClickWait();
         }
 
         // blocked patient, normal patient with watch medical, patient w.o watch medical, edit patient, enter setting screen. 
 
         public void UnauthorizedCreatePatient()
         {
-            OpenEntityDropdown.ClickOn(Constant.Dropdown);
+            OpenEntityDropdown.ClickOn();
             try
             {
                 if (CreateNewPatient.IsDisplayed("patient create button"))
@@ -234,7 +264,6 @@ namespace DoctorWeb.PageObjects
                 Console.WriteLine(e);
             }
         }
-
         public void UnaothorizedWatchBlockedPatient() {
             Thread.Sleep(500);
             SearchBox.EnterClearText(Pages.Patient_Page.PatientUseName);
@@ -242,30 +271,30 @@ namespace DoctorWeb.PageObjects
             String spanText = Browser.Driver.FindElement(By.XPath("//span[text()='אין הרשאה לצפות בפרטי המטופל !']")).ToString();
             Assert.AreEqual(spanText, "אין הרשאה לצפות בפרטי המטופל !");
         }
-
         public void EnterAvailbleTime()
         {
             Thread.Sleep(500);
-            AppointmentBtn_1.ClickOn(Constant.Click);
+            AppointmentBtn_1.ClickOn();
         }
+
 
         public void FilterImageApplication() {
             string filterImg = "http://drweb-sys.com//images/icons/ic-filter.svg";
 
-            MainFilterBtn.ClickOn(Constant.Click);
-            MainFilterPhoneBook.ClickOn(Constant.Click);
-            Overlay.ClickOn(Constant.Click);
+            MainFilterBtn.ClickOn();
+            MainFilterPhoneBook.ClickOn();
+            Overlay.ClickOn();
             softAssert.VerifyElementHasEqual(filterImg, "http://drweb-sys.com//images/icons/ic-filter.svg");
         }
 
         public void RightBarApplication (){
             String closedBarArrow = "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg";
           
-            SidePannelBtn.ClickOn(Constant.Click);
+            SidePannelBtn.ClickOn();
             LogoutApplication();
             Pages.Login_Page.LoginApplication();
             softAssert.VerifyElementHasEqual(closedBarArrow, "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg");
-            SidePannelBtn.ClickOn(Constant.Click);
+            SidePannelBtn.ClickOn();
         }
     }
 }

@@ -57,7 +57,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPriceListTaxScreen() {
             Pages.Home_Page.EntePriceListTab();
-            PriceListTaxScreen.ClickWait("Tax Screen");
+            PriceListTaxScreen.ClickWait();
             softAssert.VerifyElementIsPresent(PriceListTaxCreate);
         }
 
@@ -65,11 +65,11 @@ namespace DoctorWeb.PageObjects
             try
             {
                 int countBefore = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-                PriceListTaxCreate.ClickOn(Constant.Create);
-                PriceListTaxApprove.ClickOn(Constant.Create);
+                PriceListTaxCreate.ClickOn();
+                PriceListTaxApprove.ClickOn();
                 softAssert.VerifyElementIsPresent(NameErrorMsg);
                 PriceListTaxName.EnterText(Constant.priceListTax);
-                PriceListTaxApprove.ClickOn(Constant.Approve);
+                PriceListTaxApprove.ClickOn();
                 int countAfter = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             }
             catch (IndexOutOfRangeException)
@@ -82,8 +82,8 @@ namespace DoctorWeb.PageObjects
         public void PriceListTaxDeleteApplication()
         {
             int countBefore = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-            PriceListTaxDelete.ClickOn("TaxDelete");
-            DeleteApprove.ClickOn("DeleteApprove");
+            PriceListTaxDelete.ClickOn();
+            DeleteApprove.ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Home_Page.SuccessPopup);
             int countAfter = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
         }
@@ -92,14 +92,14 @@ namespace DoctorWeb.PageObjects
         {
             try
             {
-                PriceListTaxEdit.ClickOn("TaxEdit");
+                PriceListTaxEdit.ClickOn();
                 PriceListTaxName.EnterClearText(Constant.priceListTax);
-                PriceListTaxApprove.ClickOn("TaxApprove");
+                PriceListTaxApprove.ClickOn();
             }
             catch (IndexOutOfRangeException)
             {
                 softAssert.VerifyElementIsPresent(Pages.Home_Page.ErrorPopup);
-                Assert.Fail("test OK - repeated numbers");
+                Assert.Warn("test OK - repeated numbers");
             }
         }
     }
