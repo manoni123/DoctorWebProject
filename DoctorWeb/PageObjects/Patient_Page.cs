@@ -140,7 +140,7 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementIsPresent(PatientEditButton);
         }
 
-        public void CloseCloseTab() {
+        public void PatientCloseTab() {
             ClosePatientTab.ClickOn();
         }
 

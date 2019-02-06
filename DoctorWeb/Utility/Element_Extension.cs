@@ -16,6 +16,7 @@ namespace DoctorWeb.Utility
     public static class Element_Extension
     {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public static UtilityFunction utility = new UtilityFunction();
         private static int _time = 300;
 
 
@@ -54,27 +55,13 @@ namespace DoctorWeb.Utility
         public static void ClickOn(this IWebElement element) {
             try {
                 element.Click();
-                Thread.Sleep(_time);
                 string valueName = element.GetAttribute("name");
                 string valueID = element.GetAttribute("id");
-                var valueText = element.Text;
-                if (valueName != null)
-                {
-                    log.Info("Click On : " + element.GetAttribute("name"));
-                }
-                else if (valueID != null)
-                {
-                    log.Info("Click On : " + element.GetAttribute("id"));
-                }
-                else if (valueText != null)
-                {
-                    log.Info("Click On : " + valueText);
-                }
-                else if (valueText == null && valueName == null && valueID == null)
-                {
-                    log.Info("Click On : Icon (element has no name)");
-                }
-            } catch (Exception e) {
+                string valueText = element.Text;
+                utility.NameInElement(element, valueName, valueID, valueText);
+                Thread.Sleep(_time);
+            }
+            catch (Exception e) {
                 Debug.WriteLine(e);
             }
         }
@@ -83,26 +70,11 @@ namespace DoctorWeb.Utility
         public static void ClickWait(this IWebElement element)
         {
             element.Click();
-            Thread.Sleep(1500);
             string valueName = element.GetAttribute("name");
             string valueID = element.GetAttribute("id");
-            var valueText = element.Text;
-            if (valueName != null)
-            {
-                log.Info("Click On : " + element.GetAttribute("name"));
-            }
-            else if (valueID != null)
-            {
-                log.Info("Click On : " + element.GetAttribute("id"));
-            }
-            else if (valueText != null)
-            {
-                log.Info("Click On : " + valueText);
-            }
-            else if (valueText == null && valueName == null && valueID == null)
-            {
-                log.Info("Click On : Icon (element has no name)");
-            }
+            string valueText = element.Text;
+            utility.NameInElement(element, valueName, valueID, valueText);
+            Thread.Sleep(1500);
         }
 
         //isDisplayd Method with log

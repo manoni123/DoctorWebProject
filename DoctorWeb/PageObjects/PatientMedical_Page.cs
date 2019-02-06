@@ -273,6 +273,10 @@ namespace DoctorWeb.PageObjects
         //create new anamneza applicaiton
         public void CreateNewAnamnezaApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterAnamnezaTable();
+
             var disButton = SaveAnamnezaTable.GetAttribute("disabled");
             string anamnezaNewName = "Anam" + RandomNumber.smallNumber();
             //call patient page to enter medical Tab
@@ -285,7 +289,6 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(DeleteAnamneza, CloseAnamnezaTable);
             softAssert.VerifySuccessMsg();
             Thread.Sleep(500);
-           // CheckAnamnezaActive.ClickOn();
             CloseAnamnezaTable.ClickOn();
  
             Constant.anamnezaName = anamnezaNewName;         

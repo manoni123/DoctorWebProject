@@ -18,9 +18,34 @@ namespace DoctorWeb.Utility
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
 
-        public int ListCount(string element) {
+        public int TableCount(string element) {
             int count = Browser.Driver.FindElements(By.XPath(element + "/tr")).Count;
             return count;
+        }
+
+        public int ListCount(string element)
+        {
+            int count = Browser.Driver.FindElements(By.XPath(element + "/li")).Count;
+            return count;
+        }
+
+        public void NameInElement(IWebElement element, string valueOne, string valueTwo, string valueThree){
+            if (valueOne != null)
+            {
+                Log.Info("Click On : " + element.GetAttribute("name"));
+            }
+            else if (valueTwo != null)
+            {
+                Log.Info("Click On : " + element.GetAttribute("id"));
+            }
+            else if (valueThree != null)
+            {
+                Log.Info("Click On : " + valueThree);
+            }
+            else 
+            {
+                Log.Info("Click On : Icon (element has no name)");
+            }
         }
 
         public string ElementText(string element) {
@@ -41,6 +66,17 @@ namespace DoctorWeb.Utility
         {
             decimal ResultAfterPercentage = (tax / 100) * price + price;
             return ResultAfterPercentage;
+        }
+
+        public void TestWrap(Action method, IWebElement CloseWindow = null)
+        {
+            try {
+                method();
+            } catch (Exception) {
+                CloseWindow.ClickOn();
+                softAssert.WarningMsg();
+            }
+
         }
     }
 }

@@ -204,6 +204,12 @@ namespace DoctorWeb
             }
         }
 
+        public void WarningMsg() {
+            Assert.Warn("TEST FAILED DUE TO WRONG CODE");
+        }
+
+
+
         //verify at what table the Browser.webDriver is currently in
         public void CloseWindowssIfDisplayed(IWebElement element)
         {

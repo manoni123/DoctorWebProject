@@ -2,10 +2,6 @@
 using log4net;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorWeb
 {
@@ -13,6 +9,7 @@ namespace DoctorWeb
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         readonly AssertionExtent softAssert = new AssertionExtent();
+        public UtilityFunction utility = new UtilityFunction();
         public bool isActive;
         
         //Each Test Category has a fixture of its own that contains a setup and tear down beforre and after each test
@@ -98,10 +95,7 @@ namespace DoctorWeb
         [Test, Category("Medical")]
         public void AnamnezaCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
+            utility.TestWrap(Pages.PatientMedical_Page.CreateNewAnamnezaApplication, Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
         [Ignore("ff")]
@@ -128,6 +122,7 @@ namespace DoctorWeb
         [Test, Category("Medical")]
         public void AnamnezaDeleteTest()
         {
+            
             Pages.Patient_Page.NewPatientApplication();
             Pages.PatientMedical_Page.EnterMedicalTab();
             Pages.PatientMedical_Page.EnterAnamnezaTable();
@@ -537,6 +532,25 @@ namespace DoctorWeb
         }
 
         [Test, Category("Scheduler")]
+        public void DragAndDropToWaitList()
+        {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Scheduler_Page.CreateMeetingOnTodayCell();
+            Pages.Scheduler_Page.DragAndDropTemporaryList();
+        }
+
+        [Test, Category("Scheduler")]
+        public void DragAndDropToStandby()
+        {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Scheduler_Page.CreateMeetingOnTodayCell();
+            Pages.Scheduler_Page.DragAndDropStandbyList();
+
+        }
+
+        [Test, Category("Scheduler")]
         public void ReportDailyTest()
         {
             Pages.Scheduler_Page.EnterDailyReportScreen();
@@ -581,6 +595,7 @@ namespace DoctorWeb
         {
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Home_Page.EnterAvailbleTime();
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
             Pages.Meeting_Page.CreateMeetingApplication();
         }

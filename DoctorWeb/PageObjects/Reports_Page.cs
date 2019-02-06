@@ -159,8 +159,7 @@ namespace DoctorWeb.PageObjects
             {
                 PatientReportExcel.ClickOn();
              //   PatientReportPdf.ClickWait(2000);
-                PatientReportShow.ClickOn();
-                Thread.Sleep(500);
+                PatientReportShow.ClickWait();
                 softAssert.VerifyElementIsPresent(PatientOutputName);
 
             } catch(Exception) {

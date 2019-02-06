@@ -186,13 +186,13 @@ namespace DoctorWeb.PageObjects
         }
 
         public void CreateCategoryApplication() {
-            var listCount = utility.ListCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
+            var listCount = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
             CategoryCreateNew.ClickOn();
             CategoryApprove.ClickOn();
             softAssert.VerifyElementIsPresent(CategoryNameValidation);
             CategoryName.EnterClearText(Constant.CategoryName + RandomNumber.smallNumber());
             CategoryApprove.ClickOn();
-            var listCountAfter = utility.ListCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
+            var listCountAfter = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
             softAssert.VerifyElementIsPresent(CategoryDelete);
             Assert.AreNotEqual(listCountAfter, listCount);
         }
@@ -236,7 +236,7 @@ namespace DoctorWeb.PageObjects
         }
 
         public void DevCreatePriceListDevApplication() {
-            var listCount = utility.ListCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
+            var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
             PriceListCreateNew.ClickOn();
             PriceListSaveDev.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(ValidationError, PriceListCancelDev);
@@ -245,14 +245,14 @@ namespace DoctorWeb.PageObjects
             PriceListPrice.EnterClearText("25");
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
-            var listCountAfter = utility.ListCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
+            var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
             Assert.AreEqual(listCountAfter, listCount+1);
         }
 
         public void DevCreatePriceListPackageApplicaiton() {
             try
             {
-                var listCount = utility.ListCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
+                var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
                 var usedCode = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]");
                 PriceListCreateNew.ClickOn();
                 PriceListSaveDev.ClickOn();
@@ -272,7 +272,7 @@ namespace DoctorWeb.PageObjects
                 PriceListSubCode.SendKeys(Keys.Enter);
                 PriceListSaveDev.ClickOn();
                 PriceListSaveDev.ClickOn();
-                var listCountAfter = utility.ListCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
+                var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
                 Assert.AreEqual(listCountAfter, listCount + 1);
             }
             catch (Exception) {

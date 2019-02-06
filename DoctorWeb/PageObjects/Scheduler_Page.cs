@@ -1,6 +1,8 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
+using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -17,6 +19,7 @@ namespace DoctorWeb.PageObjects
         
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "schedulerHeaderMenuButton")]
         [CacheLookup]
@@ -72,7 +75,7 @@ namespace DoctorWeb.PageObjects
 
         [FindsBy(How = How.Id, Using = "tabPageWaitingListContainer")]
         [CacheLookup]
-        public IWebElement StandBySchedulerList { get; set; }
+        public IWebElement StandBySchedulerTab { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "ic-add-standby")]
         [CacheLookup]
@@ -81,6 +84,53 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.ClassName, Using = "//*[@id='btnNewAppointment']/div/span[1]")]
         [CacheLookup]
         public IWebElement AvailbleTime_Btn { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[1]/td[4]")]
+        [CacheLookup]
+        public IWebElement FirstCellToday { get; set; }
+
+        public void CreateMeetingOnTodayCell() {
+            try {
+                (new Actions(Browser.chromebDriver)).DoubleClick(FirstCellToday).Perform();
+                Thread.Sleep(1000);
+                Pages.Meeting_Page.CreateMeetingApplication();
+            } catch (NoSuchWindowException) {
+                Thread.Sleep(1000);
+                Pages.Meeting_Page.CancelMeeting.ClickOn();
+                softAssert.WarningMsg();
+            }
+        }
+
+        public void DragAndDropTemporaryList() {
+            Thread.Sleep(500);
+            EnterStandBySchedulerList();
+            IWebElement drag = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/div[2]"));
+            Thread.Sleep(1000);
+            IWebElement drop = Browser.Driver.FindElement(By.XPath("//*[@id='tempWaitListPanelBar']/li/div"));
+            var CountBefore = utility.ListCount("//*[@id='temp-wait-list']");
+            (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag,drop).Perform();
+            var CountAfter = utility.ListCount("//*[@id='temp-wait-list']");
+            Assert.AreNotEqual(CountBefore, CountAfter);
+        }
+
+        public void DragAndDropStandbyList()
+        {
+            Thread.Sleep(500);
+            EnterStandBySchedulerList();
+            IWebElement drag = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/div[2]"));
+            IWebElement drop = Browser.Driver.FindElement(By.XPath("//*[@id='waitListPanelBar']/li/div"));
+            var CountBefore = utility.ListCount("//*[@id='wait-list']");
+            (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag, drop).Perform();
+            Pages.Standby_Page.StandbyEndDate.EnterClearText(Constant.datePlusMonth);
+            Pages.Standby_Page.CreateStandby.ClickWait();
+            var CountAfter = utility.ListCount("//*[@id='wait-list']");
+            Assert.AreNotEqual(CountBefore, CountAfter);
+        }
+
+        public void DragAndDropWaitToStandby() {
+
+        }
+
 
         public void EnterLateYear() {
             int yearCount = 0;
@@ -128,7 +178,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterStandBySchedulerList() {
             Thread.Sleep(500);
-            StandBySchedulerList.ClickOn();
+            StandBySchedulerTab.ClickWait();
         }
 
         public void EnterAvailbleTime()

@@ -64,13 +64,14 @@ namespace DoctorWeb.PageObjects
         public void PriceListTaxCreateApplication() {
             try
             {
-                int countBefore = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+                string useName = Constant.priceListTax;
+                int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
                 PriceListTaxCreate.ClickOn();
                 PriceListTaxApprove.ClickOn();
                 softAssert.VerifyElementIsPresent(NameErrorMsg);
-                PriceListTaxName.EnterText(Constant.priceListTax);
+                PriceListTaxName.EnterText(useName);
                 PriceListTaxApprove.ClickOn();
-                int countAfter = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+                int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             }
             catch (IndexOutOfRangeException)
             {
@@ -81,19 +82,19 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTaxDeleteApplication()
         {
-            int countBefore = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             PriceListTaxDelete.ClickOn();
             DeleteApprove.ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Home_Page.SuccessPopup);
-            int countAfter = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
         }
 
         public void PriceListTaxEditApplication()
         {
             try
             {
-                PriceListTaxEdit.ClickOn();
-                PriceListTaxName.EnterClearText(Constant.priceListTax);
+                PriceListTaxEdit.ClickWait();
+                PriceListTaxName.EnterClearText(RandomNumber.taxNumber());
                 PriceListTaxApprove.ClickOn();
             }
             catch (IndexOutOfRangeException)

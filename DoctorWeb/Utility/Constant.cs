@@ -7,7 +7,6 @@ namespace DoctorWeb.Utility
         public static string drWebUrl = "http://drweb-sys.com/Account/Login";
         public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
 
-
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
         public static string groupUser = "reut@doctorwin.co.il";
