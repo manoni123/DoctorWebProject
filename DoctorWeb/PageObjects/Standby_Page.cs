@@ -53,28 +53,22 @@ namespace DoctorWeb.PageObjects
 
 
         public void CreateStandbyApplication() {
-            try {
-                Pages.Scheduler_Page.EnterStandBySchedulerList();
-                var CountBefore = utility.ListCount("//*[@id='wait-list']");
-                Pages.Scheduler_Page.StanByCreate.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
-                StandbySearch.EnterText(Pages.Patient_Page.PatientUseName);
-                Thread.Sleep(500);
-                StandbySearch.EnterText(Keys.ArrowDown);
-                Thread.Sleep(500);
-                StandbySearch.EnterText(Keys.Enter);
-                CreateStandby.ClickOn();
-                softAssert.VerifyErrorMsg();
-                TherapistSearch.SendKeys(Keys.ArrowDown);
-                TherapistSearch.SendKeys(Keys.Enter);
-                CreateStandby.ClickWait();
-                var CountAfter = utility.ListCount("//*[@id='wait-list']");
-                Assert.AreNotEqual(CountBefore, CountAfter);
-            }
-            catch (Exception) {
-                Assert.Warn("Test Did not run well");
-            }
-
+            Pages.Scheduler_Page.EnterStandBySchedulerList();
+            var CountBefore = utility.ListCount("//*[@id='wait-list']");
+            Pages.Scheduler_Page.StanByCreate.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
+            StandbySearch.EnterText(Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(500);
+            StandbySearch.EnterText(Keys.ArrowDown);
+            Thread.Sleep(500);
+            StandbySearch.EnterText(Keys.Enter);
+            CreateStandby.ClickOn();
+            softAssert.VerifyErrorMsg();
+            TherapistSearch.SendKeys(Keys.ArrowDown);
+            TherapistSearch.SendKeys(Keys.Enter);
+            CreateStandby.ClickWait();
+            var CountAfter = utility.ListCount("//*[@id='wait-list']");
+            Assert.AreNotEqual(CountBefore, CountAfter);
         }
     }
 }

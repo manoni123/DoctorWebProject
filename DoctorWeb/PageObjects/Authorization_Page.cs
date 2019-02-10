@@ -114,34 +114,21 @@ namespace DoctorWeb.PageObjects
         public void DeleteGroupApplication()
         {
             softAssert.VerifyElementPresentInsideWindow(DeleteLastGroup, GroupCancel);
-            try
-            {
-                DeleteLastGroup.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(ApproveDelete, GroupCancel);
-                ApproveDelete.ClickOn();
-            }
-            catch (Exception)
-            {
-                TestContext.WriteLine("failed becuase of users in group - Not BUG!");
-            }
+            DeleteLastGroup.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(ApproveDelete, GroupCancel);
+            ApproveDelete.ClickOn();
+            softAssert.WarningOnErrorMsg();
         }
 
         public void SecretaryPermissionApplication() {
-            try
-            {
-                Pages.Patient_Page.NewConfidentialPatientApplication();
-                Pages.Home_Page.LogoutApplication();
-                Pages.Login_Page.LoginMiddleTest(Constant.groupUser, Constant.loginPassword);
-                Pages.Home_Page.SearchBox.EnterClearText(Pages.Patient_Page.PatientUseName);
-                Pages.Home_Page.SearchBox.SendKeys(Keys.ArrowDown);
-                Thread.Sleep(500);
-                Pages.Home_Page.SearchBox.SendKeys(Keys.Enter);
-                softAssert.VerifyErrorMsg();
-            }
-            catch (Exception e)
-            {
-               
-            }
+            Pages.Patient_Page.NewConfidentialPatientApplication();
+            Pages.Home_Page.LogoutApplication();
+            Pages.Login_Page.LoginMiddleTest(Constant.groupUser, Constant.loginPassword);
+            Pages.Home_Page.SearchBox.EnterClearText(Pages.Patient_Page.PatientUseName);
+            Pages.Home_Page.SearchBox.SendKeys(Keys.ArrowDown);
+            Thread.Sleep(500);
+            Pages.Home_Page.SearchBox.SendKeys(Keys.Enter);
+            softAssert.VerifyErrorMsg();
         }
 
         public void ImportUsersToSecretaryGroupApplication()

@@ -66,7 +66,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectPatient { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[2]/span")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab2_menuCustomerExpended']/li[2]")]
         [CacheLookup]
         public IWebElement PatientDocument { get; set; }
 
@@ -179,24 +179,16 @@ namespace DoctorWeb.PageObjects
         }
 
         public void BlockedPatientCreate() {
-            try
-            {
-                PatientName.EnterClearText(PatientUseName);
-                PatientLastame.EnterClearText(Constant.patientLastname);
-                PatientConfidential.ClickOn();
-                SaveButton.ClickOn();
-
-            }
-            catch (Exception)
-            {
-                Log.Debug("paitent Create Failed");
-            }
+            PatientName.EnterClearText(PatientUseName);
+            PatientLastame.EnterClearText(Constant.patientLastname);
+            PatientConfidential.ClickOn();
+            SaveButton.ClickOn();
         }
 
         public void EnterPatientDocument()
         {
             PatientDocument.ClickWait();
-            softAssert.VerifyElementIsPresent(Pages.Document_Page.OpenUpload);
+            softAssert.VerifyElementIsPresent(Pages.Document_Page.UplaodFileBtn);
         }
 
         public void EnterPatientVisits()

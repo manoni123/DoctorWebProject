@@ -1,8 +1,10 @@
 ﻿using log4net;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -76,7 +78,28 @@ namespace DoctorWeb.Utility
                 CloseWindow.ClickOn();
                 softAssert.WarningMsg();
             }
+        }
 
+        public void ServerErrorCheck()
+        {
+            ChromeOptions options = new ChromeOptions();
+            options.SetLoggingPreference(LogType.Browser, LogLevel.Severe);
+            Browser.chromebDriver = new ChromeDriver(options);
+
+            IList logs;
+            logs = Browser.chromebDriver.Manage().Logs.GetLog(LogType.Browser);
+            try
+            {
+                Assert.True(logs.Count == 0);
+            }
+            catch (AssertionException e)
+            {
+                Console.WriteLine("Assert Failed: " + e.Message);
+                foreach (LogEntry log in logs)
+                {
+                    Console.WriteLine(log.Message);
+                }
+            }
         }
     }
 }

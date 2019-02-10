@@ -14,7 +14,6 @@ namespace DoctorWeb
     public static class Browser
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private static readonly string BaseUrl = Constant.drWebUrl;
         private static readonly string TestUrl = Constant.drWebTestUrl;
         public static IWebDriver chromebDriver = new ChromeDriver();
@@ -35,8 +34,7 @@ namespace DoctorWeb
 
         public static ISearchContext Driver
         {
-            get {return chromebDriver;}
-            
+            get {return chromebDriver;}      
         }
 
         public static void Goto(string url)

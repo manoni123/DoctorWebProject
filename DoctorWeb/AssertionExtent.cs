@@ -45,6 +45,11 @@ namespace DoctorWeb
             }
         }
 
+        public void WarningOnErrorMsg()
+        {
+             Warn.If(Pages.Home_Page.ErrorPopup.Displayed);
+        }
+
         public void VerifyElementIsPresent(IWebElement element)
         {
             try

@@ -35,10 +35,10 @@ namespace DoctorWeb
         }
 
         [Test, Category("Patient")]
-        public void PatientDocumentTest()
+        public void PatientDocumentUploadTest()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.Document_Page.PatientUploadApplication();
+            Pages.Document_Page.UploadFileApplication();
         }
 
         [Test, Category("Patient")]
@@ -52,7 +52,7 @@ namespace DoctorWeb
         public void PatientMessageTest()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.Document_Page.PatientUploadApplication();
+            Pages.Messages_Page.PatientMessageApplication();
         }
 
         [Test, Category("Patient")]
@@ -577,8 +577,6 @@ namespace DoctorWeb
         [Test, Category("Smoke"), Order(1)]
         public void SmokeTesting()
         {
-            try
-            {
                 Pages.Home_Page.SettingScreen.ClickWait();
                 softAssert.VerifyElementIsPresent(Pages.Home_Page.UserManagementScreen);
                 Pages.Home_Page.UserManagementScreen.ClickWait();
@@ -590,13 +588,6 @@ namespace DoctorWeb
                 Pages.Patient_Page.ClosePatientTab.ClickOn();
                 Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
                 Pages.Home_Page.PopupClose.ClickOn();
-            }
-
-            catch (AssertionException e)
-            {
-                Pages.Home_Page.LogoutApplication();
-                Assert.Fail("failed" + e);
-            }
         }
     }
 }

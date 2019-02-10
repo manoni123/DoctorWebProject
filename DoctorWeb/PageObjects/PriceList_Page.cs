@@ -169,20 +169,13 @@ namespace DoctorWeb.PageObjects
         }
 
         public void CountPriceListApplicaiton() {
-            try
-            {
-                Pages.PriceList_Page.EnterPriceListScreen();
-                int listCount = Browser.Driver.FindElements(By.XPath("//*[@id='gridAppointmentTypes']/div[2]/div[1]/table/tbody")).Count;
-                Pages.Home_Page.EnterAvailbleTime();
-                Pages.PriceList_Page.VisitReason.ClickOn();
-                int visitCount = Browser.Driver.FindElements(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[8]/div/span[1]")).Count;
-                Assert.AreEqual(visitCount, listCount);
-                Pages.Home_Page.PopupClose.ClickOn();
-            }
-            catch (AssertionException e) {
-                Pages.Home_Page.PopupClose.ClickOn();
-                Debug.WriteLine(e);
-            }
+            Pages.PriceList_Page.EnterPriceListScreen();
+            int listCount = Browser.Driver.FindElements(By.XPath("//*[@id='gridAppointmentTypes']/div[2]/div[1]/table/tbody")).Count;
+            Pages.Home_Page.EnterAvailbleTime();
+            Pages.PriceList_Page.VisitReason.ClickOn();
+            int visitCount = Browser.Driver.FindElements(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[8]/div/span[1]")).Count;
+            Assert.AreEqual(visitCount, listCount);
+            Pages.Home_Page.PopupClose.ClickOn();
         }
 
         public void CreateCategoryApplication() {
@@ -250,35 +243,28 @@ namespace DoctorWeb.PageObjects
         }
 
         public void DevCreatePriceListPackageApplicaiton() {
-            try
-            {
-                var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
-                var usedCode = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]");
-                PriceListCreateNew.ClickOn();
-                PriceListSaveDev.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(ValidationError, PriceListCancelDev);
-                PriceListCode.EnterText(Constant.priceListCode);
-                PriceListName.EnterText(Constant.priceListName);
-                Thread.Sleep(500);
-                PriceListType.ClickOn();
-                PriceListType.ClickOn();
-                PriceListType.SendKeys(Keys.ArrowDown);
-                PriceListType.SendKeys(Keys.ArrowDown);
-                PriceListType.ClickOn();
-                PriceListSubCode.EnterText(usedCode);
-                Thread.Sleep(500);
-                PriceListSubCode.SendKeys(Keys.ArrowDown);
-                Thread.Sleep(500);
-                PriceListSubCode.SendKeys(Keys.Enter);
-                PriceListSaveDev.ClickOn();
-                PriceListSaveDev.ClickOn();
-                var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
-                Assert.AreEqual(listCountAfter, listCount + 1);
-            }
-            catch (Exception) {
-                PriceListCancelDev.ClickOn();
-                Assert.Fail();
-            }
+            var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
+            var usedCode = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]");
+            PriceListCreateNew.ClickOn();
+            PriceListSaveDev.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(ValidationError, PriceListCancelDev);
+            PriceListCode.EnterText(Constant.priceListCode);
+            PriceListName.EnterText(Constant.priceListName);
+            Thread.Sleep(500);
+            PriceListType.ClickOn();
+            PriceListType.ClickOn();
+            PriceListType.SendKeys(Keys.ArrowDown);
+            PriceListType.SendKeys(Keys.ArrowDown);
+            PriceListType.ClickOn();
+            PriceListSubCode.EnterText(usedCode);
+            Thread.Sleep(500);
+            PriceListSubCode.SendKeys(Keys.ArrowDown);
+            Thread.Sleep(500);
+            PriceListSubCode.SendKeys(Keys.Enter);
+            PriceListSaveDev.ClickOn();
+            PriceListSaveDev.ClickOn();
+            var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
+            Assert.AreEqual(listCountAfter, listCount + 1);
         }
     }
 }

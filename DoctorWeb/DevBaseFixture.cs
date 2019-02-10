@@ -56,6 +56,14 @@ namespace DoctorWeb
                     break;
             }
             ExtentTestManager.GetTest().Log(logstatus, "Test ended with " + logstatus + stacktrace);
+
+            if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
+            {
+                var screenshot = ((ITakesScreenshot)Browser.chromebDriver).GetScreenshot();
+                int num = 0;
+                var screenName = "Image" + num++.ToString() + "z";
+                screenshot.SaveAsFile(@"C:\\Temp\bugsScreensho\\" + screenName, ScreenshotImageFormat.Jpeg);
+            }
         }
     }
 }

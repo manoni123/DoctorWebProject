@@ -48,8 +48,7 @@ namespace DoctorWeb.PageObjects
 
 
         public void SearchAvailbleTimeApplication()
-        {
-            try {       
+        {     
             Thread.Sleep(500);
             ExpertiseSelect.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
@@ -61,12 +60,6 @@ namespace DoctorWeb.PageObjects
             FirstFreeTimeSetMeeting.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
             softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
-            } catch(ElementNotInteractableException)
-            {
-                CloseWindow.ClickOn();
-                Assert.Fail();
-            }
-
         }
     }
 }

@@ -61,51 +61,36 @@ namespace DoctorWeb.PageObjects
         public IWebElement MeetingDuration { get; set; }
 
         public void CreateMeetingApplication() {
-            try
-            {
-                Thread.Sleep(500);
-                SearchPatient.Clear();
-                SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
-                Thread.Sleep(1500);
-                SearchPatient.SendKeys(Keys.ArrowDown);
-                Thread.Sleep(1000);
-                SearchPatient.SendKeys(Keys.Enter);
-                Thread.Sleep(500);
-                SearchPatient.SendKeys(Keys.Tab);
-                Thread.Sleep(500);
-                VisitReason.ClickOn();
-                SelectFirstPriceList.ClickOn();
-                ApproveMeeting.ClickOn();
-            }
-            catch (Exception e) {
-                CancelMeeting.ClickOn();
-                Assert.Warn( e + Constant.WarningMsg);
-            }
+            Thread.Sleep(500);
+            SearchPatient.Clear();
+            SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(1500);
+            SearchPatient.SendKeys(Keys.ArrowDown);
+            Thread.Sleep(1000);
+            SearchPatient.SendKeys(Keys.Enter);
+            Thread.Sleep(500);
+            SearchPatient.SendKeys(Keys.Tab);
+            Thread.Sleep(500);
+            VisitReason.ClickOn();
+            SelectFirstPriceList.ClickOn();
+            ApproveMeeting.ClickOn();
         }
 
         public void CreateMeetingKnownPatient()
         {
-            try
-            {
-                Thread.Sleep(500);
-                SearchPatient.Clear();
-                SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
-                Thread.Sleep(1500);
-                SearchPatient.SendKeys(Keys.ArrowDown);
-                Thread.Sleep(1000);
-                SearchPatient.SendKeys(Keys.Enter);
-                Thread.Sleep(500);
-                SearchPatient.SendKeys(Keys.Tab);
-                Thread.Sleep(500);
-                VisitReason.ClickOn();
-                SelectFirstPriceList.ClickOn();
-                ApproveMeeting.ClickOn();
-            }
-            catch (Exception e)
-            {
-                CancelMeeting.ClickOn();
-                Assert.Warn(e + Constant.WarningMsg);
-            }
+            Thread.Sleep(500);
+            SearchPatient.Clear();
+            SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(1500);
+            SearchPatient.SendKeys(Keys.ArrowDown);
+            Thread.Sleep(1000);
+            SearchPatient.SendKeys(Keys.Enter);
+            Thread.Sleep(500);
+            SearchPatient.SendKeys(Keys.Tab);
+            Thread.Sleep(500);
+            VisitReason.ClickOn();
+            SelectFirstPriceList.ClickOn();
+            ApproveMeeting.ClickOn();
         }
     }
 }

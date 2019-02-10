@@ -62,22 +62,15 @@ namespace DoctorWeb.PageObjects
         }
 
         public void PriceListTaxCreateApplication() {
-            try
-            {
-                string useName = Constant.priceListTax;
-                int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-                PriceListTaxCreate.ClickOn();
-                PriceListTaxApprove.ClickOn();
-                softAssert.VerifyElementIsPresent(NameErrorMsg);
-                PriceListTaxName.EnterText(useName);
-                PriceListTaxApprove.ClickOn();
-                int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                softAssert.VerifyElementIsPresent(Pages.Home_Page.ErrorPopup);
-                Assert.Fail("test OK - repeated numbers");
-            }
+            string useName = Constant.priceListTax;
+            int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            PriceListTaxCreate.ClickOn();
+            PriceListTaxApprove.ClickOn();
+            softAssert.VerifyElementIsPresent(NameErrorMsg);
+            PriceListTaxName.EnterText(useName);
+            PriceListTaxApprove.ClickOn();
+            int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            softAssert.WarningOnErrorMsg();
         }
 
         public void PriceListTaxDeleteApplication()
@@ -91,17 +84,10 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTaxEditApplication()
         {
-            try
-            {
-                PriceListTaxEdit.ClickWait();
-                PriceListTaxName.EnterClearText(RandomNumber.taxNumber());
-                PriceListTaxApprove.ClickOn();
-            }
-            catch (IndexOutOfRangeException)
-            {
-                softAssert.VerifyElementIsPresent(Pages.Home_Page.ErrorPopup);
-                Assert.Warn("test OK - repeated numbers");
-            }
+            PriceListTaxEdit.ClickWait();
+            PriceListTaxName.EnterClearText(RandomNumber.taxNumber());
+            PriceListTaxApprove.ClickOn();
+            softAssert.WarningOnErrorMsg();
         }
     }
 }

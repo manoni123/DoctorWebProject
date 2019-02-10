@@ -45,8 +45,7 @@ namespace DoctorWeb.PageObjects
 
         public void NewContactApplication()
         {
-            try
-            {
+
                 Pages.Home_Page.OpenEntityDropdown.ClickOn();
                 Pages.Home_Page.CreateNewContact.ClickOn();
                 ContactName.SendKeys("1");
@@ -57,11 +56,7 @@ namespace DoctorWeb.PageObjects
                 ContactPhone.EnterClearText(Constant.contactPhone);
                 ContactSaveButton.ClickOn();
                 softAssert.VerifySuccessMsg();
-
                 ContactCloseTab.ClickOn();
-            }   catch (Exception) {
-                Log.Debug("contact Create Failed");
-            }
         }
     }
 }

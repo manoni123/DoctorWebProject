@@ -76,7 +76,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement UserAuthorizationScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(4)")]
+        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(X)")]
         [CacheLookup]
         public IWebElement GeneralScreen { get; set; }
 
@@ -229,39 +229,27 @@ namespace DoctorWeb.PageObjects
         public void UnauthorizedCreatePatient()
         {
             OpenEntityDropdown.ClickOn();
-            try
+            if (CreateNewPatient.IsDisplayed("patient create button"))
             {
-                if (CreateNewPatient.IsDisplayed("patient create button"))
-                {
-                    Console.WriteLine("fail test");
-                    Assert.Fail();
-                }
-                else {
-                    Log.Info("create patient isnt availble - Pass test.");
-                }
+                Console.WriteLine("fail test");
+                Assert.Fail();
             }
-            catch (Exception e) {
-                Console.WriteLine(e);
+            else {
+                Log.Info("create patient isnt availble - Pass test.");
             }
+            
         }
         public void UnaothorizedEnterSettingScreen()
         {
-            Thread.Sleep(500);
-            try
+            Thread.Sleep(500);      
+            if (ReportScreen.IsDisplayed("setting screen"))
             {
-                if (ReportScreen.IsDisplayed("setting screen"))
-                {
-                    Console.WriteLine("fail test");
-                    Assert.Fail();
-                }
-                else
-                {
-                    Log.Info("setting screen isnt availble - pass");
-                }
+                Console.WriteLine("fail test");
+                Assert.Fail();
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e);
+                Log.Info("setting screen isnt availble - pass");
             }
         }
         public void UnaothorizedWatchBlockedPatient() {

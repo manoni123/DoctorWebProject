@@ -352,23 +352,15 @@ namespace DoctorWeb.PageObjects
 
         public void DeleteActivePracticeApplication()
         {
-            try
+            PracticesManagerButton.ClickOn();
+            if (PracticeDelete.IsDisplayed("is delete icon displayed"))
             {
-                PracticesManagerButton.ClickOn();
-                if (PracticeDelete.IsDisplayed("is delete icon displayed"))
-                {
-                    Log.Error("delete is displayed after active - fail");
-                }
-                else
-                {
-                    PracticeWindowClose.ClickOn();
-                }
+                Log.Error("delete is displayed after active - fail");
             }
-            catch (Exception)
+            else
             {
-                throw;
+                PracticeWindowClose.ClickOn();
             }
- 
         }
     }
 }

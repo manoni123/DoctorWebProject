@@ -15,7 +15,7 @@ namespace DoctorWeb.TestCases
     [Ignore("jj")]
     public class TestServerErrors
     {
-        IList logs;
+        IList logs, logder;
         String URL = "http://drweb-sys.com/";
 
         [OneTimeSetUp]

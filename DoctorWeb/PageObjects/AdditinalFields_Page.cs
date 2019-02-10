@@ -83,6 +83,7 @@ namespace DoctorWeb.PageObjects
             FieldSave.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(FieldName, CloseFieldWindow);
             FieldName.EnterClearText("Field Name");
+            softAssert.WarningOnErrorMsg();
             FieldSave.ClickOn();
            // softAssert.VerifyElementNotPresent(FieldSave);
             CloseFieldWindow.ClickOn();           

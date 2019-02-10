@@ -1,46 +1,50 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace DoctorWeb.PageObjects
 {
-   public class Document_Page
+    public class Document_Page
     {
          
         AssertionExtent softAssert = new AssertionExtent();
-
+        UtilityFunction utility = new UtilityFunction();
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        [FindsBy(How = How.Id, Using = "tab2_btnAddCustomerDocument_1")]
+      
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"mainTabStrip\"]/ul/li[2]")]
         [CacheLookup]
-        public IWebElement UploadDocument { get; set; }
+        public IWebElement NewPatiantTabClick { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "control-label")]
+        [FindsBy(How = How.PartialLinkText, Using = "העלאת קובץ")]
         [CacheLookup]
-        public IWebElement CreateUploadDate { get; set; }
+        public IWebElement UplaodFileBtn { get; set; }
 
-        [FindsBy(How = How.Id, Using = "btnCancelUploadDocuments-label")]
+        [FindsBy(How = How.Name, Using = "fileUploader")]
         [CacheLookup]
-        public IWebElement CancelUpload { get; set; }
+        public IWebElement SelectFile { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "control-label")]
+        [FindsBy(How = How.Name, Using = "btnCancelUploadDocuments")]
         [CacheLookup]
-        public IWebElement ConfirmUpload { get; set; }
+        public IWebElement btnCancelUploadDocuments { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "k-button k-upload-button")]
+        [FindsBy(How = How.Name, Using = "btnUploadDocuments")]
         [CacheLookup]
-        public IWebElement OpenUpload { get; set; }
+        public IWebElement UploadWindowSave { get; set; }
 
-        public void PatientUploadApplication() {
-            OpenUpload.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(CreateUploadDate, CancelUpload);
+        public void UploadFileApplication()
+        {
+            Thread.Sleep(1500);
+            Pages.Patient_Page.PatientDocument.ClickWait();
+            var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
+            IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab2_btnAddCustomerDocument_" + patientDataID));
+            UplaodBtn.ClickOn();
+            SelectFile.SendKeys("C:\\Temp\\file.txt");
+            UploadWindowSave.ClickOn();
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab2_gridCustomerDocuments_" + patientDataID + "']/div[2]/div[1]/table/tbody/tr/td[8]/a[2]")));
         }
-
     }
 }

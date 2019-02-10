@@ -196,11 +196,7 @@ namespace DoctorWeb.PageObjects
 
 
         public void EnterMedicalTab() {
-            try {
-                Pages.Patient_Page.OpenMedicalTab.ClickOn();
-            } catch (Exception) {
-                Log.Error("could not Enter Medical Tab successfuly");
-            }
+            Pages.Patient_Page.OpenMedicalTab.ClickWait();
         }
 
         public void EnterMedicineTable() {
@@ -213,28 +209,22 @@ namespace DoctorWeb.PageObjects
         //create new medicine applicaiton
         public void CreateNewMedicineApplication()
         {
-            try
-            {
-                string MedicienNewName = "Med" + RandomNumber.smallNumber();
-                var disButton = SaveMedicineTable.GetAttribute("disabled");
-                CreateNewMedicine.ClickOn();
-                CreateNewMedicine.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(NameValidationError, CancelMedicineTable);
-                MedicalName.EnterClearText(Constant.medicineName + RandomNumber.smallNumber());
-                MedicalDescription.EnterClearText(Constant.medicineName);
-                Thread.Sleep(500);
-                ConfirmCreateMedicine.ClickOn();
-                Thread.Sleep(500);
-                softAssert.VerifyElementPresentInsideWindow(DeleteMedicine, CancelMedicineTable);
-                Thread.Sleep(500);
-                CheckMedicineActive.ClickOn();
-                Thread.Sleep(500);
-                SaveMedicineTable.ClickOn();
-                Constant.medicineName = MedicienNewName;
-            }
-            catch (Exception) {
-                CancelMedicineTable.ClickOn();
-            }
+            string MedicienNewName = "Med" + RandomNumber.smallNumber();
+            var disButton = SaveMedicineTable.GetAttribute("disabled");
+            CreateNewMedicine.ClickOn();
+            CreateNewMedicine.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(NameValidationError, CancelMedicineTable);
+            MedicalName.EnterClearText(Constant.medicineName + RandomNumber.smallNumber());
+            MedicalDescription.EnterClearText(Constant.medicineName);
+            Thread.Sleep(500);
+            ConfirmCreateMedicine.ClickOn();
+            Thread.Sleep(500);
+            softAssert.VerifyElementPresentInsideWindow(DeleteMedicine, CancelMedicineTable);
+            Thread.Sleep(500);
+            CheckMedicineActive.ClickOn();
+            Thread.Sleep(500);
+            SaveMedicineTable.ClickOn();
+            Constant.medicineName = MedicienNewName;
         }
 
         //edit medicine
@@ -337,21 +327,12 @@ namespace DoctorWeb.PageObjects
         }
 
         public void AddICDApplication() {
-            try
-            {
-                ICDWindow.ClickOn();
-                softAssert.VerifyElementInPopupOverWindow(ICDImport, ICDCancel, CloseAnamnezaTable);
-                ICDSearch.SendKeys(Constant.ICDData);
-                ICDSearch.SendKeys(Keys.Enter);
-                ICDImport.ClickOn();
-                CloseAnamnezaTable.ClickOn();
-            }
-            catch (Exception)
-            {
-                ICDCancel.ClickOn();
-                CloseAnamnezaTable.ClickOn();
-            }
-;
+            ICDWindow.ClickOn();
+            softAssert.VerifyElementInPopupOverWindow(ICDImport, ICDCancel, CloseAnamnezaTable);
+            ICDSearch.SendKeys(Constant.ICDData);
+            ICDSearch.SendKeys(Keys.Enter);
+            ICDImport.ClickOn();
+            CloseAnamnezaTable.ClickOn();;
         }
 
         //enter note table
@@ -409,8 +390,8 @@ namespace DoctorWeb.PageObjects
             }
         }
 
-        public void ValidateWarningIndicator() {
-            try { 
+        public void ValidateWarningIndicator()
+        {
             Thread.Sleep(500);
             EditMedicineOnUser.ClickOn();
             SelectYesMedicineOnUser.ClickOn();
@@ -420,11 +401,6 @@ namespace DoctorWeb.PageObjects
             Pages.PatientMedical_Page.OpenMedicineTable.ClickOn();
             Pages.PatientMedical_Page.CancelMedicineTable.ClickOn();
             softAssert.VerifyElementIsPresent(MedicalWarningIcon);
-            }
-            catch (Exception)
-            {
-                CancelMedicineTable.ClickOn();
-            }
         }
     } 
 }

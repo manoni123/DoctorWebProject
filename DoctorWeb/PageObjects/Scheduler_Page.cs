@@ -90,15 +90,10 @@ namespace DoctorWeb.PageObjects
         public IWebElement FirstCellToday { get; set; }
 
         public void CreateMeetingOnTodayCell() {
-            try {
-                (new Actions(Browser.chromebDriver)).DoubleClick(FirstCellToday).Perform();
-                Thread.Sleep(1000);
-                Pages.Meeting_Page.CreateMeetingApplication();
-            } catch (NoSuchWindowException) {
-                Thread.Sleep(1000);
-                Pages.Meeting_Page.CancelMeeting.ClickOn();
-                softAssert.WarningMsg();
-            }
+            (new Actions(Browser.chromebDriver)).DoubleClick(FirstCellToday).Perform();
+            softAssert.WarningOnErrorMsg();
+            Thread.Sleep(1000);
+            Pages.Meeting_Page.CreateMeetingApplication();
         }
 
         public void DragAndDropTemporaryList() {
