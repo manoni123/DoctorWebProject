@@ -89,6 +89,18 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement FirstCellToday { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//*[@id='standbyOptionsGridName']/div[2]/table/tbody/tr[1]/td[7]/a")]
+        [CacheLookup]
+        public IWebElement StanbyAppointmentBtn { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='gridWaitList']/div[2]/div[1]/table/tbody/tr[1]/td[9]/a[3]")]
+        [CacheLookup]
+        public IWebElement StandbyAppointmentSelect { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnClose")]
+        [CacheLookup]
+        public IWebElement StandbyAppointmentCancel { get; set; }
+
         public void CreateMeetingOnTodayCell() {
             (new Actions(Browser.chromebDriver)).DoubleClick(FirstCellToday).Perform();
             softAssert.WarningOnErrorMsg();
@@ -97,6 +109,10 @@ namespace DoctorWeb.PageObjects
         }
 
         public void DragAndDropTemporaryList() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Scheduler_Page.CreateMeetingOnTodayCell();
+
             Thread.Sleep(500);
             EnterStandBySchedulerList();
             IWebElement drag = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/div[2]"));
@@ -110,6 +126,10 @@ namespace DoctorWeb.PageObjects
 
         public void DragAndDropStandbyList()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Scheduler_Page.CreateMeetingOnTodayCell();
+
             Thread.Sleep(500);
             EnterStandBySchedulerList();
             IWebElement drag = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/div[2]"));
@@ -122,8 +142,21 @@ namespace DoctorWeb.PageObjects
             Assert.AreNotEqual(CountBefore, CountAfter);
         }
 
-        public void DragAndDropWaitToStandby() {
-
+        public void StandbySetMeetingApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Standby_Page.CreateStandbyApplication();
+            Thread.Sleep(1500);
+            Pages.Scheduler_Page.EnterStanbyWindow();
+            StandbyAppointmentSelect.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(StandbyAppointmentCancel, StandbyAppointmentCancel);
+            StanbyAppointmentBtn.ClickWait();
+            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+            Pages.Meeting_Page.VisitReason.ClickOn();
+            Pages.Meeting_Page.SelectFirstPriceList.ClickOn();
+            Pages.Meeting_Page.ApproveMeeting.ClickOn();
+            softAssert.VerifySuccessMsg();
+            Pages.Home_Page.PopupClose.ClickOn();
         }
 
 

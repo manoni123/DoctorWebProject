@@ -54,11 +54,13 @@ namespace DoctorWeb.Utility
         //Time in Miliseconds for user actionss
         public static void ClickOn(this IWebElement element) {
             try {
+                string valueName = element.Text;
+                string valueID = element.GetAttribute("name");
+                string valueTag = element.GetAttribute("id");
+                string valueText = element.GetAttribute("data-tag");
+                utility.NameInElement(element, valueName, valueID, valueTag, valueText);
                 element.Click();
-                string valueName = element.GetAttribute("name");
-                string valueID = element.GetAttribute("id");
-                string valueText = element.Text;
-                utility.NameInElement(element, valueName, valueID, valueText);
+
                 Thread.Sleep(_time);
             }
             catch (Exception e) {
@@ -69,12 +71,20 @@ namespace DoctorWeb.Utility
         //self determine the wait time
         public static void ClickWait(this IWebElement element)
         {
-            element.Click();
-            string valueName = element.GetAttribute("name");
-            string valueID = element.GetAttribute("id");
-            string valueText = element.Text;
-            utility.NameInElement(element, valueName, valueID, valueText);
-            Thread.Sleep(1500);
+            try
+            {
+                string valueName = element.GetAttribute("name");
+                string valueID = element.GetAttribute("id");
+                string valueTag = element.GetAttribute("data-tag");
+                string valueText = element.Text;
+                utility.NameInElement(element, valueName, valueID, valueTag, valueText);
+                element.Click();
+                Thread.Sleep(1500);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         //isDisplayd Method with log

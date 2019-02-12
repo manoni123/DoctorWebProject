@@ -74,9 +74,13 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement PatientVisits { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[5]/span")]
         [CacheLookup]
         public IWebElement PatientMessages { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
+        [CacheLookup]
+        public IWebElement PatientTreatments { get; set; }
 
         [FindsBy(How = How.Id, Using = "tab2.FirstName_validationMessage")]
         [CacheLookup]

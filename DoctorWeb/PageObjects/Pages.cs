@@ -167,5 +167,10 @@ namespace DoctorWeb
             get { return GetPage<PriceListUpdate_Page>(); }
         }
 
+        public static Treatment_Page Treatment_Page
+        {
+            get { return GetPage<Treatment_Page>(); }
+        }
+
     }
 }

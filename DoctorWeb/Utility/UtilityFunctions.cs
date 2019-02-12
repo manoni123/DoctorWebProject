@@ -2,21 +2,14 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DoctorWeb.Utility
 {
     public class UtilityFunction
     {
-
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
 
@@ -31,22 +24,30 @@ namespace DoctorWeb.Utility
             return count;
         }
 
-        public void NameInElement(IWebElement element, string valueOne, string valueTwo, string valueThree){
-            if (valueOne != null)
+        public void ClickElementName() {
+            Log.Info("Click On: " );
+        }
+
+        public void NameInElement(IWebElement element, string valueOne = null, string valueTwo = null, string valueThree = null, string valueFour = null) {
+            if (!String.IsNullOrEmpty(valueOne))
             {
-                Log.Info("Click On : " + element.GetAttribute("name"));
+                Log.Info("Click On : " + valueOne);
             }
-            else if (valueTwo != null)
+            else if (!String.IsNullOrEmpty(valueTwo))
             {
-                Log.Info("Click On : " + element.GetAttribute("id"));
+                Log.Info("Click On : " + valueTwo);
             }
-            else if (valueThree != null)
+            else if (!String.IsNullOrEmpty(valueThree))
             {
                 Log.Info("Click On : " + valueThree);
             }
+            else if (!String.IsNullOrEmpty(valueFour))
+            {
+                Log.Info("Click On : " + valueFour);
+            }
             else 
             {
-                Log.Info("Click On : Icon (element has no name)");
+                Log.Info("Click On : Icon (Element w/ no name)");
             }
         }
 
@@ -78,6 +79,11 @@ namespace DoctorWeb.Utility
                 CloseWindow.ClickOn();
                 softAssert.WarningMsg();
             }
+        }
+
+        public void dropdownAndEnter(IWebElement element) {
+            element.SendKeys(Keys.Down);
+            element.SendKeys(Keys.Enter);
         }
 
         public void ServerErrorCheck()

@@ -150,6 +150,8 @@ namespace DoctorWeb.PageObjects
 
         public void PatientReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
@@ -160,6 +162,8 @@ namespace DoctorWeb.PageObjects
         } 
         public void ContactReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             Thread.Sleep(500);
             ContactReportTab.ClickOn();
             ContactReportExcel.ClickOn();
@@ -170,6 +174,8 @@ namespace DoctorWeb.PageObjects
 
         public void MeetingReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
@@ -189,6 +195,8 @@ namespace DoctorWeb.PageObjects
 
         public void NotificationReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             Thread.Sleep(500);
             NotificationReportTab.ClickOn();
             NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);

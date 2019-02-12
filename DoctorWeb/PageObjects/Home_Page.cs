@@ -76,7 +76,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement UserAuthorizationScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(X)")]
+        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(5)")]
         [CacheLookup]
         public IWebElement GeneralScreen { get; set; }
 

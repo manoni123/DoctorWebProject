@@ -28,6 +28,8 @@ namespace DoctorWeb.PageObjects
 
         public void PatientVisitsApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+
             Thread.Sleep(500);
             Pages.Patient_Page.PatientMeetingCreate.ClickOn();
             IWebElement patientAvailbleTime = Browser.Driver.FindElement(By.Id("tab3_newAppointmentContextMenu"));

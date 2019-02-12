@@ -88,6 +88,8 @@ namespace DoctorWeb.PageObjects
         //create new permission group
         public void CreateGroupApplication()
         {
+            Pages.Authorization_Page.EnterAuthorizationScreen();
+
             GroupCreate.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(GroupCancel, GroupCancel);
             GroupName.EnterClearText("11");
@@ -101,6 +103,9 @@ namespace DoctorWeb.PageObjects
 
         public void EditGroupApplication()
         {
+            Pages.Authorization_Page.EnterAuthorizationScreen();
+            Pages.Authorization_Page.CreateGroupApplication();
+
             softAssert.VerifyElementPresentInsideWindow(GroupeEdit, GroupCancel);
             GroupeEdit.ClickOn();
             GroupName.EnterClearText("11");
@@ -113,6 +118,9 @@ namespace DoctorWeb.PageObjects
 
         public void DeleteGroupApplication()
         {
+            Pages.Authorization_Page.EnterAuthorizationScreen();
+            Pages.Authorization_Page.CreateGroupApplication();
+
             softAssert.VerifyElementPresentInsideWindow(DeleteLastGroup, GroupCancel);
             DeleteLastGroup.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(ApproveDelete, GroupCancel);
@@ -133,6 +141,8 @@ namespace DoctorWeb.PageObjects
 
         public void ImportUsersToSecretaryGroupApplication()
         {
+            Pages.Authorization_Page.EnterAuthorizationScreen();
+
             Thread.Sleep(500);
             SelectSecretaryGroup.ClickOn();
             ImportToGroup.ClickOn();

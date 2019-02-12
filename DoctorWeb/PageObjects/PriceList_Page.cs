@@ -179,6 +179,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void CreateCategoryApplication() {
+            Pages.PriceList_Page.DevEnterCategoryWindow();
+
             var listCount = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
             CategoryCreateNew.ClickOn();
             CategoryApprove.ClickOn();
@@ -191,6 +193,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void DeleteCategoryApplication() {
+            Pages.PriceList_Page.DevEnterCategoryWindow();
+            Pages.PriceList_Page.CreateCategoryApplication();
 
             CategoryDelete.ClickOn();
             softAssert.VerifyElementIsPresent(PopUpButtonApprove);
@@ -199,6 +203,8 @@ namespace DoctorWeb.PageObjects
 
         public void DeleteActiveCategoryApplication()
         {
+                            Pages.PriceList_Page.CreateCategoryApplication();
+
             CategoryManager.ClickOn();
             if (CategoryDelete.IsDisplayed("if delete action is shown"))
             {
@@ -211,6 +217,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void EditCategoryApplication() {
+            Pages.PriceList_Page.CreateCategoryApplication();
+
             CategoryEdit.ClickOn();
             CategoryName.Clear();
             CategoryApprove.ClickOn();
@@ -229,6 +237,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void DevCreatePriceListDevApplication() {
+            Pages.Home_Page.EntePriceListTab();
+
             var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
             PriceListCreateNew.ClickOn();
             PriceListSaveDev.ClickOn();
@@ -243,6 +253,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void DevCreatePriceListPackageApplicaiton() {
+            Pages.Home_Page.EntePriceListTab();
+
             var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
             var usedCode = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]");
             PriceListCreateNew.ClickOn();

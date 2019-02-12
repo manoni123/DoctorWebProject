@@ -37,6 +37,8 @@ namespace DoctorWeb.PageObjects
 
         public void UploadFileApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+
             Thread.Sleep(1500);
             Pages.Patient_Page.PatientDocument.ClickWait();
             var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");

@@ -88,7 +88,7 @@ namespace DoctorWeb
                 string Month = DateTime.Now.Month.ToString();
                 string Day = DateTime.Now.Day.ToString();
                 string createDirectory = Directory.CreateDirectory(StartupPath + "\\" + Year + "\\" + Month + "\\" + Day).ToString();
-                string bugDirectory = StartupPath + "\\" + Year + "\\" + Month + "\\" + Day;
+                string bugDirectory = StartupPath + Year + "\\" + Month + "\\" + Day;
 
                 var screenshot = ((ITakesScreenshot)Browser.chromebDriver).GetScreenshot();
                 var imageName =  testName +".jpg";
@@ -99,6 +99,11 @@ namespace DoctorWeb
                 List<String> MyMusicFiles = Directory
                                    .GetFiles("C:\\Temp\\bugsScreenshot\\", "*.jpg").ToList();
 
+                if (new FileInfo(bugDirectory + "\\" + imageName).Exists == true)
+                {
+                    File.Delete(bugDirectory + "\\" + imageName);
+                }
+
                 foreach (string file in MyMusicFiles)
                 {
                     FileInfo mFile = new FileInfo(file);
@@ -108,12 +113,13 @@ namespace DoctorWeb
                         mFile.MoveTo(bugDirectory + "\\" + imageName);
                     }
                 }
-
+                
                 if (window != null)
                 {
                     window.ClickOn();
                 }
 
+                Assert.Warn("Not a bug - Failed due to wrong code/compile");
                // throw;
             }
         }

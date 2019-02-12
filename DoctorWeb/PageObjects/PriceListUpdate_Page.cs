@@ -51,7 +51,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void UpdateBasePriceListApplication() {
-       //     Pages.PriceList_Page.DevCreatePriceListDevApplication();
+            Pages.Home_Page.EntePriceListTab();
+
             string PriceToUpdate = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[5]");
             string percentageToUpdate = "25";
 

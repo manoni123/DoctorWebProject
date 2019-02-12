@@ -121,6 +121,7 @@
     <Compile Include="PageObjects\PriceListTax_Page.cs" />
     <Compile Include="PageObjects\PriceListType_Page.cs" />
     <Compile Include="PageObjects\PriceListUpdate_Page.cs" />
+    <Compile Include="PageObjects\Treatment_Page.cs" />
     <Compile Include="RegressionDevTest.cs" />
     <Compile Include="ExtentManager.cs" />
     <Compile Include="ExtentTestManager.cs" />

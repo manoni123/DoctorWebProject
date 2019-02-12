@@ -89,6 +89,8 @@ namespace DoctorWeb.PageObjects
         //create new supplier contact
         public void NewSupplierContactApplication()
         {
+            Pages.Supplier_Page.NewSupplierCreateApplication();
+
             CreateSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(SuppContName);
             SuppContName.SendKeys("1");

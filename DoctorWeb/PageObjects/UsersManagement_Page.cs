@@ -18,8 +18,6 @@ namespace DoctorWeb.PageObjects
 {
     public class UsersManagement_Page
     {
-
-         
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
 
@@ -173,6 +171,8 @@ namespace DoctorWeb.PageObjects
         //create a create user 
         public void CreateUserApplication()
         {
+            Pages.UsersManagement_Page.EnterManagementWindow();
+            Pages.UsersManagement_Page.EnterCreateNewUser();
 
             softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
             UserName.EnterClearText(Constant.userName);
@@ -315,6 +315,9 @@ namespace DoctorWeb.PageObjects
         //create practice in usermanagement window
         public void CreatePracticeApplication()
         {
+            Pages.Home_Page.EnterUserManagmentScreen();
+            Pages.UsersManagement_Page.EnterPracticeWindow();
+
             CreateNewPractice.ClickOn();
             PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
@@ -328,6 +331,9 @@ namespace DoctorWeb.PageObjects
         //edit practice name
         public void EditPracticeApplication()
         {
+            Pages.Home_Page.EnterUserManagmentScreen();
+            Pages.UsersManagement_Page.EnterPracticeWindow();
+
             PracticeEdit.ClickOn();
             PracticeName.Clear();
             EditPracticeApprove.ClickOn();
@@ -340,6 +346,9 @@ namespace DoctorWeb.PageObjects
 
         public void DeletePracticeApplication()
         {
+            Pages.Home_Page.EnterUserManagmentScreen();
+            Pages.UsersManagement_Page.EnterPracticeWindow();
+
             CreateNewPractice.ClickOn();
             PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
             PracticeApprove.ClickOn();
@@ -352,6 +361,9 @@ namespace DoctorWeb.PageObjects
 
         public void DeleteActivePracticeApplication()
         {
+            Pages.UsersManagement_Page.CreatePracticeApplication();
+            Pages.UsersManagement_Page.CreateUserApplication();
+
             PracticesManagerButton.ClickOn();
             if (PracticeDelete.IsDisplayed("is delete icon displayed"))
             {

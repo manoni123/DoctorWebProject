@@ -48,11 +48,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StandbyEndDate { get; set; }
 
-
-
-
-
         public void CreateStandbyApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+
             Pages.Scheduler_Page.EnterStandBySchedulerList();
             var CountBefore = utility.ListCount("//*[@id='wait-list']");
             Pages.Scheduler_Page.StanByCreate.ClickOn();
@@ -66,7 +65,7 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyErrorMsg();
             TherapistSearch.SendKeys(Keys.ArrowDown);
             TherapistSearch.SendKeys(Keys.Enter);
-            CreateStandby.ClickWait();
+            Thread.Sleep(1000);
             var CountAfter = utility.ListCount("//*[@id='wait-list']");
             Assert.AreNotEqual(CountBefore, CountAfter);
         }

@@ -2,12 +2,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DoctorWeb.PageObjects
 {
@@ -65,6 +60,8 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTypeCreateApplication()
         {
+            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
+
             int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeCreate.ClickOn();
             PriceListTypeApprove.ClickOn();
@@ -78,6 +75,9 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTypeDeleteApplication()
         {
+            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
+            Pages.PriceListType_Page.PriceListTypeCreateApplication();
+
             int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeDelete.ClickOn();
             DeleteApprove.ClickOn();
@@ -88,6 +88,9 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTypeEditApplication()
         {
+            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
+            Pages.PriceListType_Page.PriceListTypeCreateApplication();
+
             PriceListTypeEdit.ClickOn();
             PriceListTypeName.EnterClearText("Edit");
             PriceListTypeApprove.ClickOn();

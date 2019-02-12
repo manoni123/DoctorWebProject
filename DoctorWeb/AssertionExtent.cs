@@ -37,11 +37,11 @@ namespace DoctorWeb
             try
             {
                 Assert.IsTrue(Pages.Home_Page.ErrorPopup.Displayed);
+                Log.Info("Error Msg shown - success");
             }
             catch (AssertionException e)
             {
-                Debug.WriteLine(e);
-                Assert.Fail();
+                Log.Error("Error NOT Msg shown - success");
             }
         }
 
@@ -55,14 +55,13 @@ namespace DoctorWeb
             try
             {
                 Assert.IsTrue(element.Displayed, Constant.stackTraceFalse);
-                Log.Info("Element : " + element.Text + " IS Present");
+                Log.Info("Element IS Present");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
-                Log.Error("Element : " + element.Text + " IS NOT Present");
-                Debug.WriteLine(e);
-            }
+                Log.Error("Element IS NOT Present");
+           } 
         }
 
         public void VerifyElementNotPresent(IWebElement element)
@@ -98,14 +97,14 @@ namespace DoctorWeb
             {
                 Assert.IsTrue(element.Displayed);
                 Thread.Sleep(_time);
-                Log.Info("Verify " + element.GetAttribute("name") + " is present");
+                Log.Info("Verify Element is present");
                 
             }
             catch (AssertionException e)
             {
                 CloseWindowssIfDisplayed(_window);
                 Debug.WriteLine(e + Constant.stackTraceTrue);
-                Log.Error("Verify " + element.GetAttribute("name") + " is NOT present");
+                Log.Error("Verify Element is NOT present");
             }
         }
 
@@ -125,31 +124,29 @@ namespace DoctorWeb
             }
         }
 
-        public void VerifyElementHasEqual(String element, String str) {
+        public void VerifyElementHasEqual(object element, object expected) {
             try
             {
-                Assert.AreEqual(element, str);
-                Log.Info("Verify " + element + " Has Equal");
+                Assert.AreEqual(element, expected);
+                Log.Info("Verify Element HAS Equal");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e) {
-                Log.Info("Verify " + element + " DOES NOT Has Equal");
-                Debug.WriteLine(e);
+                Log.Info("Verify DOES NOT Has Equal");
             }
         }
 
-        public void VerifyElemenNotHaveEqual(IWebElement element, String str)
+        public void VerifyElemenNotHaveEqual(object element, object expected)
         {
             try
             {
-                Log.Info("Verify " + element + " Has No Equal");
-                Assert.AreNotEqual(element, str);
+                Assert.AreNotEqual(element, expected);
+                Log.Info("Verify Element Not Have Equal (success)");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
-                Log.Info("Verify " + element + " Has Equal - Fail");
-                Debug.WriteLine(e);
+                Log.Info("Verify Element HAS Equal (fail)");
 
             }
         }
@@ -187,12 +184,14 @@ namespace DoctorWeb
             try
             {
                 Assert.IsNotNull(element, Constant.stackTraceNotNull);
+                Log.Info("Element is not null (success)");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
                 CloseWindowssIfDisplayed(_window);
-                Debug.WriteLine(e);
+                Log.Info("Element is null (fail)");
+
             }
         }
 
@@ -200,12 +199,13 @@ namespace DoctorWeb
             try
             {
                 Assert.IsNull(element, Constant.stackTraceNull);
+                Log.Info("Element is null (success)");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
                 CloseWindowssIfDisplayed(_window);
-                Debug.WriteLine(e);
+                Log.Info("Element is not null (fail)");
             }
         }
 

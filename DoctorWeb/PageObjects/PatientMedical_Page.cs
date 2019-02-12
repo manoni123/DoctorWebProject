@@ -209,6 +209,10 @@ namespace DoctorWeb.PageObjects
         //create new medicine applicaiton
         public void CreateNewMedicineApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterMedicineTable();
+
             string MedicienNewName = "Med" + RandomNumber.smallNumber();
             var disButton = SaveMedicineTable.GetAttribute("disabled");
             CreateNewMedicine.ClickOn();
@@ -225,11 +229,20 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             SaveMedicineTable.ClickOn();
             Constant.medicineName = MedicienNewName;
+
+            Pages.PatientMedical_Page.ValidateWarningIndicator();
+
         }
 
         //edit medicine
         public void EditMedicineApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterMedicineTable();
+            Pages.PatientMedical_Page.CreateNewMedicineApplication();
+            Pages.PatientMedical_Page.EnterMedicineTable();
+
             EditMedicine.ClickOn();
             MedicalName.EnterClearText("MedEdit");
             ConfirmCreateMedicine.ClickOn();
@@ -239,6 +252,9 @@ namespace DoctorWeb.PageObjects
 
         //delete medicine
         public void DeleteMedicineApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterMedicineTable();
 
             if (DeleteMedicine.IsDisplayed("delete medicine"))
             {
@@ -286,6 +302,10 @@ namespace DoctorWeb.PageObjects
 
         public void CreateNewAnamnezaWhenSaveApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterAnamnezaTable();
+
             var disButton = SaveAnamnezaTable.GetAttribute("disabled");
             //call patient page to enter medical Tab
             CreateNewAnamneza.ClickOn();
@@ -303,6 +323,12 @@ namespace DoctorWeb.PageObjects
 
         //edit new anamneza application
         public void EditNewAnamnezaApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterAnamnezaTable();
+            Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
+            Pages.PatientMedical_Page.EnterAnamnezaTable();
+
             EditAnamneza.ClickOn();
             AnamnezaName.Clear();
             ConfirmCreateAnamneza.ClickOn();
@@ -314,6 +340,10 @@ namespace DoctorWeb.PageObjects
 
         //delete new anamneza app
         public void DeleteNewAnamanezaApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterAnamnezaTable();
+
             if (DeleteAnamneza.IsDisplayed("delete anamneza"))
             {
                 DeleteAnamneza.ClickOn();
@@ -327,6 +357,10 @@ namespace DoctorWeb.PageObjects
         }
 
         public void AddICDApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterAnamnezaTable();
+
             ICDWindow.ClickOn();
             softAssert.VerifyElementInPopupOverWindow(ICDImport, ICDCancel, CloseAnamnezaTable);
             ICDSearch.SendKeys(Constant.ICDData);
@@ -346,6 +380,10 @@ namespace DoctorWeb.PageObjects
         //create new note applicaiton
         public void CreateNewNoteApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterNoteTable();
+
             string NoteNewName = "note" + RandomNumber.smallNumber();
 
             CreateNewNote.ClickOn();
@@ -364,6 +402,12 @@ namespace DoctorWeb.PageObjects
         //edit desc
         public void EditNoteApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterNoteTable();
+            Pages.PatientMedical_Page.CreateNewNoteApplication();
+            Pages.PatientMedical_Page.EnterNoteTable();
+
             EditNote.ClickOn();
             NoteDescription.Clear();
             ConfirmCreateNote.ClickOn();
@@ -377,6 +421,12 @@ namespace DoctorWeb.PageObjects
         //delete note
         public void DeleteNoteApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterNoteTable();
+            Pages.PatientMedical_Page.CreateNewNoteApplication();
+            Pages.PatientMedical_Page.EnterNoteTable();
+
             if (DeleteNote.IsDisplayed("deelete note"))
             {
                 DeleteNote.ClickOn();

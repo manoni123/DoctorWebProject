@@ -61,6 +61,11 @@ namespace DoctorWeb.PageObjects
         public IWebElement MeetingDuration { get; set; }
 
         public void CreateMeetingApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Home_Page.EnterAvailbleTime();
+            Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
+
             Thread.Sleep(500);
             SearchPatient.Clear();
             SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);

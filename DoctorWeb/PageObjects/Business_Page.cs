@@ -181,6 +181,8 @@ namespace DoctorWeb.PageObjects
 
         public void CreateBranchApplication()
         {
+            Pages.Business_Page.EnterSettingScreen();
+
             Thread.Sleep(500);
             SelectBusinessFromList.ClickOn();
             BranchCreate.ClickOn();
@@ -199,16 +201,23 @@ namespace DoctorWeb.PageObjects
 
         public void CreateDepartmentApplication()
         {
-            //call home page enter inside setting window and create department
+            Pages.Business_Page.CheckDepartmentIsNull();
+            Pages.Business_Page.EnterDepaertmentWindow();
+
             DepartmentCreate.ClickOn();
             DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepNameValidationPopup, DepartmentCloseButton);
             DepartmentName.EnterClearText(Constant.departmentName + RandomNumber.smallNumber());
             DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
+            Pages.Business_Page.DepartmentCloseButton.ClickOn();
         }
 
         public void DeleteDepartmentApplication() {
+            Pages.Business_Page.CheckDepartmentIsNull();
+            Pages.Business_Page.EnterDepaertmentWindow();
+            Pages.Business_Page.CreateDepartmentApplication();
+
             Thread.Sleep(500);
             softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
             DepartmentDelete.ClickOn();

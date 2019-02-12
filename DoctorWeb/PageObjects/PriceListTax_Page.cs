@@ -62,6 +62,8 @@ namespace DoctorWeb.PageObjects
         }
 
         public void PriceListTaxCreateApplication() {
+            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
+
             string useName = Constant.priceListTax;
             int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             PriceListTaxCreate.ClickOn();
@@ -75,6 +77,9 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTaxDeleteApplication()
         {
+            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
+            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
+
             int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             PriceListTaxDelete.ClickOn();
             DeleteApprove.ClickOn();
@@ -84,6 +89,9 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTaxEditApplication()
         {
+            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
+            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
+
             PriceListTaxEdit.ClickWait();
             PriceListTaxName.EnterClearText(RandomNumber.taxNumber());
             PriceListTaxApprove.ClickOn();
