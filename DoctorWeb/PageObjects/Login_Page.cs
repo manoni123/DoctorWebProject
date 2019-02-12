@@ -45,9 +45,7 @@ namespace DoctorWeb.PageObjects
         //Login Form credentials
         public void LoginApplication()
         {
-            //change language by clicking the language drop down list
             LanguageSelect.SendKeys(Keys.ArrowDown);
-  //          LoginButton.ClickOn();
             UserName.EnterText(Constant.adminUser);
             UserPassword.EnterText(Constant.loginPassword);
             Thread.Sleep(500);
@@ -58,7 +56,22 @@ namespace DoctorWeb.PageObjects
             }
             else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
             {
-            SideBarArrow.Click();
+            SideBarArrow.ClickOn();
+            }
+        }
+
+        public void LoginMiddleTest(string name, string password) {
+            UserName.EnterText(name);
+            UserPassword.EnterText(password);
+
+        }
+
+        public void LoginCredentials(int num) {
+            int userCredential = num;
+            switch (userCredential) {
+                case 1:
+
+                break;
             }
         }
 
@@ -67,8 +80,8 @@ namespace DoctorWeb.PageObjects
             LanguageSelect.SendKeys(Keys.ArrowDown);
             Log.Info("pressed arrow down to select hebrew language");
             //fill user name, pasdoword and hit LOGIN
-            UserName.EnterClearText(Constant.unauthorizedUserName, "UserName");
-            UserPassword.EnterClearText(Constant.unauthorizedPassword, "UserPassword");
+            UserName.EnterClearText(Constant.unauthorizedUserName);
+            UserPassword.EnterClearText(Constant.loginPassword);
             LoginButton.ClickOn();
             if (NewAppointment.IsDisplayed("new Appointment btn"))
             {
@@ -83,56 +96,44 @@ namespace DoctorWeb.PageObjects
 
         public void TherapistLogin()
         {
-            try
-            {
-                //change language by clicking the language drop down list
-                LanguageSelect.SendKeys(Keys.ArrowDown);
-                //  Log.Info("pressed arrow down to select hebrew language");
-                //fill user name, pasdoword and hit LOGIN
-                UserName.EnterClearText(Constant.user1, "UserName");
-                UserPassword.EnterClearText(Constant.loginPassword, "UserPassword");
-                LoginButton.ClickOn();
-                if (Pages.Home_Page.AppointmentBtn_1.Displayed)
-                {
-
-                }
-                else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
-                {
-                    SideBarArrow.Click();
-                }
-                softAssert.VerifyElementNotPresent(Pages.Home_Page.SettingScreen);
-            }
-            catch (Exception)
+            
+            //change language by clicking the language drop down list
+            LanguageSelect.SendKeys(Keys.ArrowDown);
+            //  Log.Info("pressed arrow down to select hebrew language");
+            //fill user name, pasdoword and hit LOGIN
+            UserName.EnterClearText(Constant.therapistUser);
+            UserPassword.EnterClearText(Constant.loginPassword);
+            LoginButton.ClickOn();
+            if (Pages.Home_Page.AppointmentBtn_1.Displayed)
             {
 
             }
+            else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
+            {
+                SideBarArrow.ClickOn();
+            }
+            softAssert.VerifyElementNotPresent(Pages.Home_Page.SettingScreen);
         }
 
         public void ClerkApplication()
         {
-            try
+            //change language by clicking the language drop down list
+            LanguageSelect.SendKeys(Keys.ArrowDown);
+            //  Log.Info("pressed arrow down to select hebrew language");
+            //fill user name, pasdoword and hit LOGIN
+            UserName.EnterClearText(Constant.clerkUser);
+            UserPassword.EnterClearText(Constant.loginPassword);
+            LoginButton.ClickOn();
+            if (Pages.Home_Page.AppointmentBtn_1.Displayed)
             {
-                //change language by clicking the language drop down list
-                LanguageSelect.SendKeys(Keys.ArrowDown);
-                //  Log.Info("pressed arrow down to select hebrew language");
-                //fill user name, pasdoword and hit LOGIN
-                UserName.EnterClearText(Constant.clerkUser, "UserName");
-                UserPassword.EnterClearText(Constant.clerkPassword, "UserPassword");
-                LoginButton.ClickOn();
-                if (Pages.Home_Page.AppointmentBtn_1.Displayed)
-                {
 
-                }
-                else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
-                {
-                    SideBarArrow.Click();
-                }
-                softAssert.VerifyElementNotPresent(Pages.Home_Page.SettingScreen);
             }
-            catch (Exception)
+            else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
             {
-                
+                SideBarArrow.ClickOn();
             }
+            softAssert.VerifyElementNotPresent(Pages.Home_Page.SettingScreen);
+  
         }
     }
 }

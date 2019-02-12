@@ -1,5 +1,7 @@
-﻿using DoctorWeb.Utility;
+﻿using Data;
+using DoctorWeb.Utility;
 using log4net;
+using MySql.Data.MySqlClient;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
@@ -16,8 +18,6 @@ namespace DoctorWeb.PageObjects
 {
     public class UsersManagement_Page
     {
-
-         
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
 
@@ -160,28 +160,30 @@ namespace DoctorWeb.PageObjects
 
         public void EnterManagementWindow()
         {
-            Pages.Home_Page.SettingScreen.ClickWait(2000);
-            Pages.Home_Page.UserManagementScreen.ClickWait(1500);
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.UserManagementScreen.ClickWait();
         }
 
         public void EnterCreateNewUser() {
-            CreateUser.ClickWait(1500);
+            CreateUser.ClickWait();
         }
 
         //create a create user 
         public void CreateUserApplication()
         {
+            Pages.UsersManagement_Page.EnterManagementWindow();
+            Pages.UsersManagement_Page.EnterCreateNewUser();
 
             softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
-            UserName.EnterClearText(Constant.userName, "name");
+            UserName.EnterClearText(Constant.userName);
             UserContinueBtn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(UserEmailVerification, UserCancelBtn);
-            UserLastname.EnterClearText(Constant.userLastName, "Last Name");
-            UserEmail.EnterClearText(Constant.userEmail, "User Email");
-            UserMobile.EnterClearText(Constant.userPhone, "User Mobile");
-            UserContinueBtn.ClickWait(500);
+            UserLastname.EnterClearText(Constant.userLastName);
+            UserEmail.EnterClearText(Constant.userEmail);
+            UserMobile.EnterClearText(Constant.userPhone);
+            UserContinueBtn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(UserGoBack, UserCancelBtn);
-            UserContinueBtn.ClickWait(500);
+            UserContinueBtn.ClickOn();
             SelectBusinessOnUserCreate.ClickOn();
             //UserContinueBtn.ClickOn();
             //softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.ErrorPopup, UserCancelBtn);
@@ -193,8 +195,28 @@ namespace DoctorWeb.PageObjects
             SelectDepartmentOnUserCreate.ClickOn();
             UserContinueBtn.ClickOn();
             softAssert.VerifySuccessMsg();
-
             //wish to make an assert here on green toastg msg when successfull
+        }
+
+        public void UserPasswordDBSettUP() {
+            var dbCon = DBConnect.Instance();
+            dbCon.DatabaseName = "doctorweb";
+            if (dbCon.IsConnect())
+            {
+                //suppose col0 and col1 are defined as VARCHAR in the DB
+                string query = "SELECT Password " +
+                                 "FROM doctorweb" +
+                                 "Where Email = 'rona@doctorwin.co.il'";
+                var cmd = new MySqlCommand(query, dbCon.Connection);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string someStringFromColumnZero = reader.GetString(0);
+                    string someStringFromColumnOne = reader.GetString(1);
+                    Console.WriteLine(someStringFromColumnZero + "," + someStringFromColumnOne);
+                }
+                dbCon.Close();
+            }
         }
 
         //Application to edit user - change setting and save.
@@ -213,22 +235,22 @@ namespace DoctorWeb.PageObjects
 
             //edit 2nd user on list
                 EditUSer.ClickOn();
-                UserName.EnterClearText(Constant.userName, "name");
-                UserLastname.EnterClearText(Constant.userLastName, "Last Name");
-                UserEmail.EnterClearText(Constant.userEmail, "User Email");
-                UserMobile.EnterClearText(Constant.userPhone, "User Mobile");
+                UserName.EnterClearText(Constant.userName);
+                UserLastname.EnterClearText(Constant.userLastName);
+                UserEmail.EnterClearText(Constant.userEmail);
+                UserMobile.EnterClearText(Constant.userPhone);
 
                 //moves to determine setting
                 EditUserTab2.ClickOn();
-                GroupSelect.Click();
+                GroupSelect.ClickOn();
                 GroupSelect.SendKeys(Keys.ArrowDown);
-                GroupSelect.Click();
+                GroupSelect.ClickOn();
           
                 //moves to user activty screen
                 //select first business >>> first Branch >> marks all departments
                 EditUserTab3.ClickOn();
-                SelectBusinessOnUserCreate.Click();
-                //SelectBranchOnUserCreate.Click();
+                SelectBusinessOnUserCreate.ClickOn();
+                //SelectBranchOnUserCreate.ClickOn();
 
                 //check if save without selecting department
                 UserContinueBtn.ClickOn();
@@ -239,8 +261,8 @@ namespace DoctorWeb.PageObjects
                 }
                 else
                 {
-                    SelectDepartmentOnUserCreate.Click();
-                    UserContinueBtn.Click();
+                    SelectDepartmentOnUserCreate.ClickOn();
+                    UserContinueBtn.ClickOn();
                 }
 
                 int minusCount = 6;
@@ -260,7 +282,7 @@ namespace DoctorWeb.PageObjects
                 }
                 else
                 {
-                    TherapistBranchList.Click();
+                    TherapistBranchList.ClickOn();
                 }
                 //save complete user - check if window closed
                 UserContinueBtn.ClickOn();
@@ -272,9 +294,9 @@ namespace DoctorWeb.PageObjects
                 else {
 
                     //select department
-                    SelectDepartmentOnUserCreate.Click();
+                    SelectDepartmentOnUserCreate.ClickOn();
                     Log.Info("pressed on the first ");
-                    UserContinueBtn.Click();
+                    UserContinueBtn.ClickOn();
                 }
 
              }
@@ -287,66 +309,70 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPracticeWindow()
         {
-            PracticesManagerButton.ClickWait(1500);
+            PracticesManagerButton.ClickWait();
         }
 
         //create practice in usermanagement window
         public void CreatePracticeApplication()
         {
-            CreateNewPractice.Click();
-            PracticeApprove.Click();
+            Pages.Home_Page.EnterUserManagmentScreen();
+            Pages.UsersManagement_Page.EnterPracticeWindow();
+
+            CreateNewPractice.ClickOn();
+            PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
             Thread.Sleep(500);
-            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber(), "practice name");
-            PracticeApprove.Click();
+            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
+            PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeDelete, PracticeWindowClose);
-            PracticeWindowClose.Click();
+            PracticeWindowClose.ClickOn();
         }
 
         //edit practice name
         public void EditPracticeApplication()
         {
-            PracticeEdit.Click();
+            Pages.Home_Page.EnterUserManagmentScreen();
+            Pages.UsersManagement_Page.EnterPracticeWindow();
+
+            PracticeEdit.ClickOn();
             PracticeName.Clear();
-            EditPracticeApprove.Click();
+            EditPracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
             Thread.Sleep(500);
-            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber(), "practice name");
-            EditPracticeApprove.Click();
-            PracticeWindowClose.Click();
+            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
+            EditPracticeApprove.ClickOn();
+            PracticeWindowClose.ClickOn();
         }
 
         public void DeletePracticeApplication()
         {
-            CreateNewPractice.Click();
-            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber(), "practice name");
+            Pages.Home_Page.EnterUserManagmentScreen();
+            Pages.UsersManagement_Page.EnterPracticeWindow();
+
+            CreateNewPractice.ClickOn();
+            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
             PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeDelete, PracticeWindowClose);
             PracticeDelete.ClickOn();
-            DeletePopup.Click();
+            DeletePopup.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeWindowClose, PracticeWindowClose);
-            PracticeWindowClose.Click();
+            PracticeWindowClose.ClickOn();
         }
 
         public void DeleteActivePracticeApplication()
         {
-            try
+            Pages.UsersManagement_Page.CreatePracticeApplication();
+            Pages.UsersManagement_Page.CreateUserApplication();
+
+            PracticesManagerButton.ClickOn();
+            if (PracticeDelete.IsDisplayed("is delete icon displayed"))
             {
-                PracticesManagerButton.Click();
-                if (PracticeDelete.IsDisplayed("is delete icon displayed"))
-                {
-                    Log.Error("delete is displayed after active - fail");
-                }
-                else
-                {
-                    PracticeWindowClose.Click();
-                }
+                Log.Error("delete is displayed after active - fail");
             }
-            catch (Exception)
+            else
             {
-                throw;
+                PracticeWindowClose.ClickOn();
             }
- 
         }
     }
 }

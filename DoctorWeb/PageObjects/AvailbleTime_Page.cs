@@ -1,5 +1,6 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
@@ -46,26 +47,21 @@ namespace DoctorWeb.PageObjects
         public IWebElement VisitReason { get; set; }
 
 
-        public void SearchAvailbleTimeApplication() {
-            Thread.Sleep(500);
+        public void SearchAvailbleTimeApplication()
+        {
             Pages.Home_Page.EnterAvailbleTime();
+            Thread.Sleep(500);
             ExpertiseSelect.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
-            try {
-                VisitReason.SendKeys(Keys.ArrowDown);
-                var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
-                SearchBtn.ClickWait(500);
-                FirstFreeTime.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(AvailbleTimeGoBackBtn, CloseWindow);
-                FirstFreeTimeSetMeeting.ClickWait(500);
-                softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
-                softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
-            } catch(ElementNotInteractableException)
-            {
-                Pages.Home_Page.PopupButtonOk.ClickOn();
-                CloseWindow.ClickOn();
-            }
-            
+            VisitReason.SendKeys(Keys.ArrowDown);
+            var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
+            SearchBtn.ClickOn();
+            FirstFreeTime.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(AvailbleTimeGoBackBtn, CloseWindow);
+            FirstFreeTimeSetMeeting.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+            softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
+            Pages.Meeting_Page.CancelMeeting.ClickOn();
         }
     }
 }

@@ -61,7 +61,7 @@ namespace DoctorWeb.PageObjects
             CreateNewSlot.ClickOn();
             CreateNewBlock.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(SaveAndClose, CancelOpenBlock);
-            SaveAndClose.Click();
+            SaveAndClose.ClickOn();
             softAssert.VerifyErrorMsg();
             CancelOpenBlock.ClickOn();
             CloseWindow.ClickOn();

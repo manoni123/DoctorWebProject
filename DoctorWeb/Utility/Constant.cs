@@ -7,21 +7,17 @@ namespace DoctorWeb.Utility
         public static string drWebUrl = "http://drweb-sys.com/Account/Login";
         public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
 
-
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
-        public static string user1 = "rona@doctorwin.co.il";
+        public static string groupUser = "reut@doctorwin.co.il";
         public static string adminUser = "test@doctorwin.co.il";
         public static string loginPassword = "zxcv1234";
 
         public static string therapistUser = "therapist@doctorwin.co.il";
-        public static string therapistPassword = "zxcv1234";
 
         public static string clerkUser = "clerk@doctorwin.co.il";
-        public static string clerkPassword = "zxcv1234";
 
         public static string unauthorizedUserName = "test02@test02.co.il";
-        public static string unauthorizedPassword = "zxcv1234";
 
         public static string patientName = "selenium" + RandomNumber.smallNumber();
         public static string patientLastname = "test";
@@ -82,6 +78,8 @@ namespace DoctorWeb.Utility
         public static string stackTraceNotNull = "Test Failed for Startment was null";
         public static string stackTraceNull = "Test Failed for Startment was Not null";
 
+        public static string WarningMsg = "Test failed due to step invalid";
+
         public static string uploadDocument = "importtest01.csv";
 
         public static string ICDData = "A01";
@@ -89,6 +87,22 @@ namespace DoctorWeb.Utility
         public static string CancelReason = "Reason" + RandomNumber.smallNumber();
 
         public static string closeTabBeforeSave = "לא שמרת את נתוני המטופל החדש והנך עומד לסגור את טאב המטופל, האם לסגור את הטאב?";
+
+        public static string CloseTable = "CloseTable";
+        public static string OpenTable = "OpenTable";
+        public static string Save = "Save";
+        public static string Edit = "Edit";
+        public static string PopupSave = "PopupSave";
+        public static string PopupCancel = "PopupCancel";
+        public static string Delete = "Delete";
+        public static string Approve = "Approve";
+        public static string Create = "CreateNew";
+        public static string Checkbox = "Mark Checkbox";
+        public static string Dropdown = "Select Dropdown";
+        public static string Click = "Button";
+        public static string CloseWindow = "CloseWindow";
+        public static string Select = "Selected From List";
+
 
     }
 }

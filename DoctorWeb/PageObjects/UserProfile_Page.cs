@@ -52,7 +52,7 @@ namespace DoctorWeb.PageObjects
             //check if profile button pressed
             try
             {
-                Pages.Home_Page.ProfileButton.Click();
+                Pages.Home_Page.ProfileButton.ClickOn();
                 Thread.Sleep(500);
                 log.Info("opened profile window");
             }
@@ -69,7 +69,7 @@ namespace DoctorWeb.PageObjects
             UserLastName.SendKeys(Constant.UserLastnameEdit);
             log.Info("Cleared and changed user last name");
             Thread.Sleep(500);
-            EditUserButton.Click();
+            EditUserButton.ClickOn();
             log.Info("pressed on Edit user button");
         }
     }

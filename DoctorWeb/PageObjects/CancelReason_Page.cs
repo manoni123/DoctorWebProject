@@ -58,8 +58,8 @@ namespace DoctorWeb.PageObjects
 
         public void EnterCancelReason() {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait(1500);
-            Pages.Home_Page.GeneralScreen.ClickWait(2000);
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.GeneralScreen.ClickWait();
             CancelReasonPage.ClickOn();
         }
 
@@ -78,7 +78,7 @@ namespace DoctorWeb.PageObjects
             SaveCancelReason.ClickOn();
             softAssert.VerifyErrorMsg();
             EditCancelReason.ClickOn();
-            CancelReasonName.EnterClearText("Tester", "Test");
+            CancelReasonName.EnterClearText("Tester");
         }
 
         public void DeleteCancelReasonApplicaiton() {

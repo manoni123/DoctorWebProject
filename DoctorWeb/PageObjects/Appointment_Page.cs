@@ -27,8 +27,8 @@ namespace DoctorWeb.PageObjects
         public void EnterCancelReason()
         {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait(1500);
-            Pages.Home_Page.GeneralScreen.ClickWait(2000);
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.GeneralScreen.ClickWait();
             AppointmentReminderPage.ClickOn();
         }
 

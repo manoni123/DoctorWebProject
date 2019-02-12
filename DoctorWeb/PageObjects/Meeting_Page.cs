@@ -1,9 +1,11 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
+using System;
 using System.Threading;
 
 namespace DoctorWeb.PageObjects
@@ -59,9 +61,12 @@ namespace DoctorWeb.PageObjects
         public IWebElement MeetingDuration { get; set; }
 
         public void CreateMeetingApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Pages.Home_Page.EnterAvailbleTime();
+            Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
+
             Thread.Sleep(500);
-            ApproveMeeting.ClickOn();
- //           softAssert.VerifyErrorMsg();
             SearchPatient.Clear();
             SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
             Thread.Sleep(1500);
@@ -72,8 +77,25 @@ namespace DoctorWeb.PageObjects
             SearchPatient.SendKeys(Keys.Tab);
             Thread.Sleep(500);
             VisitReason.ClickOn();
-            SelectFirstPriceList.ClickWait(500);
-            ApproveMeeting.ClickWait(500);
+            SelectFirstPriceList.ClickOn();
+            ApproveMeeting.ClickOn();
+        }
+
+        public void CreateMeetingKnownPatient()
+        {
+            Thread.Sleep(500);
+            SearchPatient.Clear();
+            SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(1500);
+            SearchPatient.SendKeys(Keys.ArrowDown);
+            Thread.Sleep(1000);
+            SearchPatient.SendKeys(Keys.Enter);
+            Thread.Sleep(500);
+            SearchPatient.SendKeys(Keys.Tab);
+            Thread.Sleep(500);
+            VisitReason.ClickOn();
+            SelectFirstPriceList.ClickOn();
+            ApproveMeeting.ClickOn();
         }
     }
 }

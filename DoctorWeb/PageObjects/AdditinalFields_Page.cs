@@ -1,15 +1,7 @@
 ﻿using log4net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium.Support.UI;
-using System.Threading;
 using DoctorWeb.Utility;
-using OpenQA.Selenium.Interactions;
 using NUnit.Framework;
 
 namespace DoctorWeb.PageObjects
@@ -19,6 +11,7 @@ namespace DoctorWeb.PageObjects
         
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
 
         [FindsBy(How = How.CssSelector, Using = "#generalTabstrip > ul > li:nth-child(2)")]
@@ -56,20 +49,24 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement DeleteIcon { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"moreFieldsManagmentGrid2\"]/div[2]/table/tbody/tr[11]/td[3]/a[2]/span")]
+        [CacheLookup]
+        public IWebElement CapacityText { get; set; }
+
         //create new additional Field application
 
         public void EnterAdditionalFieldsScreen() {
             //call home page to enter general setting
-            Pages.Home_Page.SettingScreen.ClickWait(2000);
-            Pages.Home_Page.GeneralScreen.ClickWait(2500);
-            AdditionalFieldsScreen.ClickWait(1500);
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.GeneralScreen.ClickWait();
+            AdditionalFieldsScreen.ClickWait();
         }
 
         public void DevEnterAdditionalFieldsScreen()
         {
-            Pages.Home_Page.SettingScreen.ClickWait(2000);
-            Pages.Home_Page.GeneralScreen.ClickWait(2500);
-            AdditionalFieldsScreen.ClickWait(1500);
+            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.DevGeneralScreen.ClickWait();
+            AdditionalFieldsScreen.ClickWait();
         }
 
         public void OpenFieldsManager() {
@@ -78,14 +75,19 @@ namespace DoctorWeb.PageObjects
 
         public void AdditionalFieldApplication()
         {
+            Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
+            Pages.AdditinalFields_Page.OpenFieldsManager();
+
             softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
-            CreateNewField.Click();
+            var countBefore = utility.TableCount("//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody");
+            CreateNewField.ClickOn();
             FieldSave.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(FieldName, CloseFieldWindow);
-            FieldName.EnterClearText(Constant.fieldName, "Field Name");
+            softAssert.VerifyErrorMsg();
+            FieldName.EnterClearText("Field"  + RandomNumber.smallNumber());
             FieldSave.ClickOn();
-           // softAssert.VerifyElementNotPresent(FieldSave);
-            CloseFieldWindow.Click();            
+            var countAfter = utility.TableCount("//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody");
+            softAssert.VerifyElementHasEqual(countBefore, countAfter);
+            CloseFieldWindow.ClickOn();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement PatientIDType { get; set; }
 
-        [FindsBy(How = How.Id, Using = "//*[@id=\"tab2_frmCustomerDetails_0\"]/div[2]/div/div/div[1]/div[1]/div/div[1]/div[3]/ul/li/div/label")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='details_scrollable_area']/div/div[1]/div[1]/div/div[1]/div[3]/ul/li/div/label")]
         [CacheLookup]
         public IWebElement PatientConfidential { get; set; }
 
@@ -66,7 +66,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectPatient { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[3]/span")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab2_menuCustomerExpended']/li[2]")]
         [CacheLookup]
         public IWebElement PatientDocument { get; set; }
 
@@ -74,9 +74,13 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement PatientVisits { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[3]/span")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[5]/span")]
         [CacheLookup]
         public IWebElement PatientMessages { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
+        [CacheLookup]
+        public IWebElement PatientTreatments { get; set; }
 
         [FindsBy(How = How.Id, Using = "tab2.FirstName_validationMessage")]
         [CacheLookup]
@@ -103,6 +107,18 @@ namespace DoctorWeb.PageObjects
             Pages.Home_Page.OpenEntityDropdown.ClickOn();
             Pages.Home_Page.CreateNewPatient.ClickOn();
             PatientExecute();
+            PatientConfirmCreate();
+        }
+
+        public void NewConfidentialPatientApplication()
+        {
+            Pages.Home_Page.OpenEntityDropdown.ClickOn();
+            Pages.Home_Page.CreateNewPatient.ClickOn();
+            PatientConfidentialExecute();
+            PatientConfirmCreate();
+            var isCheck = Browser.Driver.FindElement(By.XPath("//*[@id='tab3_Confidential']")).GetAttribute("checked");
+            Assert.IsTrue(isCheck == "true");
+
         }
 
         //fill patient form with MUST-only credentials
@@ -111,20 +127,26 @@ namespace DoctorWeb.PageObjects
             PatientName.SendKeys("1");
             SaveButton.ClickOn();
             softAssert.VerifyElementIsPresent(PatientValidation);
-            PatientName.EnterClearText(PatientUseName, "patient name");
-            PatientLastame.SendKeys(Constant.patientLastname);
+            PatientName.EnterClearText(PatientUseName);
+            PatientLastame.EnterClearText(Constant.patientLastname);
             PatientId.SendKeys(RandomNumber.smallNumber());
             PatientIDType.ClickOn();
             PatientIDType.SendKeys(Keys.ArrowDown);
-            SaveButton.ClickWait(500);
+        }
+
+        public void PatientConfidentialExecute() {
+            PatientExecute();
+            PatientConfidential.ClickOn();
+        }
+
+        public void PatientConfirmCreate() {
+            SaveButton.ClickOn();
             softAssert.VerifyElementIsPresent(PatientEditButton);
         }
 
-        public void CloseCloseTab() {
+        public void PatientCloseTab() {
             ClosePatientTab.ClickOn();
         }
-
-
 
         public void NewBlockedPatientApplication()
         {
@@ -147,7 +169,7 @@ namespace DoctorWeb.PageObjects
             {
                 Thread.Sleep(500);
                 Log.Info("select business window has opened");
-                Browser.Driver.FindElement(By.XPath("//*[@id=\"windowPopup0\"]/div/div[2]/ul/li[1]")).Click();
+                Browser.Driver.FindElement(By.XPath("//*[@id=\"windowPopup0\"]/div/div[2]/ul/li[1]")).ClickOn();
                 BlockedPatientCreate();
             }
             else
@@ -161,35 +183,27 @@ namespace DoctorWeb.PageObjects
         }
 
         public void BlockedPatientCreate() {
-            try
-            {
-                PatientName.EnterClearText(PatientUseName, "PatientName");
-                PatientLastame.EnterClearText(Constant.patientLastname, "PatientLastName");
-                PatientConfidential.ClickOn();
-                SaveButton.ClickOn();
-
-            }
-            catch (Exception)
-            {
-                Log.Debug("paitent Create Failed");
-            }
+            PatientName.EnterClearText(PatientUseName);
+            PatientLastame.EnterClearText(Constant.patientLastname);
+            PatientConfidential.ClickOn();
+            SaveButton.ClickOn();
         }
 
         public void EnterPatientDocument()
         {
-            PatientDocument.ClickWait(1500);
-            softAssert.VerifyElementIsPresent(Pages.Document_Page.OpenUpload);
+            PatientDocument.ClickWait();
+            softAssert.VerifyElementIsPresent(Pages.Document_Page.UplaodFileBtn);
         }
 
         public void EnterPatientVisits()
         {
-            PatientVisits.ClickWait(1500);
+            PatientVisits.ClickWait();
             softAssert.VerifyElementIsPresent(Pages.Visits_Page.TherapistDropdown);
         }
 
         public void EnterPatientMessages()
         {
-            PatientMessages.ClickWait(1500);
+            PatientMessages.ClickWait();
             softAssert.VerifyElementIsPresent(Pages.Messages_Page.PatientValidation);
         }
     }

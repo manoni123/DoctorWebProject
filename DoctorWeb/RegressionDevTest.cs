@@ -1,23 +1,23 @@
 ﻿using DoctorWeb.Utility;
+using log4net;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorWeb
 {
     public class RegressionDevTest : BaseFixture
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         readonly AssertionExtent softAssert = new AssertionExtent();
+        public UtilityFunction utility = new UtilityFunction();
         public bool isActive;
         
         //Each Test Category has a fixture of its own that contains a setup and tear down beforre and after each test
         //OneTimeSetUp and OnTimeTearDown reffers to BaseFixture and effects all the tests
         [SetUp]
         public void LoginBeforeEachTest()
-        {
+        {  
+            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + TestContext.CurrentContext.Test.MethodName + " #####" + Environment.NewLine);
             Pages.Login_Page.LoginApplication();
         }
 
@@ -31,173 +31,204 @@ namespace DoctorWeb
         [Test, Category("Patient")]
         public void PatientCreateTest()
         {
-            //call patient page
-            Pages.Patient_Page.NewPatientApplication();
+            UITest(() =>
+            {
+                Pages.Patient_Page.NewPatientApplication();
+            }, Pages.Patient_Page.ClosePatientTab);
         }
 
         [Test, Category("Patient")]
-        public void PatientDocumentTest()
+        public void PatientConfidentialCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.Document_Page.PatientUploadApplication();
+            UITest(() =>
+            {
+                Pages.Patient_Page.NewConfidentialPatientApplication();
+            }, Pages.Patient_Page.ClosePatientTab);
+        }
+
+        [Test, Category("Patient")]
+        public void PatientDocumentUploadTest()
+        {
+            UITest(() =>
+            {
+                Pages.Document_Page.UploadFileApplication();
+            }, Pages.Patient_Page.ClosePatientTab);
         }
 
         [Test, Category("Patient")]
         public void PatientVisitsTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.Visits_Page.PatientVisitsApplication();
+            UITest(() =>
+            {
+                Pages.Visits_Page.PatientVisitsApplication();
+            }, Pages.Patient_Page.ClosePatientTab);
         }
 
         [Test, Category("Patient")]
         public void PatientMessageTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.Document_Page.PatientUploadApplication();
+            UITest(() =>
+            {
+                Pages.Patient_Page.NewPatientApplication();
+                Pages.Document_Page.UploadFileApplication();
+            }, Pages.Patient_Page.ClosePatientTab);
         }
 
         [Test, Category("Patient")]
-        public void PatientCreateNewMultiple()
+        public void PatientCreateNewMultipleTest()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickWait(1500);
-            softAssert.VerifyElementIsPresent(Pages.Patient_Page.PatientName);
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.PopupButtonOk, Pages.Home_Page.PopupClose);
-            Pages.Home_Page.PopupButtonOk.ClickOn();
+            UITest(() =>
+            {
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickWait();
+                softAssert.VerifyElementIsPresent(Pages.Patient_Page.PatientName);
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickOn();
+                softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.PopupButtonOk, Pages.Home_Page.PopupClose);
+                Pages.Home_Page.PopupButtonOk.ClickOn();
+            }, Pages.Patient_Page.ClosePatientTab);
         }
 
         [Test, Category("Patient")]
-        public void PatientCloseTabBeforeSave()
+        public void PatientCloseTabBeforeSaveTest()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickWait(2000);
-            softAssert.VerifyElementIsPresent(Pages.Patient_Page.PatientName);
-            Pages.Patient_Page.PatientName.SendKeys(Constant.patientName);
-            Pages.Home_Page.CloseTab.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.PopupButtonOk, Pages.Home_Page.PopupButtonCancel);
-            Pages.Home_Page.PopupButtonOk.ClickOn();
+            UITest(() =>
+            {
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickWait();
+                softAssert.VerifyElementIsPresent(Pages.Patient_Page.PatientName);
+                Pages.Patient_Page.PatientName.SendKeys(Constant.patientName);
+                Pages.Home_Page.CloseTab.ClickOn();
+                softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.PopupButtonOk, Pages.Home_Page.PopupButtonCancel);
+                Pages.Home_Page.PopupButtonOk.ClickOn();
+            }, Pages.Patient_Page.ClosePatientTab);
+        }
+
+        [Test, Category("Treatments")]
+        public void TreatmentCreateSingleTest()
+        {
+            UITest(() =>
+            {
+                Pages.Treatment_Page.CreateNewSingleTreatmentApplication();
+            }, Pages.Home_Page.PopupClose);
+        }
+
+        [Test, Category("Users")]
+        public void AuthorizationSecretaryTest()
+        {
+            UITest(() =>
+            {
+                Pages.Authorization_Page.SecretaryPermissionApplication();
+            });
         }
         //+++++++++++++Medical Tab Tests++++++++++++++++++//
 
         [Test, Category("Medical")]
         public void AnamnezaCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
+            utility.TestWrap(Pages.PatientMedical_Page.CreateNewAnamnezaApplication, Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
         [Ignore("ff")]
         [Test, Category("Medical")]
         public void AnamnezaSaveWhenCreate()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.CreateNewAnamnezaWhenSaveApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.CreateNewAnamnezaWhenSaveApplication();
+            },  Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
         [Test, Category("Medical")]
         public void AnamnezaEditTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.EditNewAnamnezaApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.EditNewAnamnezaApplication();
+            }, Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
         [Test, Category("Medical")]
         public void AnamnezaDeleteTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.DeleteNewAnamanezaApplication();
+            UITest(() =>
+            {
+               Pages.PatientMedical_Page.DeleteNewAnamanezaApplication();
+            }, Pages.PatientMedical_Page.CloseAnamnezaTable);
+
         }
 
         [Test, Category("Medical")]
         public void IcdAddTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
-            Pages.PatientMedical_Page.AddICDApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.AddICDApplication();
+            }, Pages.PatientMedical_Page.ICDCancel);
         }
 
         [Test, Category("Medical")]
         public void NoteCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterNoteTable();
-            Pages.PatientMedical_Page.CreateNewNoteApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.CreateNewNoteApplication();
+            }, Pages.PatientMedical_Page.CloseNotesTable);
         }
 
         [Test, Category("Medical")]
         public void NoteEditTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterNoteTable();
-            Pages.PatientMedical_Page.CreateNewNoteApplication();
-            Pages.PatientMedical_Page.EnterNoteTable();
-            Pages.PatientMedical_Page.EditNoteApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.EditNoteApplication();
+            }, Pages.PatientMedical_Page.CloseNotesTable);
         }
 
         [Test, Category("Medical")]
         public void NoteDeleteTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterNoteTable();
-            Pages.PatientMedical_Page.CreateNewNoteApplication();
-            Pages.PatientMedical_Page.EnterNoteTable();
-            Pages.PatientMedical_Page.DeleteNoteApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.DeleteNoteApplication();
+            }, Pages.PatientMedical_Page.CloseNotesTable);
         }
         //medicine
         [Test, Category("Medical")]
         public void MedicineCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterMedicineTable();
-            Pages.PatientMedical_Page.CreateNewMedicineApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.CreateNewMedicineApplication();
+            }, Pages.PatientMedical_Page.CancelMedicineTable);
         }
 
         [Test, Category("Medical")]
         public void MedicineEditTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterMedicineTable();
-            Pages.PatientMedical_Page.CreateNewMedicineApplication();
-            Pages.PatientMedical_Page.EnterMedicineTable();
-            Pages.PatientMedical_Page.EditMedicineApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.EditMedicineApplication();
+            }, Pages.PatientMedical_Page.CancelMedicineTable);
         }
 
         [Test, Category("Medical")]
         public void MedicineDeleteTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterMedicineTable();
-            Pages.PatientMedical_Page.DeleteMedicineApplication();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.DeleteMedicineApplication();
+            }, Pages.PatientMedical_Page.CancelMedicineTable);
         }
 
 
         [Test, Category("Medical")]
         public void MedicalWarningTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterMedicineTable();
-            Pages.PatientMedical_Page.CreateNewMedicineApplication();
-            Pages.PatientMedical_Page.ValidateWarningIndicator();
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.CreateNewMedicineApplication();
+            }, Pages.PatientMedical_Page.CancelMedicineTable);
 
         }
         //+++++++++++++Suppliers and Contacts Tests++++++++++++++++++//
@@ -205,269 +236,325 @@ namespace DoctorWeb
         [Test, Category("Entity")]
         public void SupplierCreateTest()
         {
-            //create new supplier
-            Pages.Supplier_Page.NewSupplierCreateApplication();
+            UITest(() =>
+            {
+                Pages.Supplier_Page.NewSupplierCreateApplication();
+            });
         }
 
         [Test, Category("Entity")]
         public void SupplierContactCreateTest()
         {
-            //create new supplier
-            Pages.Supplier_Page.NewSupplierCreateApplication();
-            //create supplier contact
-            Pages.Supplier_Page.NewSupplierContactApplication();
+            UITest(() =>
+            {   
+                Pages.Supplier_Page.NewSupplierContactApplication();
+            });
         }
 
         [Test, Category("Entity")]
         public void ContactCreateTest()
         {
-            Pages.Contact_Page.NewContactApplication();
+            UITest(() =>
+            {
+                Pages.Contact_Page.NewContactApplication();
+            });
         }
 
         //+++++++++++++Settings Tests++++++++++++++++++//
         [Test, Category("Settings")]
         public void FilterMainPageTest()
         {
-            Pages.Home_Page.FilterImageApplication();
+            UITest(() =>
+            {
+                Pages.Home_Page.FilterImageApplication();
+            });
         }
 
 
         [Test, Category("Settings")]
         public void ExpertiseCreateTest()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
-            Pages.UsersManagement_Page.CreatePracticeApplication();
+            UITest(() =>
+            {
+                Pages.UsersManagement_Page.CreatePracticeApplication();
+            }, Pages.UsersManagement_Page.PracticeWindowClose);
         }
 
         [Test, Category("Settings")]
         public void ExpertiseEditTest()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
-            Pages.UsersManagement_Page.EditPracticeApplication();
+            UITest(() =>
+            {
+                Pages.UsersManagement_Page.EditPracticeApplication();
+            }, Pages.UsersManagement_Page.PracticeWindowClose);
         }
 
         [Test, Category("Settings")]
         public void ExpertiseDeleteTest()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
-            Pages.UsersManagement_Page.DeletePracticeApplication();
+            UITest(() =>
+            {
+                Pages.UsersManagement_Page.DeletePracticeApplication();
+            }, Pages.UsersManagement_Page.PracticeWindowClose);
         }
 
         [Ignore("skip Test")]
         [Test, Category("Settings")]
         public void ExpertiseDeleteActiveTest()
         {
-            Pages.UsersManagement_Page.CreatePracticeApplication();
-            //create practice now create user and use the new practice
-            Pages.UsersManagement_Page.CreateUserApplication();
-            //check if activated practice cant be deleted
-            Pages.UsersManagement_Page.DeleteActivePracticeApplication();
+            UITest(() =>
+            {
+                Pages.UsersManagement_Page.DeleteActivePracticeApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void DepartmentCreateTest()
         {
-            Pages.Business_Page.CheckDepartmentIsNull();
-            Pages.Business_Page.EnterDepaertmentWindow();
-            Pages.Business_Page.CreateDepartmentApplication();
-            Pages.Business_Page.DepartmentCloseButton.Click();
+            UITest(() =>
+            {
+                Pages.Business_Page.CreateDepartmentApplication();
+            }, Pages.Business_Page.DepartmentCloseButton);
         }
 
         [Test, Category("Settings")]
         public void DepartmentDeleteTest()
         {
-            Pages.Business_Page.CheckDepartmentIsNull();
-            Pages.Business_Page.EnterDepaertmentWindow();
-            Pages.Business_Page.CreateDepartmentApplication();
-            Pages.Business_Page.DeleteDepartmentApplication();
+            UITest(() =>
+            {
+                Pages.Business_Page.DeleteDepartmentApplication();
+            }, Pages.Business_Page.DepartmentCloseButton);
         }
 
         [Ignore("ff")]
         [Test, Category("Settings")]
         public void DepartmentActiveDeleteTest()
         {
-            Pages.Business_Page.DeleteActiveDepartmentApplication();
+            UITest(() =>
+            {
+                Pages.Business_Page.DeleteActiveDepartmentApplication();
+            }, Pages.Business_Page.DepartmentCloseButton);
 
         }
 
         [Test, Category("Settings")]
         public void DepartmentEditTest()
         {
-            Pages.Business_Page.CheckDepartmentIsNull();
-            Pages.Business_Page.EnterDepaertmentWindow();
-            Pages.Business_Page.EditDepartmentApplicaiton();
+            UITest(() =>
+            {
+                Pages.Business_Page.CheckDepartmentIsNull();
+                Pages.Business_Page.EnterDepaertmentWindow();
+                Pages.Business_Page.EditDepartmentApplicaiton();
+            }, Pages.Business_Page.DepartmentCloseButton);
 
         }
 
         [Test, Category("Settings")]
         public void CategoryCreateTest()
         {
-            Pages.PriceList_Page.DevEnterCategoryWindow();
-            Pages.PriceList_Page.CreateCategoryApplication();
+            UITest(() =>
+            {
+                Pages.PriceList_Page.CreateCategoryApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void CategoryDeleteTest()
         {
-            Pages.PriceList_Page.DevEnterCategoryWindow();
-            Pages.PriceList_Page.CreateCategoryApplication();
-            Pages.PriceList_Page.DeleteCategoryApplication();
+            UITest(() =>
+            {
+                Pages.PriceList_Page.DeleteCategoryApplication();
+            });
         }
 
         [Ignore("skip Test")]
         [Test, Category("Settings")]
         public void CategoryActiveDeleteTest()
         {
-            Pages.PriceList_Page.CreateCategoryApplication();
-            Pages.PriceList_Page.DeleteActiveCategoryApplication();
+            UITest(() =>
+            {
+                Pages.PriceList_Page.DeleteActiveCategoryApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void CategoryEditTest()
         {
-            Pages.PriceList_Page.DevEnterCategoryWindow();
-            Pages.PriceList_Page.CreateCategoryApplication();
-            Pages.PriceList_Page.EditCategoryApplication();
+            UITest(() =>
+            {
+                Pages.PriceList_Page.EditCategoryApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void BusinessCreateTest()
         {
-            Pages.Business_Page.EnterSettingScreen();
-            if (!Pages.Home_Page.AdminTab.Enabled)
+            UITest(() =>
             {
-                Assert.Pass();
-            }
-            else
-            {
-                Pages.Business_Page.CreateBusinessApplication();
-            }
+                Pages.Business_Page.EnterSettingScreen();
+                if (!Pages.Home_Page.AdminTab.Enabled)
+                {
+                    Assert.Pass();
+                }
+                else
+                {
+                    Pages.Business_Page.CreateBusinessApplication();
+                }
+            }, Pages.Business_Page.BusinessClose);
         }
 
         [Test, Category("Settings")]
         public void BranchCreateTest()
         {
-            //call business page to preform create branch
-            Pages.Business_Page.EnterSettingScreen();
-            Pages.Business_Page.CreateBranchApplication();
+            UITest(() =>
+            {   
+                Pages.Business_Page.CreateBranchApplication();
+            }, Pages.Business_Page.BranchCancelButton);
         }
 
         [Test, Category("Settings")]
         public void GroupCreateTest()
         {
-            Pages.Authorization_Page.EnterAuthorizationScreen();
-            Pages.Authorization_Page.CreateGroupApplication();
+            UITest(() =>
+            {
+                Pages.Authorization_Page.CreateGroupApplication();
+            }, Pages.Authorization_Page.GroupCancel);
         }
 
         [Test, Category("Settings")]
         public void GroupEditTest()
         {
-            Pages.Authorization_Page.EnterAuthorizationScreen();
-            Pages.Authorization_Page.CreateGroupApplication();
-            Pages.Authorization_Page.EditGroupApplication();
+            UITest(() =>
+            {
+                Pages.Authorization_Page.EditGroupApplication();
+            }, Pages.Authorization_Page.GroupCancel);
         }
 
         [Test, Category("Settings")]
         public void GroupDeleteTest()
         {
-            Pages.Authorization_Page.EnterAuthorizationScreen();
-            Pages.Authorization_Page.CreateGroupApplication();
-            Pages.Authorization_Page.DeleteGroupApplication();
+            UITest(() =>
+            {
+                Pages.Authorization_Page.DeleteGroupApplication();
+            }, Pages.Authorization_Page.GroupCancel);
         }
 
-        [Ignore("skip Test")]
         [Test, Category("Settings")]
         public void GroupImportTest()
         {
-            //create new and try to delete last created group
-            Pages.Authorization_Page.ImportUsersToGroupApplication();
+            UITest(() =>
+            {
+                Pages.Authorization_Page.ImportUsersToSecretaryGroupApplication();
+            });
         }
         //users
         [Test, Category("Settings")]
         public void UserCreateTest()
         {
-            Pages.UsersManagement_Page.EnterManagementWindow();
-            Pages.UsersManagement_Page.EnterCreateNewUser();
-            Pages.UsersManagement_Page.CreateUserApplication();
+            UITest(() =>
+            {
+                Pages.UsersManagement_Page.CreateUserApplication();
+            }, Pages.UsersManagement_Page.PracticeWindowClose);
         }
 
         [Test, Category("Settings")]
         public void PriceListTypeCreateTest()
         {
-            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
-            Pages.PriceListType_Page.PriceListTypeCreateApplication();
+            UITest(() =>
+            {
+                Pages.PriceListType_Page.PriceListTypeCreateApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void PriceListTypeDeleteTest()
         {
-            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
-            Pages.PriceListType_Page.PriceListTypeCreateApplication();
-            Pages.PriceListType_Page.PriceListTypeDeleteApplication();
+            UITest(() =>
+            {
+                Pages.PriceListType_Page.PriceListTypeDeleteApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void PriceListTypeEditTest()
         {
-            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
-            Pages.PriceListType_Page.PriceListTypeCreateApplication();
-            Pages.PriceListType_Page.PriceListTypeEditApplication();
+            UITest(() =>
+            {
+                Pages.PriceListType_Page.PriceListTypeEditApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void PriceListTaxCreateTest()
         {
-            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
-            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
+            UITest(() =>
+            {
+                Pages.PriceListTax_Page.PriceListTaxCreateApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void PriceListTaxDeleteTest()
         {
-            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
-            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
-            Pages.PriceListTax_Page.PriceListTaxDeleteApplication();
+            UITest(() =>
+            {
+                Pages.PriceListTax_Page.PriceListTaxDeleteApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void PriceListTaxEditTest()
         {
-            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
-            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
-            Pages.PriceListTax_Page.PriceListTaxEditApplication();
+            UITest(() =>
+            {
+                Pages.PriceListTax_Page.PriceListTaxEditApplication();
+            });
         }
 
         [Test, Category("Settings")]
         public void PriceListCreateTest()
         {
-            Pages.Home_Page.EntePriceListTab();
-            Pages.PriceList_Page.DevCreatePriceListDevApplication();
+            UITest(() =>
+            {
+                Pages.PriceList_Page.DevCreatePriceListDevApplication();
+            }, Pages.PriceList_Page.PriceListCancelDev);
         }
 
         [Test, Category("Settings")]
         public void PriceListCreatePackageTest()
         {
-            Pages.Home_Page.EntePriceListTab();
-            Pages.PriceList_Page.DevCreatePriceListPackageApplicaiton();
+            UITest(() =>
+            {
+                Pages.PriceList_Page.DevCreatePriceListPackageApplicaiton();
+            }, Pages.PriceList_Page.PriceListCancelDev);
+        }
+
+        [Test, Category("Settings")]
+        public void PriceListUpdateTest()
+        {
+            UITest(() =>
+            {
+                Pages.PriceListUpdate_Page.UpdateBasePriceListApplication();
+            });
         }
 
         //additional fields
         [Test, Category("Settings")]
         public void AdditionalFieldCreateTest()
         {
-            //call the create additional field application
-            Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
-            Pages.AdditinalFields_Page.OpenFieldsManager();
-            Pages.AdditinalFields_Page.AdditionalFieldApplication();
+            UITest(() => 
+            {
+                Pages.AdditinalFields_Page.AdditionalFieldApplication();
+            }, Pages.AdditinalFields_Page.CloseFieldWindow);
         }
 
         [Test, Category("Settings")]
         public void RightBarPannelTest()
         {
-            Pages.Home_Page.RightBarApplication();
+            UITest(() =>
+            {
+                Pages.Home_Page.RightBarApplication();
+            });
         }
 
         //+++++++++++++ Tests++++++++++++++++++//
@@ -475,37 +562,49 @@ namespace DoctorWeb
         [Test, Category("Reports")]
         public void ReportPatientTest()
         {
-            Pages.Reports_Page.EnterReportScreen();
-            Pages.Reports_Page.PatientReportApplication();
+            UITest(() =>
+            {
+                Pages.Reports_Page.PatientReportApplication();
+            }, Pages.Reports_Page.PopupButton);
         }
 
         [Test, Category("Reports")]
         public void ReportContactTest()
         {
-            Pages.Reports_Page.EnterReportScreen();
-            Pages.Reports_Page.ContactReportApplication();
+            UITest(() =>
+            {
+                Pages.Reports_Page.ContactReportApplication();
+
+            }, Pages.Reports_Page.PopupButton);
         }
 
         [Test, Category("Reports")]
         public void ReportMeetingTest()
         {
-            Pages.Reports_Page.EnterReportScreen();
-            Pages.Reports_Page.MeetingReportApplication();
+            UITest(() =>
+            {
+                Pages.Reports_Page.MeetingReportApplication();
+            }, Pages.Reports_Page.PopupButton);
         }
 
         [Test, Category("Reports")]
         public void ReportNotificationTest()
         {
-            Pages.Reports_Page.EnterReportScreen();
-            Pages.Reports_Page.NotificationReportApplication();
+            UITest(() =>
+            {
+                Pages.Reports_Page.NotificationReportApplication();
+            }, Pages.Reports_Page.PopupButton);
         }
 
         [Ignore("Not ready")]
         [Test, Category("Reports")]
         public void ReportAuditTest()
         {
-            Pages.Reports_Page.EnterReportScreen();
-            Pages.Reports_Page.AuditReportApplication();
+            UITest(() =>
+            {
+                Pages.Reports_Page.EnterReportScreen();
+                Pages.Reports_Page.AuditReportApplication();
+            }, Pages.Reports_Page.PopupButton);
         }
 
         //+++++++++++++Scheduler Tests++++++++++++++++++//
@@ -513,132 +612,193 @@ namespace DoctorWeb
         [Test, Category("Scheduler")]
         public void LockTest()
         {
-            Pages.Home_Page.LockApplication();
+            UITest(() =>
+            {
+                Pages.Home_Page.LockApplication();
+            });
+        }
+
+        [Test, Category("Scheduler")]
+        public void DragAndDropToWaitList()
+        {
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.DragAndDropTemporaryList();
+            });
+        }
+
+        [Test, Category("Scheduler")]
+        public void DragAndDropToStandbyTest()
+        {
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.DragAndDropStandbyList();
+
+            }, Pages.Scheduler_Page.CancelledMeetingWindow);
+         }
+
+        [Test, Category("Scheduler")]
+        public void StandbyMeetingSetTest()
+        {
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.StandbySetMeetingApplication();
+
+            }, Pages.Standby_Page.CancelStandby);
         }
 
         [Test, Category("Scheduler")]
         public void ReportDailyTest()
         {
-            Pages.Scheduler_Page.EnterDailyReportScreen();
-            Pages.Scheduler_Page.SchedulerEventPrintCancel.ClickOn();
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.EnterDailyReportScreen();
+                Pages.Scheduler_Page.SchedulerEventPrintCancel.ClickOn();
+            });
         }
 
         [Test, Category("Scheduler")]
         public void ReportCancelledMeetingTest()
         {
-            Pages.Scheduler_Page.EnterCancelledMeetingWindow();
-            Pages.CancelledMeeting_Page.CloseWindow.ClickOn();
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.EnterCancelledMeetingWindow();
+                Pages.CancelledMeeting_Page.CloseWindow.ClickOn();
+            });
         }
 
         [Test, Category("Scheduler")]
         public void OpenBlockListWindowTest()
         {
-            Pages.Scheduler_Page.EnterOpenBlockWindow();
-            Pages.BlockOpen_Page.CloseWindow.ClickOn();
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.EnterOpenBlockWindow();
+                Pages.BlockOpen_Page.CloseWindow.ClickOn();
+            });
         }
 
         [Test, Category("Scheduler")]
         public void StandbyListWindowTest()
         {
-            Pages.Scheduler_Page.EnterStanbyWindow();
-            Pages.StandbyList_Page.CloseWindow.ClickOn();
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.EnterStanbyWindow();
+                Pages.StandbyList_Page.CloseWindow.ClickOn();
+            });
         }
 
         [Test, Category("Scheduler")]
         public void BlockCreateEmptyTest()
         {
-            Pages.BlockOpen_Page.BlockCreateEmptyApplication();
+            UITest(() =>
+            {
+                Pages.BlockOpen_Page.BlockCreateEmptyApplication();
+            });
         }
 
         [Test, Category("Scheduler")]
         public void EnterLaterYearTest()
         {
-            Pages.Scheduler_Page.EnterLateYear();
+            UITest(() =>
+            {
+                Pages.Scheduler_Page.EnterLateYear();
+            });
         }
 
         [Test, Category("Scheduler")]
         public void MeetingCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.ClosePatientTab.ClickWait(500);
-            Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
-            Pages.Meeting_Page.CreateMeetingApplication();
+            UITest(() =>
+            {
+                Pages.Meeting_Page.CreateMeetingApplication();
+            }, Pages.Meeting_Page.CancelMeeting);
+
         }
 
         [Test, Category("Scheduler")]
         public void StandbyCreateTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.ClosePatientTab.ClickOn();
-            Pages.Standby_Page.CreateStandbyApplication();
+            UITest(() =>
+            {
+                Pages.Standby_Page.CreateStandbyApplication();
+            }, Pages.Scheduler_Page.StandbyAppointmentCancel);
         }
 
         [Test, Category("Scheduler")]
         public void AvailbleTimeTest()
         {
-            Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
-            Pages.Meeting_Page.CancelMeeting.ClickOn();
+            UITest(() =>
+            {
+                Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
+            }, Pages.AvailbleTime_Page.CloseWindow);
         }
 
         [Ignore("no ready")]
         [Test, Category("Authorization")]
         public void ManagerLoginTest()
         {
-            Pages.Login_Page.LoginApplication();
+            UITest(() =>
+            {
+                Pages.Login_Page.LoginApplication();
+            });
         }
 
 
         [Test, Category("Authorization")]
         public void TherapistLoginTest()
         {
-            Pages.Login_Page.TherapistLogin();
+            UITest(() =>
+            {
+                Pages.Login_Page.TherapistLogin();
+            });
 
         }
 
         [Test, Category("Authorization")]
         public void ClerkLoginTest()
         {
-            Pages.Login_Page.ClerkApplication();
+            UITest(() =>
+            {
+                Pages.Login_Page.ClerkApplication();
+            });
         }
 
         //Create Patient > Create MEdicine> Create Note > Search Availble Time
         [Test, Category("EndToEnd")]
         public void PatientMedicineNoteAppointment()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterMedicineTable();
-            Pages.PatientMedical_Page.CreateNewMedicineApplication();
-            Pages.PatientMedical_Page.EnterNoteTable();
-            Pages.PatientMedical_Page.CreateNewNoteApplication();
-            Pages.Home_Page.CloseTab.ClickOn();
-            Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
-            Pages.Meeting_Page.CreateMeetingApplication();
+            UITest(() =>
+            {
+                Pages.Patient_Page.NewPatientApplication();
+                Pages.PatientMedical_Page.EnterMedicalTab();
+                Pages.PatientMedical_Page.EnterMedicineTable();
+                Pages.PatientMedical_Page.CreateNewMedicineApplication();
+                Pages.PatientMedical_Page.EnterNoteTable();
+                Pages.PatientMedical_Page.CreateNewNoteApplication();
+                Pages.Home_Page.CloseTab.ClickOn();
+                Pages.Home_Page.EnterAvailbleTime();
+                Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
+                Pages.Meeting_Page.CreateMeetingApplication();
+            });
         }
 
         [Test, Category("Smoke"), Order(1)]
         public void SmokeTesting()
         {
-            try
+            UITest(() =>
             {
-                Pages.Home_Page.SettingScreen.ClickWait(1500);
+                Pages.Home_Page.SettingScreen.ClickWait();
                 softAssert.VerifyElementIsPresent(Pages.Home_Page.UserManagementScreen);
-                Pages.Home_Page.UserManagementScreen.ClickWait(1500);
+                Pages.Home_Page.UserManagementScreen.ClickWait();
                 softAssert.VerifyElementIsPresent(Pages.UsersManagement_Page.PracticesManagerButton);
-                Pages.Home_Page.UserAuthorizationScreen.ClickWait(1500);
+                Pages.Home_Page.UserAuthorizationScreen.ClickWait();
                 softAssert.VerifyElementIsPresent(Pages.Authorization_Page.GroupCreate);
-                Pages.Home_Page.GeneralScreen.ClickWait(1500);
+                Pages.Home_Page.GeneralScreen.ClickWait();
                 Pages.Patient_Page.NewPatientApplication();
                 Pages.Patient_Page.ClosePatientTab.ClickOn();
                 Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
                 Pages.Home_Page.PopupClose.ClickOn();
-            }
-
-            catch (AssertionException e)
-            {
-                Pages.Home_Page.LogoutApplication();
-                Assert.Fail("failed" + e);
-            }
+            });
         }
     }
 

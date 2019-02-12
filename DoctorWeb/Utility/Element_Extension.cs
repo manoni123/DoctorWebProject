@@ -15,12 +15,18 @@ namespace DoctorWeb.Utility
 {
     public static class Element_Extension
     {
-
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public static UtilityFunction utility = new UtilityFunction();
         private static int _time = 300;
 
 
         //enter Text method with log
+        public static void WaitForElement(this IWebElement element, int time)
+        {
+            Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(time);
+            element.Click();
+        }
+
         public static void EnterText(this IWebElement element, string text)
         {
             element.SendKeys(text);
@@ -37,29 +43,48 @@ namespace DoctorWeb.Utility
         }
 
         //enter Text method with log
-        public static void EnterClearText(this IWebElement element, string text, string elementName)
+        public static void EnterClearText(this IWebElement element, string text)
         {
             element.Clear();
             element.SendKeys(text);
             Thread.Sleep(_time);
-            log.Info(text + " is entered in the " + elementName + " Field");
+            log.Info(text + " is entered in the " + element.Text);
         }
 
         //Time in Miliseconds for user actionss
         public static void ClickOn(this IWebElement element) {
             try {
+                string valueName = element.Text;
+                string valueID = element.GetAttribute("name");
+                string valueTag = element.GetAttribute("id");
+                string valueText = element.GetAttribute("data-tag");
+                utility.NameInElement(element, valueName, valueID, valueTag, valueText);
                 element.Click();
+
                 Thread.Sleep(_time);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Debug.WriteLine(e);
             }
         }
 
         //self determine the wait time
-        public static void ClickWait(this IWebElement element, int sleepTime)
+        public static void ClickWait(this IWebElement element)
         {
-            element.Click();
-            Thread.Sleep(sleepTime);
+            try
+            {
+                string valueName = element.GetAttribute("name");
+                string valueID = element.GetAttribute("id");
+                string valueTag = element.GetAttribute("data-tag");
+                string valueText = element.Text;
+                utility.NameInElement(element, valueName, valueID, valueTag, valueText);
+                element.Click();
+                Thread.Sleep(1500);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         //isDisplayd Method with log

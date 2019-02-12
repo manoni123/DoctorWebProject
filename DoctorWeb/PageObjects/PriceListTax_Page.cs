@@ -57,50 +57,45 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPriceListTaxScreen() {
             Pages.Home_Page.EntePriceListTab();
-            PriceListTaxScreen.ClickOn();
+            PriceListTaxScreen.ClickWait();
             softAssert.VerifyElementIsPresent(PriceListTaxCreate);
         }
 
         public void PriceListTaxCreateApplication() {
-            try
-            {
-                int countBefore = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-                PriceListTaxCreate.Click();
-                PriceListTaxApprove.Click();
-                softAssert.VerifyElementIsPresent(NameErrorMsg);
-                PriceListTaxName.EnterText(Constant.priceListTax);
-                PriceListTaxApprove.Click();
-                int countAfter = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                softAssert.VerifyElementIsPresent(Pages.Home_Page.ErrorPopup);
-                Assert.Fail("test OK - repeated numbers");
-            }
+            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
+
+            string useName = Constant.priceListTax;
+            int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            PriceListTaxCreate.ClickOn();
+            PriceListTaxApprove.ClickOn();
+            softAssert.VerifyElementIsPresent(NameErrorMsg);
+            PriceListTaxName.EnterText(useName);
+            PriceListTaxApprove.ClickOn();
+            int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            softAssert.WarningOnErrorMsg();
         }
 
         public void PriceListTaxDeleteApplication()
         {
-            int countBefore = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
+            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
+
+            int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             PriceListTaxDelete.ClickOn();
             DeleteApprove.ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Home_Page.SuccessPopup);
-            int countAfter = utility.ListCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
+            int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
         }
 
         public void PriceListTaxEditApplication()
         {
-            try
-            {
-                PriceListTaxEdit.ClickOn();
-                PriceListTaxName.EnterClearText(Constant.priceListTax, "edit");
-                PriceListTaxApprove.ClickOn();
-            }
-            catch (IndexOutOfRangeException)
-            {
-                softAssert.VerifyElementIsPresent(Pages.Home_Page.ErrorPopup);
-                Assert.Fail("test OK - repeated numbers");
-            }
+            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
+            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
+
+            PriceListTaxEdit.ClickWait();
+            PriceListTaxName.EnterClearText(RandomNumber.taxNumber());
+            PriceListTaxApprove.ClickOn();
+            softAssert.WarningOnErrorMsg();
         }
     }
 }

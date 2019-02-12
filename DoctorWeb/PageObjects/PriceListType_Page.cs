@@ -2,12 +2,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DoctorWeb.PageObjects
 {
@@ -59,37 +54,45 @@ namespace DoctorWeb.PageObjects
         public void EnterPriceLisTypeScreen()
         {
             Pages.Home_Page.EntePriceListTab();
-            PriceListTypeScreen.ClickOn();
+            PriceListTypeScreen.ClickWait();
             softAssert.VerifyElementIsPresent(PriceListTypeCreate);
         }
 
         public void PriceListTypeCreateApplication()
         {
-            int priceListCount = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
-            PriceListTypeCreate.Click();
+            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
+
+            int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
+            PriceListTypeCreate.ClickOn();
             PriceListTypeApprove.ClickOn();
             softAssert.VerifyElementIsPresent(NameErrorMsg);
             PriceListTypeName.EnterText(Constant.priceListName);
-            PriceListTypeApprove.ClickWait(1000);
-            int priceListCountAfter = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
+            PriceListTypeApprove.ClickOn();
+            int priceListCountAfter = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             Thread.Sleep(500);
             Assert.AreNotEqual(priceListCount, priceListCountAfter);
         }
 
         public void PriceListTypeDeleteApplication()
         {
-            int priceListCount = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
+            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
+            Pages.PriceListType_Page.PriceListTypeCreateApplication();
+
+            int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeDelete.ClickOn();
             DeleteApprove.ClickOn();
-            int priceListCountAfter = utilityFunction.ListCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
+            int priceListCountAfter = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             Assert.AreNotEqual(priceListCount, priceListCountAfter);
 
         }
 
         public void PriceListTypeEditApplication()
         {
-            PriceListTypeEdit.Click();
-            PriceListTypeName.EnterClearText("Edit", "edit");
+            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
+            Pages.PriceListType_Page.PriceListTypeCreateApplication();
+
+            PriceListTypeEdit.ClickOn();
+            PriceListTypeName.EnterClearText("Edit");
             PriceListTypeApprove.ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Home_Page.SuccessPopup);
         }

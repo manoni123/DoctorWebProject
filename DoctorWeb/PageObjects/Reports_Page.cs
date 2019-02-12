@@ -145,108 +145,78 @@ namespace DoctorWeb.PageObjects
 
         public void EnterReportScreen() {
             Thread.Sleep(500);
-            Pages.Home_Page.ReportScreen.ClickWait(1500);
+            Pages.Home_Page.ReportScreen.ClickWait();
         }
 
         public void PatientReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
-            PatientReportFromDate.EnterClearText(Constant.dateMinusMonth, "Patient report");
+            PatientReportFromDate.EnterClearText(Constant.dateMinusMonth);
+            PatientReportExcel.ClickOn();
+            PatientReportShow.ClickWait();
 
-            try
-            {
-                PatientReportExcel.ClickWait(2000);
-             //   PatientReportPdf.ClickWait(2000);
-                PatientReportShow.ClickWait(1500);
-                softAssert.VerifyElementIsPresent(PatientOutputName);
-
-            } catch(Exception) {
-                PopupButton.ClickOn();
-            }
         } 
         public void ContactReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             Thread.Sleep(500);
             ContactReportTab.ClickOn();
-            try
-            {
-                ContactReportExcel.ClickWait(2000);
-       //         ContactReportPDF.ClickWait(2000);
-                ContactReportShow.ClickWait(1500);
-                softAssert.VerifyElementIsPresent(ContactOutputName);
-            }
-            catch (Exception)
-            {
-                PopupButton.ClickOn();
-            }
+            ContactReportExcel.ClickOn();
+            ContactReportShow.ClickOn();
+            Thread.Sleep(500);
+            softAssert.VerifyElementIsPresent(ContactOutputName);
         }
 
         public void MeetingReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
             MeetingReportTab.ClickOn();
-            MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth, "meetin report");
-            try
-            {
-                MeetingReportExcel.ClickWait(2000);
-        //        MeetingReportPdf.ClickWait(2000);
-                MeetingReportShow.ClickWait(1500);
-                softAssert.VerifyElementIsPresent(MeetingReportOutput);
+            MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth);
+            MeetingReportExcel.ClickOn();
+            MeetingReportShow.ClickOn();
+            softAssert.VerifyElementIsPresent(MeetingReportOutput);
 
-                if (tabs.Count > 1)
-                {
-                    Browser.chromebDriver.SwitchTo().Window(tabs[1]);
-                    Browser.chromebDriver.Close();
-                    Browser.chromebDriver.SwitchTo().Window(tabs[0]);
-                }
-            }
-            catch (Exception)
+            if (tabs.Count > 1)
             {
-                PopupButton.ClickOn();
+                Browser.chromebDriver.SwitchTo().Window(tabs[1]);
+                Browser.chromebDriver.Close();
+                Browser.chromebDriver.SwitchTo().Window(tabs[0]);
             }
         }
 
         public void NotificationReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             Thread.Sleep(500);
             NotificationReportTab.ClickOn();
-            NotificationDateFrom.EnterClearText(Constant.dateMinusMonth, "meetin report");
-            try
-            {
-                NotificationReportExcel.ClickWait(2000);
-         //       NotificationReportPDF.ClickWait(2000);
-                NotficationReportShow.ClickWait(1500);
-                softAssert.VerifyElementIsPresent(NotificationOutput);
-            }
-            catch (Exception)
-            {
-                PopupButton.ClickOn();
-            }
+            NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
+            NotificationReportExcel.ClickOn();
+            NotficationReportShow.ClickOn();
+            softAssert.VerifyElementIsPresent(NotificationOutput);
         }
 
         public void AuditReportApplication()
         {
-            try
+            Thread.Sleep(500);
+            AuditReportTab.ClickOn();
+            ShowAuditReport.ClickOn();
+            if (Pages.Home_Page.CloseTab.Displayed)
             {
-                Thread.Sleep(500);
-                AuditReportTab.ClickOn();
-                ShowAuditReport.ClickOn();
-                if (Pages.Home_Page.CloseTab.Displayed)
-                {
-                    Pages.Home_Page.CloseTab.Click();
-                }
-                else
-                {
-                    Assert.Fail();
-                }
+                Pages.Home_Page.CloseTab.ClickOn();
             }
-            catch (Exception)
+            else
             {
-
+                Assert.Fail();
             }
         }
 

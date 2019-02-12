@@ -14,6 +14,7 @@ namespace DoctorWeb.PageObjects
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "btnWaitListSave")]
         [CacheLookup]
@@ -35,7 +36,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StandbyBranch { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='waitingListForm']/div/div[2]/div[1]/div/div[4]/div/span[1]/span/input")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='waitingListForm']/div/div[3]/div[1]/div/div[4]/div/span[1]/span/input")]
         [CacheLookup]
         public IWebElement TherapistSearch { get; set; }
 
@@ -43,33 +44,30 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StandByListCount { get; set; }
 
-        
+        [FindsBy(How = How.Id, Using = "ToDate")]
+        [CacheLookup]
+        public IWebElement StandbyEndDate { get; set; }
 
         public void CreateStandbyApplication() {
-            try {
-                Pages.Scheduler_Page.EnterStandBySchedulerList();
-                string  standbyListCount =  Browser.Driver.FindElement(By.XPath("//*[@id='waitListPanelBar']/li/span/span[3]")).Text;
-                Pages.Scheduler_Page.StanByCreate.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
-                Thread.Sleep(500);
-                StandbySearch.EnterText(Pages.Patient_Page.PatientUseName);
-                Thread.Sleep(500);
-                StandbySearch.EnterText(Keys.ArrowDown);
-                Thread.Sleep(500);
-                StandbySearch.EnterText(Keys.Enter);
-                Thread.Sleep(500);
-                CreateStandby.ClickOn();
-                softAssert.VerifyErrorMsg();
-                TherapistSearch.SendKeys(Keys.ArrowDown);
-                Thread.Sleep(500);
-                TherapistSearch.SendKeys(Keys.Enter);
-                CreateStandby.ClickWait(1500);
-                string standbyListCountAfter = Browser.Driver.FindElement(By.XPath("//*[@id='waitListPanelBar']/li/span/span[3]")).Text;
-                Assert.AreNotEqual(standbyListCount, standbyListCountAfter);
-            } catch (Exception) {
-                Assert.Fail();
-            }
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.ClosePatientTab.ClickOn();
 
+            Pages.Scheduler_Page.EnterStandBySchedulerList();
+            var CountBefore = utility.ListCount("//*[@id='wait-list']");
+            Pages.Scheduler_Page.StanByCreate.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
+            StandbySearch.EnterText(Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(500);
+            StandbySearch.EnterText(Keys.ArrowDown);
+            Thread.Sleep(500);
+            StandbySearch.EnterText(Keys.Enter);
+            CreateStandby.ClickOn();
+            softAssert.VerifyErrorMsg();
+            TherapistSearch.SendKeys(Keys.ArrowDown);
+            TherapistSearch.SendKeys(Keys.Enter);
+            Thread.Sleep(1000);
+            var CountAfter = utility.ListCount("//*[@id='wait-list']");
+            Assert.AreNotEqual(CountBefore, CountAfter);
         }
     }
 }

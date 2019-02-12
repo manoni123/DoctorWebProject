@@ -60,9 +60,9 @@ namespace DoctorWeb.PageObjects
             Actions actions = new Actions(Browser.chromebDriver);
             actions.KeyDown(Keys.Control).SendKeys(Keys.ArrowDown).Perform();
             Log.Info("press on relative type");
-            SelectPatientFamily.Click();
+            SelectPatientFamily.ClickOn();
             Log.Info("selected the patient");
-            SaveFamilyRelation.Click();
+            SaveFamilyRelation.ClickOn();
             Log.Info("saved patient ");
         }
     }

@@ -80,23 +80,25 @@ namespace DoctorWeb.PageObjects
             SupplierName.SendKeys("1");
             SupplierSave.ClickOn();
             softAsserts.VerifyElementIsPresent(supplierNameValidate);
-            SupplierName.EnterClearText(Constant.supplierName, "SupplierName");
+            SupplierName.EnterClearText(Constant.supplierName);
             SupplierSave.ClickOn();
-            SupplierContactTab.ClickWait(500);
+            SupplierContactTab.ClickOn();
             softAsserts.VerifyElementIsPresent(CreateSupplierContact);
         }
 
         //create new supplier contact
         public void NewSupplierContactApplication()
         {
-            CreateSupplierContact.Click();
+            Pages.Supplier_Page.NewSupplierCreateApplication();
+
+            CreateSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(SuppContName);
             SuppContName.SendKeys("1");
             SaveNewSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(supplierContactNameValidate);
-            SuppContName.EnterClearText(Constant.suppContactName, "SuppName");
-            SuppContLast.EnterClearText(Constant.suppContactLast, "SuppLastName");
-            SuppContPhone.EnterClearText(Constant.suppContactPhone, "SuppPhone");
+            SuppContName.EnterClearText(Constant.suppContactName);
+            SuppContLast.EnterClearText(Constant.suppContactLast);
+            SuppContPhone.EnterClearText(Constant.suppContactPhone);
             SaveNewSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(SupplierContactEdit);
            
