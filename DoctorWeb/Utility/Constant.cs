@@ -7,6 +7,11 @@ namespace DoctorWeb.Utility
         public static string drWebUrl = "http://drweb-sys.com/Account/Login";
         public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
 
+        public static class Globals
+        {
+            public static int tabNum = 2;
+        }
+
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
         public static string groupUser = "reut@doctorwin.co.il";
@@ -21,6 +26,7 @@ namespace DoctorWeb.Utility
 
         public static string patientName = "selenium" + RandomNumber.smallNumber();
         public static string patientLastname = "test";
+        public static bool patientCreated;
 
         public static string supplierName = "supplier" + RandomNumber.smallNumber();
         public static string suppContactName = "test" + RandomNumber.smallNumber();
@@ -40,7 +46,7 @@ namespace DoctorWeb.Utility
 
         public static string departmentName = "depart";
 
-        public static string userName = "Doctor" + RandomNumber.smallNumber();
+        public static string userName = "Doctor";
         public static string userLastName = RandomNumber.smallNumber();
         public static string userEmail = "doctor" + RandomNumber.smallNumber() + "@doctorwin.co.il";
         public static string userPhone = RandomNumber.smallNumber();
@@ -64,11 +70,15 @@ namespace DoctorWeb.Utility
 
         public static string priceListName = "Name" + RandomNumber.smallNumber();
         public static string priceListCode = "K" + RandomNumber.smallNumber();
+        public static string priceListExistCode;
+        public static bool priceListCreated;
 
         public static string priceListTax = RandomNumber.taxNumber();
 
         public static string practiceName = "Expertise" + RandomNumber.smallNumber();
         public static string practiceNameEdit = "Edit" + RandomNumber.smallNumber();
+
+        public static string treatmentPlan = "Plan" + RandomNumber.smallNumber();
 
         public static string dateMinusMonth = DateTime.Today.AddMonths(-1).ToString();
         public static string datePlusMonth = DateTime.Today.AddMonths(+1).ToString();
@@ -102,7 +112,7 @@ namespace DoctorWeb.Utility
         public static string Click = "Button";
         public static string CloseWindow = "CloseWindow";
         public static string Select = "Selected From List";
-
+        
 
     }
 }

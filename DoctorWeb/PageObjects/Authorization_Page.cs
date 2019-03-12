@@ -18,7 +18,7 @@ namespace DoctorWeb.PageObjects
         
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
-
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "btnAddClaim")]
         [CacheLookup]
@@ -121,21 +121,18 @@ namespace DoctorWeb.PageObjects
             Pages.Authorization_Page.EnterAuthorizationScreen();
             Pages.Authorization_Page.CreateGroupApplication();
 
-            softAssert.VerifyElementPresentInsideWindow(DeleteLastGroup, GroupCancel);
-            DeleteLastGroup.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(ApproveDelete, GroupCancel);
+            var lastGroupNum = utility.ListCount("//*[@id='panelGroup']/div/div/div/ul");
+            IWebElement deleteLastGroup = Browser.Driver.FindElement(By.XPath("//*[@id='panelGroup']/div/div/div/ul/li[" + lastGroupNum + "]/span[5]"));
+            deleteLastGroup.ClickOn();
             ApproveDelete.ClickOn();
-            softAssert.WarningOnErrorMsg();
+            softAssert.VerifySuccessMsg();
         }
 
         public void SecretaryPermissionApplication() {
             Pages.Patient_Page.NewConfidentialPatientApplication();
             Pages.Home_Page.LogoutApplication();
             Pages.Login_Page.LoginMiddleTest(Constant.groupUser, Constant.loginPassword);
-            Pages.Home_Page.SearchBox.EnterClearText(Pages.Patient_Page.PatientUseName);
-            Pages.Home_Page.SearchBox.SendKeys(Keys.ArrowDown);
-            Thread.Sleep(500);
-            Pages.Home_Page.SearchBox.SendKeys(Keys.Enter);
+            utility.TextClearDropdownAndEnter(Pages.Home_Page.SearchBox, Pages.Patient_Page.PatientUseName);
             softAssert.VerifyErrorMsg();
         }
 

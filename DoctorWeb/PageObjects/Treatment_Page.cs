@@ -14,7 +14,7 @@ namespace DoctorWeb.PageObjects
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
-        UtilityFunction utilityFunction = new UtilityFunction();
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "tab3_btnAddNewTreatmentItem")]
         [CacheLookup]
@@ -54,26 +54,25 @@ namespace DoctorWeb.PageObjects
 
         public void CreateNewSingleTreatmentApplication() {
             Actions actions = new Actions(Browser.chromebDriver);
-
             Pages.Home_Page.EntePriceListTab();
             var pricelistCodeID = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
             var pricelistCodeDesc = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[3]")).Text;
+            Pages.Home_Page.SchedularScreen.ClickWait();
+
             Pages.Patient_Page.NewPatientApplication();
             var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
-            Pages.Patient_Page.PatientTreatments.ClickOn();
-            var countBefore = utilityFunction.TableCount("//*[@id='tab3_customerTreatmentsGrid_"+patientDataID+"']/div[2]/div[1]/table/tbody");
+            Pages.Patient_Page.PatientTreatments.ClickWait();
+            var countBefore = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_"+patientDataID+"']/div[2]/div[1]/table/tbody");
             CreateNewTreatment.ClickOn();
             IWebElement treatmentList = Browser.Driver.FindElement(By.Id("newItemMenu"));
             treatmentList.FindElements(By.TagName("li")).ElementAt(0).ClickOn();
-            SelectTerapist.ClickOn();
-            SelectTerapist.SendKeys(Keys.Down);
-            SelectTerapist.SendKeys(Keys.Enter);
-            SelectCode.EnterClearText(pricelistCodeID);
-            utilityFunction.dropdownAndEnter(SelectCode);
+            utility.ClickDropdownAndEnter(SelectTerapist);
+            utility.TextDropdownAndEnter(SelectCode, pricelistCodeID);
             var codeSelectedDesc = Browser.Driver.FindElement(By.Id("selected_codeDescription")).Text;
             Assert.AreEqual(pricelistCodeDesc, codeSelectedDesc);
+            Thread.Sleep(500);
             SaveTreatment.ClickWait();
-            var countAfter = utilityFunction.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + patientDataID + "']/div[2]/div[1]/table/tbody");
+            var countAfter = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + patientDataID + "']/div[2]/div[1]/table/tbody");
             Assert.AreNotEqual(countBefore, countAfter);
         }
 
@@ -82,7 +81,7 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.PatientTreatments.ClickWait();
             CreateNewTreatment.ClickOn();
             IWebElement treatmentList = Browser.Driver.FindElement(By.Id("newItemMenu"));
-            treatmentList.FindElements(By.TagName("li")).ElementAt(1).ClickOn();
+            treatmentList.FindElements(By.TagName("li")).ElementAt(2).ClickOn();
         }
 
         public void CreateNewTreatmentPlan()

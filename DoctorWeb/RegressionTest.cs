@@ -11,6 +11,8 @@ namespace DoctorWeb
     public class RegressionTest : BaseFixture
     {
         AssertionExtent softAssert = new AssertionExtent();
+      
+
         //Each Test Category has a fixture of its own that contains a setup and tear down beforre and after each test
         //OneTimeSetUp and OnTimeTearDown reffers to BaseFixture and effects all the tests
         [SetUp]
@@ -113,9 +115,6 @@ namespace DoctorWeb
         [Test, Category("Medical")]
         public void AnamnezaDeleteTest()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Pages.PatientMedical_Page.EnterAnamnezaTable();
             Pages.PatientMedical_Page.DeleteNewAnamanezaApplication();
         }
 
@@ -261,9 +260,7 @@ namespace DoctorWeb
         {
             Pages.UsersManagement_Page.CreatePracticeApplication();
             //create practice now create user and use the new practice
-            Pages.UsersManagement_Page.CreateUserApplication();
-            //check if activated practice cant be deleted
-            Pages.UsersManagement_Page.DeleteActivePracticeApplication();
+            Pages.UsersManagement_Page.CreateUserApplication(); 
         }
 
         [Test, Category("Settings")]
@@ -394,7 +391,7 @@ namespace DoctorWeb
         public void UserCreateTest()
         {
             Pages.UsersManagement_Page.EnterManagementWindow();
-            Pages.UsersManagement_Page.EnterCreateNewUser();
+            Pages.UsersManagement_Page.CreateUser.ClickWait();
             Pages.UsersManagement_Page.CreateUserApplication();
         }
 

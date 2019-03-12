@@ -6,6 +6,7 @@ using System.Linq;
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Tests.Parallel;
 using DoctorWeb.Utility;
+using log4net;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
@@ -16,6 +17,7 @@ namespace DoctorWeb
     public class BaseFixture
     {
         readonly Process myProcess = new Process();
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [OneTimeSetUp]
         public void Setup()
@@ -74,14 +76,16 @@ namespace DoctorWeb
         }
 
         //wrap every class
-        public static void UITest(Action action, IWebElement window = null)
+        public static void UITest(Action action, IWebElement window = null, IWebElement popup = null, IWebElement onTopPopup = null)
         {
             try
             {
                 action();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e);
+
                 string testName = TestContext.CurrentContext.Test.MethodName.ToString();
                 string StartupPath = @"C:\Temp\bugsScreenshot\";
                 string Year = DateTime.Now.Year.ToString();

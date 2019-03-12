@@ -1,6 +1,8 @@
 ﻿using log4net;
 using log4net.Config;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,12 @@ namespace DoctorWeb.Utility
         public static UtilityFunction utility = new UtilityFunction();
         private static int _time = 300;
 
+        public static IWebElement FindElementOnPage(this IWebDriver webDriver, By by)
+        {
+            RemoteWebElement element = (RemoteWebElement)webDriver.FindElement(by);
+            var hack = element.LocationOnScreenOnceScrolledIntoView;
+            return element;
+        }
 
         //enter Text method with log
         public static void WaitForElement(this IWebElement element, int time)

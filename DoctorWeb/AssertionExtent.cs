@@ -54,7 +54,7 @@ namespace DoctorWeb
         {
             try
             {
-                Assert.IsTrue(element.Displayed, Constant.stackTraceFalse);
+                Assert.IsTrue(element.Displayed);
                 Log.Info("Element IS Present");
                 Thread.Sleep(_time);
             }

@@ -13,7 +13,6 @@ namespace DoctorWeb.PageObjects
         AssertionExtent softAssert = new AssertionExtent();
         UtilityFunction utility = new UtilityFunction();
 
-
         [FindsBy(How = How.CssSelector, Using = "#generalTabstrip > ul > li:nth-child(2)")]
         [CacheLookup]
         public IWebElement AdditionalFieldsScreen { get; set; }

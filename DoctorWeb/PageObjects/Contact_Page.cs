@@ -45,7 +45,6 @@ namespace DoctorWeb.PageObjects
 
         public void NewContactApplication()
         {
-
                 Pages.Home_Page.OpenEntityDropdown.ClickOn();
                 Pages.Home_Page.CreateNewContact.ClickOn();
                 ContactName.SendKeys("1");

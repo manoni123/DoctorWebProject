@@ -2,6 +2,7 @@
 using log4net;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Diagnostics;
@@ -168,6 +169,16 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementIsPresent(PriceListCancel);
         }
 
+        public void PriceListFirstCodeName() {
+            if (Constant.priceListCreated == false)
+            {
+                Pages.Home_Page.EntePriceListTab();
+                Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
+                Pages.Home_Page.SchedularScreen.ClickWait();
+                Constant.priceListCreated = true;
+            }
+        }
+
         public void CountPriceListApplicaiton() {
             Pages.PriceList_Page.EnterPriceListScreen();
             int listCount = Browser.Driver.FindElements(By.XPath("//*[@id='gridAppointmentTypes']/div[2]/div[1]/table/tbody")).Count;
@@ -236,7 +247,7 @@ namespace DoctorWeb.PageObjects
             CreateCodeConfirm.ClickOn();
         }
 
-        public void DevCreatePriceListDevApplication() {
+        public void DevCreatePriceListApplication() {
             Pages.Home_Page.EntePriceListTab();
 
             var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
@@ -252,9 +263,10 @@ namespace DoctorWeb.PageObjects
             Assert.AreEqual(listCountAfter, listCount+1);
         }
 
-        public void DevCreatePriceListPackageApplicaiton() {
+       
+        public void DevCreatePriceListSeriesApplicaiton() {
             Pages.Home_Page.EntePriceListTab();
-
+            
             var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
             var usedCode = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]");
             PriceListCreateNew.ClickOn();
@@ -263,7 +275,6 @@ namespace DoctorWeb.PageObjects
             PriceListCode.EnterText(Constant.priceListCode);
             PriceListName.EnterText(Constant.priceListName);
             Thread.Sleep(500);
-            PriceListType.ClickOn();
             PriceListType.ClickOn();
             PriceListType.SendKeys(Keys.ArrowDown);
             PriceListType.SendKeys(Keys.ArrowDown);

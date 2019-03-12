@@ -1,18 +1,12 @@
-﻿using Data;
-using DoctorWeb.Utility;
+﻿using DoctorWeb.Utility;
 using log4net;
-using MySql.Data.MySqlClient;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DoctorWeb.PageObjects
 {
@@ -20,7 +14,7 @@ namespace DoctorWeb.PageObjects
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
-
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "btnAddUser")]
         [CacheLookup]
@@ -146,7 +140,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectDepartmentOnUserCreate { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"userActiveHours\"]/tbody/tr[6]/td[8]/img[2]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='userActiveHours']/tbody/tr[1]/td[8]/img[2]")]
         [CacheLookup]
         public IWebElement MinusClick { get; set; }
 
@@ -158,21 +152,33 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement TherapistBranchList { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//*[@id='CreateUserStep2']/div/div[3]/div/label")]
+        [CacheLookup]
+        public IWebElement TherapistActiveBtn { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='CreateUserStep2']/div/div[4]/div/span[1]")]
+        [CacheLookup]
+        public IWebElement TherapistDropdownPractice { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='PractiseID_listbox']/li")]
+        [CacheLookup]
+        public IWebElement TherapistDropdownPracticeList { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='userActiveHours']/tbody/tr[1]/td[7]/span")]
+        [CacheLookup]
+        public IWebElement TherapistSchedulerBranchDropdown { get; set; }
+        
         public void EnterManagementWindow()
         {
             Pages.Home_Page.SettingScreen.ClickWait();
             Pages.Home_Page.UserManagementScreen.ClickWait();
         }
 
-        public void EnterCreateNewUser() {
-            CreateUser.ClickWait();
-        }
-
         //create a create user 
         public void CreateUserApplication()
         {
             Pages.UsersManagement_Page.EnterManagementWindow();
-            Pages.UsersManagement_Page.EnterCreateNewUser();
+            CreateUser.ClickWait();
 
             softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
             UserName.EnterClearText(Constant.userName);
@@ -185,9 +191,6 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(UserGoBack, UserCancelBtn);
             UserContinueBtn.ClickOn();
             SelectBusinessOnUserCreate.ClickOn();
-            //UserContinueBtn.ClickOn();
-            //softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.ErrorPopup, UserCancelBtn);
-            //Thread.Sleep(500);
             var branchID = BranchIdOnUserCreate.GetAttribute("value");
             Browser.Driver.FindElement(By.CssSelector("#branchID"+branchID+" > label")).ClickOn();
             UserContinueBtn.ClickOn();
@@ -195,28 +198,37 @@ namespace DoctorWeb.PageObjects
             SelectDepartmentOnUserCreate.ClickOn();
             UserContinueBtn.ClickOn();
             softAssert.VerifySuccessMsg();
-            //wish to make an assert here on green toastg msg when successfull
         }
 
-        public void UserPasswordDBSettUP() {
-            var dbCon = DBConnect.Instance();
-            dbCon.DatabaseName = "doctorweb";
-            if (dbCon.IsConnect())
-            {
-                //suppose col0 and col1 are defined as VARCHAR in the DB
-                string query = "SELECT Password " +
-                                 "FROM doctorweb" +
-                                 "Where Email = 'rona@doctorwin.co.il'";
-                var cmd = new MySqlCommand(query, dbCon.Connection);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    string someStringFromColumnZero = reader.GetString(0);
-                    string someStringFromColumnOne = reader.GetString(1);
-                    Console.WriteLine(someStringFromColumnZero + "," + someStringFromColumnOne);
-                }
-                dbCon.Close();
-            }
+        public void CreateTherapistUserApplication() {
+            Pages.UsersManagement_Page.EnterManagementWindow();
+
+            CreateUser.ClickWait();
+            softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
+            UserName.EnterClearText(Constant.userName + RandomNumber.smallNumber());
+            UserContinueBtn.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(UserEmailVerification, UserCancelBtn);
+            UserLastname.EnterClearText(Constant.userLastName);
+            UserEmail.EnterClearText("doctor" + RandomNumber.smallNumber() + "@doctorwin.co.il");
+            UserMobile.EnterClearText(Constant.userPhone);
+            UserContinueBtn.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(UserGoBack, UserCancelBtn);
+            TherapistActiveBtn.ClickOn();
+            TherapistDropdownPractice.ClickOn();
+            List<IWebElement> practiceList = Browser.Driver.FindElements(By.XPath("//*[@id='PractiseID_listbox']/li")).ToList();
+            var lastValue = practiceList[practiceList.Count - 1];
+            lastValue.ClickOn();
+            UserContinueBtn.ClickOn();
+            SelectBusinessOnUserCreate.ClickOn();
+            var branchID = BranchIdOnUserCreate.GetAttribute("value");
+            Browser.Driver.FindElement(By.CssSelector("#branchID" + branchID + " > label")).ClickOn();
+            UserContinueBtn.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.ErrorPopup, UserCancelBtn);
+            SelectDepartmentOnUserCreate.ClickOn();
+            UserContinueBtn.ClickOn();
+            therapistSchedulerSetup();
+            UserContinueBtn.ClickOn();
+            softAssert.VerifySuccessMsg();
         }
 
         //Application to edit user - change setting and save.
@@ -359,20 +371,20 @@ namespace DoctorWeb.PageObjects
             PracticeWindowClose.ClickOn();
         }
 
-        public void DeleteActivePracticeApplication()
+        public void TherapistUserCreateApplication()
         {
             Pages.UsersManagement_Page.CreatePracticeApplication();
-            Pages.UsersManagement_Page.CreateUserApplication();
+            Pages.UsersManagement_Page.CreateTherapistUserApplication();
+        }
 
-            PracticesManagerButton.ClickOn();
-            if (PracticeDelete.IsDisplayed("is delete icon displayed"))
-            {
-                Log.Error("delete is displayed after active - fail");
+        public void therapistSchedulerSetup() {
+            int rowCount = utility.TableCount("//*[@id='userActiveHours']/tbody");
+            while (rowCount > 1) {
+                Browser.Driver.FindElement(By.XPath("//*[@id='userActiveHours']/tbody/tr[1]/td[8]/img[2]")).ClickOn();
+                rowCount--;
             }
-            else
-            {
-                PracticeWindowClose.ClickOn();
-            }
+            Thread.Sleep(1000);
+            utility.ClickDropdownAndEnter(TherapistSchedulerBranchDropdown);
         }
     }
 }

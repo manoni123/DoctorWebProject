@@ -210,20 +210,15 @@ namespace DoctorWeb.PageObjects
             DepartmentName.EnterClearText(Constant.departmentName + RandomNumber.smallNumber());
             DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
-            Pages.Business_Page.DepartmentCloseButton.ClickOn();
+            DepartmentCloseButton.ClickOn();
         }
 
         public void DeleteDepartmentApplication() {
-            Pages.Business_Page.CheckDepartmentIsNull();
-            Pages.Business_Page.EnterDepaertmentWindow();
             Pages.Business_Page.CreateDepartmentApplication();
-
-            Thread.Sleep(500);
-            softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
+            Pages.Business_Page.EnterDepaertmentWindow();
             DepartmentDelete.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(BtnApproveDelete, BusinessClose);
             BtnApproveDelete.ClickOn();
-            DepartmentCloseButton.ClickOn();
         }
 
         public void DeleteActiveDepartmentApplication()
@@ -276,7 +271,6 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementIsPresent(DepNameValidationPopup);
             DepartmentName.EnterClearText(Constant.departmentName + RandomNumber.smallNumber());
             DepartmentConfirm.ClickOn();
-            DepartmentCloseButton.ClickOn();
         }
     }
 }

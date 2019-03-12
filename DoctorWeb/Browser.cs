@@ -22,6 +22,7 @@ namespace DoctorWeb
         public static void Initialize()
         {
             Log.Info("Driver Used is:" + Driver.ToString());
+            Log.Info("Bug Images are Located in C://Temp");
             Goto("");
             chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             chromebDriver.Manage().Window.Maximize();
@@ -50,7 +51,7 @@ namespace DoctorWeb
                 case 2:
                     chromebDriver.Url = TestUrl + url;
                     Log.Info("URL Used for Testing is: " + TestUrl + Environment.NewLine);
-                    break;
+                break;
             }
         }
 

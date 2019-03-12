@@ -76,7 +76,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement UserAuthorizationScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(5)")]
+        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(4)")]
         [CacheLookup]
         public IWebElement GeneralScreen { get; set; }
 
@@ -261,8 +261,8 @@ namespace DoctorWeb.PageObjects
         }
         public void EnterAvailbleTime()
         {
-            Thread.Sleep(500);
             AppointmentBtn_1.ClickOn();
+            Thread.Sleep(500);
         }
 
 

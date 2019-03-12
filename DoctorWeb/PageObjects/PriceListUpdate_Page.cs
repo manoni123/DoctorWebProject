@@ -15,6 +15,7 @@ namespace DoctorWeb.PageObjects
         AssertionExtent softAssert = new AssertionExtent();
         UtilityFunction utility = new UtilityFunction();
 
+
         [FindsBy(How = How.CssSelector, Using = "#priceListTabStrip > ul > li.k-item.k-state-default.k-last > span.k-link")]
         [CacheLookup]
         public IWebElement PriceListUpdateScreen { get; set; }

@@ -1,7 +1,9 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
+using System.Threading;
 
 namespace DoctorWeb
 {
@@ -69,8 +71,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Patient_Page.NewPatientApplication();
-                Pages.Document_Page.UploadFileApplication();
+                Pages.Messages_Page.PatientMessageApplication();
             }, Pages.Patient_Page.ClosePatientTab);
         }
 
@@ -112,7 +113,7 @@ namespace DoctorWeb
                 Pages.Treatment_Page.CreateNewSingleTreatmentApplication();
             }, Pages.Home_Page.PopupClose);
         }
-
+        [Ignore("")]
         [Test, Category("Users")]
         public void AuthorizationSecretaryTest()
         {
@@ -172,6 +173,9 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Patient_Page.NewPatientApplication();
+                Pages.PatientMedical_Page.EnterMedicalTab();
+                Pages.PatientMedical_Page.EnterNoteTable();
                 Pages.PatientMedical_Page.CreateNewNoteApplication();
             }, Pages.PatientMedical_Page.CloseNotesTable);
         }
@@ -228,6 +232,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.PatientMedical_Page.CreateNewMedicineApplication();
+                Pages.PatientMedical_Page.ValidateWarningIndicator();
             }, Pages.PatientMedical_Page.CancelMedicineTable);
 
         }
@@ -298,13 +303,12 @@ namespace DoctorWeb
             }, Pages.UsersManagement_Page.PracticeWindowClose);
         }
 
-        [Ignore("skip Test")]
         [Test, Category("Settings")]
-        public void ExpertiseDeleteActiveTest()
+        public void UserTherapistCreate()
         {
             UITest(() =>
             {
-                Pages.UsersManagement_Page.DeleteActivePracticeApplication();
+                Pages.UsersManagement_Page.CreateTherapistUserApplication();
             });
         }
 
@@ -323,6 +327,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Business_Page.DeleteDepartmentApplication();
+                Pages.Business_Page.DepartmentCloseButton.ClickOn();
             }, Pages.Business_Page.DepartmentCloseButton);
         }
 
@@ -345,6 +350,7 @@ namespace DoctorWeb
                 Pages.Business_Page.CheckDepartmentIsNull();
                 Pages.Business_Page.EnterDepaertmentWindow();
                 Pages.Business_Page.EditDepartmentApplicaiton();
+                Pages.Business_Page.DepartmentCloseButton.ClickOn();
             }, Pages.Business_Page.DepartmentCloseButton);
 
         }
@@ -447,6 +453,16 @@ namespace DoctorWeb
                 Pages.Authorization_Page.ImportUsersToSecretaryGroupApplication();
             });
         }
+
+        [Test, Category("Settings")]
+        public void TreatmentPlanCreate()
+        {
+            UITest(() =>
+            {
+                Pages.TreatmentPlan_Page.CreateNewTreatmentPlanApplication();
+            }, Pages.Home_Page.PopupClose);
+        }
+
         //users
         [Test, Category("Settings")]
         public void UserCreateTest()
@@ -454,7 +470,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.UsersManagement_Page.CreateUserApplication();
-            }, Pages.UsersManagement_Page.PracticeWindowClose);
+            }, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Settings")]
@@ -516,16 +532,16 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.PriceList_Page.DevCreatePriceListDevApplication();
+                Pages.PriceList_Page.DevCreatePriceListApplication();
             }, Pages.PriceList_Page.PriceListCancelDev);
         }
 
         [Test, Category("Settings")]
-        public void PriceListCreatePackageTest()
+        public void PriceListCreateSeriesTest()
         {
             UITest(() =>
             {
-                Pages.PriceList_Page.DevCreatePriceListPackageApplicaiton();
+                Pages.PriceList_Page.DevCreatePriceListSeriesApplicaiton();
             }, Pages.PriceList_Page.PriceListCancelDev);
         }
 
@@ -574,7 +590,6 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Reports_Page.ContactReportApplication();
-
             }, Pages.Reports_Page.PopupButton);
         }
 
@@ -602,7 +617,6 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Reports_Page.EnterReportScreen();
                 Pages.Reports_Page.AuditReportApplication();
             }, Pages.Reports_Page.PopupButton);
         }
@@ -624,7 +638,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.DragAndDropTemporaryList();
-            });
+            }, Pages.Scheduler_Page.CancelledMeetingWindow, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Scheduler")]
@@ -633,8 +647,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.DragAndDropStandbyList();
-
-            }, Pages.Scheduler_Page.CancelledMeetingWindow);
+            }, Pages.Scheduler_Page.CancelledMeetingWindow, Pages.Home_Page.PopupClose);
          }
 
         [Test, Category("Scheduler")]
@@ -643,7 +656,6 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.StandbySetMeetingApplication();
-
             }, Pages.Standby_Page.CancelStandby);
         }
 
@@ -674,7 +686,7 @@ namespace DoctorWeb
             {
                 Pages.Scheduler_Page.EnterOpenBlockWindow();
                 Pages.BlockOpen_Page.CloseWindow.ClickOn();
-            });
+            }, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Scheduler")]
@@ -684,7 +696,7 @@ namespace DoctorWeb
             {
                 Pages.Scheduler_Page.EnterStanbyWindow();
                 Pages.StandbyList_Page.CloseWindow.ClickOn();
-            });
+            }, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Scheduler")]
@@ -693,7 +705,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.BlockOpen_Page.BlockCreateEmptyApplication();
-            });
+            }, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Scheduler")]
@@ -710,9 +722,13 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.PriceList_Page.PriceListFirstCodeName();
+                Pages.Patient_Page.NewPatientApplication();
+                Pages.Patient_Page.ClosePatientTab.ClickOn();
+                Pages.Home_Page.EnterAvailbleTime();
+                Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CreateMeetingApplication();
             }, Pages.Meeting_Page.CancelMeeting);
-
         }
 
         [Test, Category("Scheduler")]
@@ -729,7 +745,9 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Home_Page.EnterAvailbleTime();
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
+                Pages.Meeting_Page.CancelMeeting.ClickOn();
             }, Pages.AvailbleTime_Page.CloseWindow);
         }
 
@@ -743,7 +761,7 @@ namespace DoctorWeb
             });
         }
 
-
+        [Ignore("no ready")]
         [Test, Category("Authorization")]
         public void TherapistLoginTest()
         {
@@ -769,9 +787,6 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Patient_Page.NewPatientApplication();
-                Pages.PatientMedical_Page.EnterMedicalTab();
-                Pages.PatientMedical_Page.EnterMedicineTable();
                 Pages.PatientMedical_Page.CreateNewMedicineApplication();
                 Pages.PatientMedical_Page.EnterNoteTable();
                 Pages.PatientMedical_Page.CreateNewNoteApplication();
@@ -793,6 +808,8 @@ namespace DoctorWeb
                 softAssert.VerifyElementIsPresent(Pages.UsersManagement_Page.PracticesManagerButton);
                 Pages.Home_Page.UserAuthorizationScreen.ClickWait();
                 softAssert.VerifyElementIsPresent(Pages.Authorization_Page.GroupCreate);
+                Pages.Home_Page.DevPricelistScreen.ClickWait();
+                Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
                 Pages.Home_Page.GeneralScreen.ClickWait();
                 Pages.Patient_Page.NewPatientApplication();
                 Pages.Patient_Page.ClosePatientTab.ClickOn();
@@ -801,5 +818,4 @@ namespace DoctorWeb
             });
         }
     }
-
 }

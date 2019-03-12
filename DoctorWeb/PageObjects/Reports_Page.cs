@@ -202,21 +202,25 @@ namespace DoctorWeb.PageObjects
             NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
             NotificationReportExcel.ClickOn();
             NotficationReportShow.ClickOn();
-            softAssert.VerifyElementIsPresent(NotificationOutput);
+            if (Browser.Driver.FindElement(By.XPath("//*[@id='popup-btn-OK']")).Displayed)
+            {
+                Browser.Driver.FindElement(By.XPath("//*[@id='popup-btn-OK']")).ClickOn();
+            }
+            else if (!Browser.Driver.FindElement(By.XPath("//*[@id='popup-btn-OK']")).Displayed) {
+                softAssert.VerifyElementIsPresent(NotificationOutput);
+            }
         }
 
         public void AuditReportApplication()
         {
+            Pages.Reports_Page.EnterReportScreen();
+
             Thread.Sleep(500);
             AuditReportTab.ClickOn();
             ShowAuditReport.ClickOn();
             if (Pages.Home_Page.CloseTab.Displayed)
             {
                 Pages.Home_Page.CloseTab.ClickOn();
-            }
-            else
-            {
-                Assert.Fail();
             }
         }
 

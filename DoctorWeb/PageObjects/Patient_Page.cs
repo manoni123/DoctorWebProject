@@ -11,6 +11,7 @@ namespace DoctorWeb.PageObjects
     public class Patient_Page
     {
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -71,7 +72,6 @@ namespace DoctorWeb.PageObjects
         public IWebElement PatientDocument { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[3]/span")]
-        [CacheLookup]
         public IWebElement PatientVisits { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[5]/span")]
@@ -104,10 +104,20 @@ namespace DoctorWeb.PageObjects
         //create or fill method to call to use in tests
         public void NewPatientApplication()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickOn();
-            PatientExecute();
-            PatientConfirmCreate();
+            if (Constant.patientCreated == false)
+            {
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickOn();
+                PatientExecute();
+                PatientConfirmCreate();
+                Constant.patientCreated = true;
+            } else if (Constant.patientCreated == true)
+            {
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickOn();
+                Pages.Patient_Page.ClosePatientTab.ClickOn();
+                utility.TextClearDropdownAndEnter(Pages.Home_Page.SearchBox, PatientUseName);
+            }
         }
 
         public void NewConfidentialPatientApplication()
@@ -118,7 +128,6 @@ namespace DoctorWeb.PageObjects
             PatientConfirmCreate();
             var isCheck = Browser.Driver.FindElement(By.XPath("//*[@id='tab3_Confidential']")).GetAttribute("checked");
             Assert.IsTrue(isCheck == "true");
-
         }
 
         //fill patient form with MUST-only credentials
@@ -140,8 +149,9 @@ namespace DoctorWeb.PageObjects
         }
 
         public void PatientConfirmCreate() {
-            SaveButton.ClickOn();
+            SaveButton.ClickWait();
             softAssert.VerifyElementIsPresent(PatientEditButton);
+            Thread.Sleep(500);
         }
 
         public void PatientCloseTab() {
@@ -198,7 +208,7 @@ namespace DoctorWeb.PageObjects
         public void EnterPatientVisits()
         {
             PatientVisits.ClickWait();
-            softAssert.VerifyElementIsPresent(Pages.Visits_Page.TherapistDropdown);
+//            softAssert.VerifyElementIsPresent(Pages.Visits_Page.TherapistDropdown);
         }
 
         public void EnterPatientMessages()

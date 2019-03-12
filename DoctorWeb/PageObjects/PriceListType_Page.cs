@@ -69,30 +69,26 @@ namespace DoctorWeb.PageObjects
             PriceListTypeName.EnterText(Constant.priceListName);
             PriceListTypeApprove.ClickOn();
             int priceListCountAfter = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
-            Thread.Sleep(500);
             Assert.AreNotEqual(priceListCount, priceListCountAfter);
         }
 
         public void PriceListTypeDeleteApplication()
         {
-            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
             Pages.PriceListType_Page.PriceListTypeCreateApplication();
-
             int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeDelete.ClickOn();
             DeleteApprove.ClickOn();
             int priceListCountAfter = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
+            Thread.Sleep(500);
             Assert.AreNotEqual(priceListCount, priceListCountAfter);
 
         }
 
         public void PriceListTypeEditApplication()
         {
-            Pages.PriceListType_Page.EnterPriceLisTypeScreen();
             Pages.PriceListType_Page.PriceListTypeCreateApplication();
-
             PriceListTypeEdit.ClickOn();
-            PriceListTypeName.EnterClearText("Edit");
+            PriceListTypeName.EnterClearText("Edit" + RandomNumber.smallNumber());
             PriceListTypeApprove.ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Home_Page.SuccessPopup);
         }
