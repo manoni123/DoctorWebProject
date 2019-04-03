@@ -59,6 +59,14 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CodeSearch { get; set; }
 
+        [FindsBy(How = How.ClassName, Using = "btn_codeBrowser")]
+        [CacheLookup]
+        public IWebElement CodeBroswer { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr/td[5]/div/input")]
+        [CacheLookup]
+        public IWebElement CodeBroswerFirstCode { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//*[@id='createAppointmentForm']/div/div[2]/div[1]/div[1]/div[5]/div[2]/span[1]/span/input[1]")]
         [CacheLookup]
         public IWebElement MeetingDuration { get; set; }
@@ -92,14 +100,9 @@ namespace DoctorWeb.PageObjects
             utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
             Thread.Sleep(500);
             PriceList.ClickWait();
-            Actions actions = new Actions(Browser.chromebDriver);
-            CodeSearch.ClickOn();
-            actions.MoveToElement(CodeSearch);
-            utility.TextClearDropdownAndEnter(Browser.Driver.FindElement(By.Id("TreatmentCode_AutoComplete_PriceListCode")), Constant.priceListExistCode);
-            actions.Build().Perform();
-            actions.SendKeys(Constant.priceListExistCode);
+            CodeBroswer.ClickOn();
+            CodeBroswerFirstCode.ClickOn();
             SaveTreatmentFromPricelist.ClickOn();
-       //     utility.ClickDropdownAndEnter(RepeatField);
             ApproveMeeting.ClickOn();
             softAssert.VerifySuccessMsg();
         }
@@ -110,24 +113,17 @@ namespace DoctorWeb.PageObjects
             utility.ClickDropdownAndEnter(CodeSearch);
             SaveTreatmentFromPricelist.ClickOn();
             Thread.Sleep(500);
-            utility.ClickDropdownAndEnter(RepeatField);
+         //   utility.ClickDropdownAndEnter(RepeatField);
             ApproveMeeting.ClickOn();
         }
 
         public void CreateMeetingKnownPatient()
         {
-            Thread.Sleep(500);
-            SearchPatient.Clear();
-            SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
-            Thread.Sleep(1500);
-            SearchPatient.SendKeys(Keys.ArrowDown);
-            Thread.Sleep(1000);
-            SearchPatient.SendKeys(Keys.Enter);
-            Thread.Sleep(500);
-            SearchPatient.SendKeys(Keys.Tab);
-            Thread.Sleep(500);
             PriceList.ClickOn();
-            CodeSearch.ClickOn();
+            Browser.Driver.FindElement(By.Id("Code_AutoComplete_PriceListCode")).EnterClearText(Constant.priceListExistCode);
+            utility.ClickDropdownAndEnter(CodeSearch);
+            SaveTreatmentFromPricelist.ClickOn();
+            Thread.Sleep(500);
             ApproveMeeting.ClickOn();
         }
     }

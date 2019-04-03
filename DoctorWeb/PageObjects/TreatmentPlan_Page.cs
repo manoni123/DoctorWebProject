@@ -56,7 +56,7 @@ namespace DoctorWeb.PageObjects
         }
 
         public void CreateNewTreatmentPlanApplication() {
-            Pages.PriceList_Page.PriceListFirstCodeName();
+            Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Home_Page.SettingScreen.ClickWait();
             Pages.Home_Page.DevGeneralScreen.ClickWait();
             TreatmentPlanPage.ClickWait();

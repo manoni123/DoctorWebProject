@@ -48,6 +48,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement UserCancelBtn { get; set; }
 
+        [FindsBy(How = How.Id, Using = "btnCancelCreateUser")]
+        [CacheLookup]
+        public IWebElement UserPrevBtn { get; set; }
+
         [FindsBy(How = How.Id, Using = "Email_validationMessage")]
         [CacheLookup]
         public IWebElement UserEmailVerification { get; set; }
@@ -79,6 +83,10 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.Id, Using = "btnEditUser")]
         [CacheLookup]
         public IWebElement EditUserBtn { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnCancelCreateUser")]
+        [CacheLookup]
+        public IWebElement UserEditCancelBtn { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id=\"panelUserBusiness\"]/div/div/div/ul/li[1]")]
         [CacheLookup]
@@ -164,7 +172,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement TherapistDropdownPracticeList { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='userActiveHours']/tbody/tr[1]/td[7]/span")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='userActiveHours']/tbody/tr[2]/td[7]/span")]
         [CacheLookup]
         public IWebElement TherapistSchedulerBranchDropdown { get; set; }
         
@@ -234,89 +242,12 @@ namespace DoctorWeb.PageObjects
         //Application to edit user - change setting and save.
         public void UserEditApplication()
         {
-            try
-            {
-                //Select Second User on List (If Any) And perform some edit.
-                //First user = current user.
-            int rowCount = Browser.Driver.FindElements(By.XPath("//*[@id=\"gridUsers\"]/div[2]/div[1]/table/tbody/tr")).Count;
-            if (rowCount < 2)
-            {
-                Log.Error("Fail Test on puprose, Reason: " + Environment.NewLine + "The User only has one user in the table - himself");
-                Assert.Fail();
-            }
-
-            //edit 2nd user on list
-                EditUSer.ClickOn();
-                UserName.EnterClearText(Constant.userName);
-                UserLastname.EnterClearText(Constant.userLastName);
-                UserEmail.EnterClearText(Constant.userEmail);
-                UserMobile.EnterClearText(Constant.userPhone);
-
-                //moves to determine setting
-                EditUserTab2.ClickOn();
-                GroupSelect.ClickOn();
-                GroupSelect.SendKeys(Keys.ArrowDown);
-                GroupSelect.ClickOn();
-          
-                //moves to user activty screen
-                //select first business >>> first Branch >> marks all departments
-                EditUserTab3.ClickOn();
-                SelectBusinessOnUserCreate.ClickOn();
-                //SelectBranchOnUserCreate.ClickOn();
-
-                //check if save without selecting department
-                UserContinueBtn.ClickOn();
-                if (!SelectBusinessOnUserCreate.IsDisplayed("check activity window"))
-                {
-                    Log.Error("Test Failed - saved without select department");
-                    Assert.Fail();
-                }
-                else
-                {
-                    SelectDepartmentOnUserCreate.ClickOn();
-                    UserContinueBtn.ClickOn();
-                }
-
-                int minusCount = 6;
-                while (minusCount != 0)
-                {
-                    MinusClick.ClickOn();
-                    minusCount--;
-                    Thread.Sleep(300);
-                }
-
-                Thread.Sleep(500);
-                UserContinueBtn.ClickOn();
-                if (!UserWindow.IsDisplayed("user window"))
-                {
-                    Log.Error("Saved without branch select");
-                    Assert.Fail();
-                }
-                else
-                {
-                    TherapistBranchList.ClickOn();
-                }
-                //save complete user - check if window closed
-                UserContinueBtn.ClickOn();
-                if (UserWindow.IsDisplayed("user window"))
-                {
-                    Log.Error("Saved but didnt close window - fail");
-                    Assert.Fail();
-                }
-                else {
-
-                    //select department
-                    SelectDepartmentOnUserCreate.ClickOn();
-                    Log.Info("pressed on the first ");
-                    UserContinueBtn.ClickOn();
-                }
-
-             }
-                catch (Exception e)
-                {
-                    Log.Debug(e);
-                }
-
+            Pages.Home_Page.ProfileList.ClickOn();
+            Pages.Home_Page.ProfileButton.ClickOn();
+            Pages.UserProfile_Page.GeneralSetting.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(Pages.UserProfile_Page.GeneralSettingCheckbox, Pages.Home_Page.PopupClose);
+            Pages.UserProfile_Page.ActivityScope.ClickOn();
+            Pages.Home_Page.PopupClose.ClickOn();
         }
 
         public void EnterPracticeWindow()
@@ -380,7 +311,7 @@ namespace DoctorWeb.PageObjects
         public void therapistSchedulerSetup() {
             int rowCount = utility.TableCount("//*[@id='userActiveHours']/tbody");
             while (rowCount > 1) {
-                Browser.Driver.FindElement(By.XPath("//*[@id='userActiveHours']/tbody/tr[1]/td[8]/img[2]")).ClickOn();
+                Browser.Driver.FindElement(By.XPath("//*[@id='userActiveHours']/tbody/tr[2]/td[8]/img[2]")).ClickOn();
                 rowCount--;
             }
             Thread.Sleep(1000);

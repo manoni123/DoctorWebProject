@@ -113,6 +113,7 @@ namespace DoctorWeb
                 Pages.Treatment_Page.CreateNewSingleTreatmentApplication();
             }, Pages.Home_Page.PopupClose);
         }
+
         [Ignore("")]
         [Test, Category("Users")]
         public void AuthorizationSecretaryTest()
@@ -127,7 +128,10 @@ namespace DoctorWeb
         [Test, Category("Medical")]
         public void AnamnezaCreateTest()
         {
-            utility.TestWrap(Pages.PatientMedical_Page.CreateNewAnamnezaApplication, Pages.PatientMedical_Page.CloseAnamnezaTable);
+            UITest(() =>
+            {
+                Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
+            }, Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
         [Ignore("ff")]
@@ -165,7 +169,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.PatientMedical_Page.AddICDApplication();
-            }, Pages.PatientMedical_Page.ICDCancel);
+            }, Pages.PatientMedical_Page.ICDCancel, Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
         [Test, Category("Medical")]
@@ -173,9 +177,6 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Patient_Page.NewPatientApplication();
-                Pages.PatientMedical_Page.EnterMedicalTab();
-                Pages.PatientMedical_Page.EnterNoteTable();
                 Pages.PatientMedical_Page.CreateNewNoteApplication();
             }, Pages.PatientMedical_Page.CloseNotesTable);
         }
@@ -309,7 +310,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.UsersManagement_Page.CreateTherapistUserApplication();
-            });
+            }, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Settings")]
@@ -347,8 +348,6 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Business_Page.CheckDepartmentIsNull();
-                Pages.Business_Page.EnterDepaertmentWindow();
                 Pages.Business_Page.EditDepartmentApplicaiton();
                 Pages.Business_Page.DepartmentCloseButton.ClickOn();
             }, Pages.Business_Page.DepartmentCloseButton);
@@ -370,16 +369,6 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.PriceList_Page.DeleteCategoryApplication();
-            });
-        }
-
-        [Ignore("skip Test")]
-        [Test, Category("Settings")]
-        public void CategoryActiveDeleteTest()
-        {
-            UITest(() =>
-            {
-                Pages.PriceList_Page.DeleteActiveCategoryApplication();
             });
         }
 
@@ -460,7 +449,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.TreatmentPlan_Page.CreateNewTreatmentPlanApplication();
-            }, Pages.Home_Page.PopupClose);
+            }, Pages.Home_Page.PopupClose, Pages.Home_Page.PopupClose);
         }
 
         //users
@@ -470,6 +459,16 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.UsersManagement_Page.CreateUserApplication();
+            }, Pages.Home_Page.PopupClose);
+        }
+
+        //users
+        [Test, Category("Settings")]
+        public void UserEditTest()
+        {
+            UITest(() =>
+            {
+                Pages.UsersManagement_Page.UserEditApplication();
             }, Pages.Home_Page.PopupClose);
         }
 
@@ -611,15 +610,6 @@ namespace DoctorWeb
             }, Pages.Reports_Page.PopupButton);
         }
 
-        [Ignore("Not ready")]
-        [Test, Category("Reports")]
-        public void ReportAuditTest()
-        {
-            UITest(() =>
-            {
-                Pages.Reports_Page.AuditReportApplication();
-            }, Pages.Reports_Page.PopupButton);
-        }
 
         //+++++++++++++Scheduler Tests++++++++++++++++++//
 
@@ -629,7 +619,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Home_Page.LockApplication();
-            });
+            }, Pages.Home_Page.LockScreenExit);
         }
 
         [Test, Category("Scheduler")]
@@ -642,6 +632,7 @@ namespace DoctorWeb
         }
 
         [Test, Category("Scheduler")]
+
         public void DragAndDropToStandbyTest()
         {
             UITest(() =>
@@ -722,7 +713,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.PriceList_Page.PriceListFirstCodeName();
+               //Pages.PriceList_Page.PriceListFirstCodeName();;
                 Pages.Patient_Page.NewPatientApplication();
                 Pages.Patient_Page.ClosePatientTab.ClickOn();
                 Pages.Home_Page.EnterAvailbleTime();
@@ -737,7 +728,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Standby_Page.CreateStandbyApplication();
-            }, Pages.Scheduler_Page.StandbyAppointmentCancel);
+            }, Pages.Scheduler_Page.StandbyAppointmentCancel, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Scheduler")]
@@ -749,36 +740,6 @@ namespace DoctorWeb
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CancelMeeting.ClickOn();
             }, Pages.AvailbleTime_Page.CloseWindow);
-        }
-
-        [Ignore("no ready")]
-        [Test, Category("Authorization")]
-        public void ManagerLoginTest()
-        {
-            UITest(() =>
-            {
-                Pages.Login_Page.LoginApplication();
-            });
-        }
-
-        [Ignore("no ready")]
-        [Test, Category("Authorization")]
-        public void TherapistLoginTest()
-        {
-            UITest(() =>
-            {
-                Pages.Login_Page.TherapistLogin();
-            });
-
-        }
-
-        [Test, Category("Authorization")]
-        public void ClerkLoginTest()
-        {
-            UITest(() =>
-            {
-                Pages.Login_Page.ClerkApplication();
-            });
         }
 
         //Create Patient > Create MEdicine> Create Note > Search Availble Time
@@ -794,7 +755,7 @@ namespace DoctorWeb
                 Pages.Home_Page.EnterAvailbleTime();
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CreateMeetingApplication();
-            });
+            }, Pages.Home_Page.PopupClose, Pages.Home_Page.PopupClose);
         }
 
         [Test, Category("Smoke"), Order(1)]
@@ -815,7 +776,7 @@ namespace DoctorWeb
                 Pages.Patient_Page.ClosePatientTab.ClickOn();
                 Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
                 Pages.Home_Page.PopupClose.ClickOn();
-            });
+            },Pages.Home_Page.PopupClose, Pages.Home_Page.PopupClose);
         }
     }
 }

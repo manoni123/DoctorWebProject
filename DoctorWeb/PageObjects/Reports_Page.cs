@@ -82,17 +82,29 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ShowAuditReport { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li.k-item.k-state-default.k-first")]
+        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(2)")]
+        [CacheLookup]
+        public IWebElement BuiltinReport { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[2]")]
         [CacheLookup]
         public IWebElement PatientReportTab { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(2)")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[3]")]
         [CacheLookup]
         public IWebElement ContactReportTab { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(3)")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[4]")]
         [CacheLookup]
         public IWebElement MeetingReportTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[5]")]
+        [CacheLookup]
+        public IWebElement NotificationReportTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[6]")]
+        [CacheLookup]
+        public IWebElement AuditReportTab { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnPrintSchedulerEvents")]
         [CacheLookup]
@@ -122,14 +134,6 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement NotificationOutput { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(4)")]
-        [CacheLookup]
-        public IWebElement NotificationReportTab { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li.k-item.k-state-default.k-last")]
-        [CacheLookup]
-        public IWebElement AuditReportTab { get; set; }
-
         [FindsBy(How = How.ClassName, Using = "error-notification")]
         [CacheLookup]
         public IWebElement ErrorToast { get; set; }
@@ -146,28 +150,34 @@ namespace DoctorWeb.PageObjects
         public void EnterReportScreen() {
             Thread.Sleep(500);
             Pages.Home_Page.ReportScreen.ClickWait();
+            Pages.Reports_Page.BuiltinReport.ClickWait();
         }
 
         public void PatientReportApplication()
         {
             Pages.Reports_Page.EnterReportScreen();
-
-            var tabs = Browser.chromebDriver.WindowHandles;
-
+            Pages.Reports_Page.PatientReportTab.ClickWait();
             Thread.Sleep(500);
             PatientReportFromDate.EnterClearText(Constant.dateMinusMonth);
             PatientReportExcel.ClickOn();
             PatientReportShow.ClickWait();
-
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.XPath("popup-btn-OK")).ClickOn();
+            }
         } 
+
         public void ContactReportApplication()
         {
             Pages.Reports_Page.EnterReportScreen();
-
             Thread.Sleep(500);
             ContactReportTab.ClickOn();
             ContactReportExcel.ClickOn();
             ContactReportShow.ClickOn();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.XPath("popup-btn-OK")).ClickOn();
+            }
             Thread.Sleep(500);
             softAssert.VerifyElementIsPresent(ContactOutputName);
         }
@@ -179,18 +189,15 @@ namespace DoctorWeb.PageObjects
             var tabs = Browser.chromebDriver.WindowHandles;
 
             Thread.Sleep(500);
-            MeetingReportTab.ClickOn();
+            MeetingReportTab.ClickWait();
             MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth);
             MeetingReportExcel.ClickOn();
             MeetingReportShow.ClickOn();
-            softAssert.VerifyElementIsPresent(MeetingReportOutput);
-
-            if (tabs.Count > 1)
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
             {
-                Browser.chromebDriver.SwitchTo().Window(tabs[1]);
-                Browser.chromebDriver.Close();
-                Browser.chromebDriver.SwitchTo().Window(tabs[0]);
+                Browser.Driver.FindElement(By.Id("popup-btn-OK")).ClickOn();
             }
+            softAssert.VerifyElementIsPresent(MeetingReportOutput);
         }
 
         public void NotificationReportApplication()
@@ -202,12 +209,9 @@ namespace DoctorWeb.PageObjects
             NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
             NotificationReportExcel.ClickOn();
             NotficationReportShow.ClickOn();
-            if (Browser.Driver.FindElement(By.XPath("//*[@id='popup-btn-OK']")).Displayed)
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
             {
-                Browser.Driver.FindElement(By.XPath("//*[@id='popup-btn-OK']")).ClickOn();
-            }
-            else if (!Browser.Driver.FindElement(By.XPath("//*[@id='popup-btn-OK']")).Displayed) {
-                softAssert.VerifyElementIsPresent(NotificationOutput);
+                Browser.Driver.FindElement(By.Id("popup-btn-OK")).ClickOn();
             }
         }
 

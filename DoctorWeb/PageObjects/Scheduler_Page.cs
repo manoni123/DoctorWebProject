@@ -102,7 +102,7 @@ namespace DoctorWeb.PageObjects
         public IWebElement StandbyAppointmentCancel { get; set; }
 
         public void DragAndDropTemporaryList() {
-            Pages.PriceList_Page.PriceListFirstCodeName();
+           // //Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
             Thread.Sleep(500);
@@ -111,33 +111,42 @@ namespace DoctorWeb.PageObjects
             var schedulerRows = utility.TableCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             var schedulerCells = utility.TableDataCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             int numOfCellInRow = schedulerCells / schedulerRows;
-            for (int td = 1; td < schedulerCells; td++)
+            int currentRow = 1;
+            for (int td = 1; td < schedulerCells;)
             {
-                IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + td + "]/td[" + td + "]"));
+                IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + currentRow + "]/td[" + td + "]"));
                 (new Actions(Browser.chromebDriver)).DoubleClick(singleCell).Perform();
-                if (utility.IsElementVisible(Browser.chromebDriver, By.Id("ic_problem")))
+                if (Pages.Home_Page.ErrorPopup.IsDisplayed("error popup"))
                 {
-                    //nothing
+                    Pages.Home_Page.ErrorPopup.ClickOn();
+                    td++;
+                    if (td == numOfCellInRow)
+                    {
+                        currentRow++;
+                        td = 1;
+                    }
                 }
-                else if (Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
+                else if (Pages.Meeting_Page.CancelMeeting.Displayed)
                 {
-                    //enter inside exist meeting
-                    Pages.Meeting_Page.CancelMeeting.ClickOn();
-                    dragAndDropWaitListAction();
                     break;
                 }
-                else if (!Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
-                {
-                    Pages.Meeting_Page.CreateMeetingApplication();
-                    dragAndDropWaitListAction();
-                    break;
-                }
+            }
+            if (Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
+            {
+                //enter inside exist meeting
+                Pages.Meeting_Page.CancelMeeting.ClickOn();
+                dragAndDropWaitListAction();
+            }
+            else if (!Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
+            {
+                Pages.Meeting_Page.CreateMeetingApplication();
+                dragAndDropWaitListAction();
             }
         }
 
         public void DragAndDropStandbyList()
         {
-            Pages.PriceList_Page.PriceListFirstCodeName();
+            //Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
 
@@ -147,26 +156,41 @@ namespace DoctorWeb.PageObjects
             var schedulerRows = utility.TableCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             var schedulerCells = utility.TableDataCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             int numOfCellInRow = schedulerCells / schedulerRows;
-            for (int td = 1; td < schedulerCells; td++)
+            int currentRow = 1;
+            var errorPop = Browser.Driver.FindElements(By.ClassName("ic_problem"));
+        //    var popupClose = Browser.Driver.FindElements(By.ClassName("popup-close-button"));
+
+            for (int td = 1; td < schedulerCells;)
             {
-                IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr["+td+"]/td["+td+"]"));
+                IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + currentRow + "]/td[" + td + "]"));
                 (new Actions(Browser.chromebDriver)).DoubleClick(singleCell).Perform();
-                if (utility.IsElementVisible(Browser.chromebDriver, By.Id("ic_problem"))) {
-                    //nothing
-                }
-                else if (Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
+                Thread.Sleep(200);
+                if (Pages.Home_Page.ErrorPopup.IsDisplayed("error popup"))
                 {
-                    //enter inside exist meeting
-                    Pages.Meeting_Page.CancelMeeting.ClickOn();
-                    dragAndDropStandbyAction();
+                    Pages.Home_Page.ErrorPopup.ClickOn();
+                    td++;
+                    if (td == numOfCellInRow)
+                    {
+                        currentRow++;
+                        td = 1;
+                    }
+                }
+                else
+                {
                     break;
                 }
-                else if (!Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
-                {
-                    Pages.Meeting_Page.CreateMeetingApplication();
-                    dragAndDropStandbyAction();
-                    break;
-                }
+            }
+            if (Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
+            {
+                //enter inside exist meeting
+                Pages.Meeting_Page.CancelMeeting.ClickOn();
+                dragAndDropStandbyAction();
+                
+            }
+            else if (!Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
+            {
+                Pages.Meeting_Page.CreateMeetingApplication();
+                dragAndDropStandbyAction();
             }
         }
 

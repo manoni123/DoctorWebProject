@@ -214,8 +214,7 @@ namespace DoctorWeb.PageObjects
 
         public void DeleteActiveCategoryApplication()
         {
-                            Pages.PriceList_Page.CreateCategoryApplication();
-
+            Pages.PriceList_Page.CreateCategoryApplication();
             CategoryManager.ClickOn();
             if (CategoryDelete.IsDisplayed("if delete action is shown"))
             {
@@ -224,7 +223,6 @@ namespace DoctorWeb.PageObjects
             else {
                 CategoryCloseWindow.ClickOn();
             }
-
         }
 
         public void EditCategoryApplication() {
@@ -260,7 +258,7 @@ namespace DoctorWeb.PageObjects
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
             var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
-            Assert.AreEqual(listCountAfter, listCount+1);
+            Assert.AreNotEqual(listCountAfter, listCount);
         }
 
        

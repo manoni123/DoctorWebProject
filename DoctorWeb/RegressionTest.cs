@@ -249,25 +249,14 @@ namespace DoctorWeb
         [Test, Category("Settings")]
         public void ExpertiseDeleteTest()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
-            Pages.UsersManagement_Page.DeletePracticeApplication();
-        }
 
-        [Ignore("skip Test")]
-        [Test, Category("Settings")]
-        public void ExpertiseDeleteActiveTest()
-        {
-            Pages.UsersManagement_Page.CreatePracticeApplication();
-            //create practice now create user and use the new practice
-            Pages.UsersManagement_Page.CreateUserApplication(); 
+            Pages.UsersManagement_Page.DeletePracticeApplication();
         }
 
         [Test, Category("Settings")]
         public void DepartmentCreateTest()
         {
-            Pages.Business_Page.CheckDepartmentIsNull();
-            Pages.Business_Page.EnterDepaertmentWindow();
+
             Pages.Business_Page.CreateDepartmentApplication();
             Pages.Business_Page.DepartmentCloseButton.ClickOn();
         }

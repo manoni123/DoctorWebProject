@@ -361,6 +361,10 @@ namespace DoctorWeb.PageObjects
         //create new note applicaiton
         public void CreateNewNoteApplication()
         {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.PatientMedical_Page.EnterNoteTable();
+
             string NoteNewName = "note" + RandomNumber.smallNumber();
             CreateNewNote.ClickOn();
             NoteDescription.SendKeys(Constant.noteName);

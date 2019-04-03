@@ -36,6 +36,19 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement EditUserButton { get; set; }
 
+        [FindsBy(How = How.Id, Using = "editUserTab2")]
+        [CacheLookup]
+        public IWebElement GeneralSetting { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='EditUserTab2']/div/div[3]/div/label")]
+        [CacheLookup]
+        public IWebElement GeneralSettingCheckbox { get; set; }
+
+        [FindsBy(How = How.Id, Using = "editUserTab3")]
+        [CacheLookup]
+        public IWebElement ActivityScope { get; set; }
+
+
         public void EdiProfileApplication()
         {
             Thread.Sleep(500);

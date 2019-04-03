@@ -265,6 +265,8 @@ namespace DoctorWeb.PageObjects
 
         public void EditDepartmentApplicaiton()
         {
+                            Pages.Business_Page.CheckDepartmentIsNull();
+                Pages.Business_Page.EnterDepaertmentWindow();
             DepartmentEdit.ClickOn();
             DepartmentName.Clear();
             DepartmentConfirm.ClickOn();

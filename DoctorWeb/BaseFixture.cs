@@ -117,10 +117,14 @@ namespace DoctorWeb
                         mFile.MoveTo(bugDirectory + "\\" + imageName);
                     }
                 }
-                
-                if (window != null)
-                {
+
+                if (window != null) {
                     window.ClickOn();
+                    if (popup != null) {
+                        popup.ClickOn();
+                    } if (onTopPopup != null) {
+                        onTopPopup.ClickOn();
+                    }
                 }
 
                 Assert.Warn("Not a bug - Failed due to wrong code/compile");

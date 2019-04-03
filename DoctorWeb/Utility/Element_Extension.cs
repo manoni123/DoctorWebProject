@@ -101,7 +101,7 @@ namespace DoctorWeb.Utility
             try {
                 result = element.Displayed;
                 log.Info(ElementName + " is Displayed successfuly");
-            } catch (Exception) {
+            } catch (NoSuchElementException) {
                 result = false;
                 log.Error(ElementName + " is not displayed");
             }

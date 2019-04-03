@@ -60,11 +60,11 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SchedularScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(2)")]
+        [FindsBy(How = How.Id, Using = "btnSettings")]
         [CacheLookup]
         public IWebElement SettingScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(3)")]
+        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(2)")]
         [CacheLookup]
         public IWebElement ReportScreen { get; set; }
 
@@ -99,6 +99,10 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.Id, Using = "Password")]
         [CacheLookup]
         public IWebElement LockScreenPassword { get; set; }
+
+        [FindsBy(How = How.Id, Using = "logout")]
+        [CacheLookup]
+        public IWebElement LockScreenExit { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "ic-lock")]
         [CacheLookup]
@@ -188,7 +192,6 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             ProfileList.ClickOn();
             LogoutButton.ClickOn();
-            var text = Environment.NewLine;
             Assert.IsTrue(Pages.Login_Page.LoginButton.Displayed);
         }
 
