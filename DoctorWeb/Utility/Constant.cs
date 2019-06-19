@@ -1,22 +1,30 @@
 ﻿using System;
+using System.IO;
 
 namespace DoctorWeb.Utility
 {
     public static class Constant
     {
         public static string drWebUrl = "http://drweb-sys.com/Account/Login";
+        public static string newClientUrl = "https://hotfix1.drweb-sys.com/Account/Login";
         public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
+        public static string drwebMobileUrl = "http://test.m-staging.drweb-sys.com/login";
+        //1 = drweb , 2 = stage , 3 = mobile, 4 = hotfix
+        public static int VersionNumber = 2;
 
-        public static class Globals
-        {
-            public static int tabNum = 2;
-        }
+        //stored project logs report and images
+        public static string rootNetworkPath = (Path.GetPathRoot(Environment.SystemDirectory));
+        public static string logDirectory = "\\RON-PC\\Ron-Shared\\Reports\\"; //only a copy of app.config true directory
+        public static string reportDirectory = "\\\\RON-PC\\Ron-Shared\\Reports\\";
+        public static string bugImageCaptured = "\\\\RON-PC\\Ron-Shared\\bugsScreenshot\\";
 
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
         public static string groupUser = "reut@doctorwin.co.il";
-        public static string adminUser = "test@doctorwin.co.il";
+        public static string newClientUser = "serg_svp@doctorwin.co.il";
+        public static string testUser = "test@doctorwin.co.il";
         public static string loginPassword = "zxcv1234";
+        public static string prodPassword = "zxcv1234";
 
         public static string therapistUser = "therapist@doctorwin.co.il";
 

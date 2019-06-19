@@ -1,5 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
@@ -68,8 +69,8 @@ namespace DoctorWeb.Utility
                 string valueText = element.GetAttribute("data-tag");
                 utility.NameInElement(element, valueName, valueID, valueTag, valueText);
                 element.Click();
-
                 Thread.Sleep(_time);
+               // Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_time);
             }
             catch (Exception e) {
                 Debug.WriteLine(e);

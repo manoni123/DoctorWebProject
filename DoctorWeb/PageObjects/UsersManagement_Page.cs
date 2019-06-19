@@ -113,7 +113,6 @@ namespace DoctorWeb.PageObjects
         public IWebElement CreateNewPractice { get; set; }
 
         [FindsBy(How = How.Id, Using = "Name")]
-        [CacheLookup]
         public IWebElement PracticeName { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='ManageUserPractiseGrid']/div[2]/table/tbody/tr[1]/td[3]/a[1]")]
@@ -124,7 +123,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement EditPracticeApprove { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"ManageUserPractiseGrid\"]/div[2]/table/tbody/tr[2]/td[3]/a[1]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"ManageUserPractiseGrid\"]/div[2]/table/tbody/tr[1]/td[3]/a[1]")]
         [CacheLookup]
         public IWebElement PracticeEdit { get; set; }
 
@@ -178,6 +177,12 @@ namespace DoctorWeb.PageObjects
         
         public void EnterManagementWindow()
         {
+            Pages.Home_Page.SettingScreenProd.ClickWait();
+            Pages.Home_Page.UserManagementScreen.ClickWait();
+        }
+
+        public void DevEnterManagementWindow()
+        {
             Pages.Home_Page.SettingScreen.ClickWait();
             Pages.Home_Page.UserManagementScreen.ClickWait();
         }
@@ -185,7 +190,7 @@ namespace DoctorWeb.PageObjects
         //create a create user 
         public void CreateUserApplication()
         {
-            Pages.UsersManagement_Page.EnterManagementWindow();
+            Pages.UsersManagement_Page.DevEnterManagementWindow();
             CreateUser.ClickWait();
 
             softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
@@ -209,7 +214,7 @@ namespace DoctorWeb.PageObjects
         }
 
         public void CreateTherapistUserApplication() {
-            Pages.UsersManagement_Page.EnterManagementWindow();
+            Pages.UsersManagement_Page.DevEnterManagementWindow();
 
             CreateUser.ClickWait();
             softAssert.VerifyElementPresentInsideWindow(UserCancelBtn, UserCancelBtn);
@@ -258,47 +263,42 @@ namespace DoctorWeb.PageObjects
         //create practice in usermanagement window
         public void CreatePracticeApplication()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
+            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
 
+            var countBefore = utility.TableCount("//*[@id='ManageUserPractiseGrid']/div[2]/table/tbody");
             CreateNewPractice.ClickOn();
             PracticeApprove.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
             Thread.Sleep(500);
             PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
             PracticeApprove.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(PracticeDelete, PracticeWindowClose);
-            PracticeWindowClose.ClickOn();
+            var countAfter = utility.TableCount("//*[@id='ManageUserPractiseGrid']/div[2]/table/tbody");
+            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
         }
 
         //edit practice name
         public void EditPracticeApplication()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
+            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
 
             PracticeEdit.ClickOn();
-            PracticeName.Clear();
-            EditPracticeApprove.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(EmptyNameValidation, PracticeWindowClose);
-            Thread.Sleep(500);
             PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
             EditPracticeApprove.ClickOn();
-            PracticeWindowClose.ClickOn();
+            softAssert.VerifySuccessMsg();
         }
 
         public void DeletePracticeApplication()
         {
-            Pages.Home_Page.EnterUserManagmentScreen();
-            Pages.UsersManagement_Page.EnterPracticeWindow();
+            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
 
-            CreateNewPractice.ClickOn();
-            PracticeName.EnterClearText(Constant.practiceName + RandomNumber.smallNumber());
-            PracticeApprove.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(PracticeDelete, PracticeWindowClose);
+            var countBefore = utility.TableCount("//*[@id='ManageUserPractiseGrid']/div[2]/table/tbody");
             PracticeDelete.ClickOn();
             DeletePopup.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(PracticeWindowClose, PracticeWindowClose);
+            var countAfter = utility.TableCount("//*[@id='ManageUserPractiseGrid']/div[2]/table/tbody");
             PracticeWindowClose.ClickOn();
         }
 

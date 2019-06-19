@@ -64,7 +64,7 @@ namespace DoctorWeb.PageObjects
             CreateTreatmentPlan.ClickWait();
             TreatmentPlanName.EnterClearText(Constant.treatmentPlan);
             utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
-            TreatmentPlanSave.ClickOn();
+            TreatmentPlanSave.ClickWait();
             var countAfter = utility.TableCount("//*[@id='gridTreatmentPlanTemplates']/div[2]/table/tbody");
             softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
         }

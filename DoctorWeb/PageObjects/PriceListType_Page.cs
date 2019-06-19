@@ -74,7 +74,6 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTypeDeleteApplication()
         {
-            Pages.PriceListType_Page.PriceListTypeCreateApplication();
             int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeDelete.ClickOn();
             DeleteApprove.ClickOn();
@@ -86,7 +85,6 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTypeEditApplication()
         {
-            Pages.PriceListType_Page.PriceListTypeCreateApplication();
             PriceListTypeEdit.ClickOn();
             PriceListTypeName.EnterClearText("Edit" + RandomNumber.smallNumber());
             PriceListTypeApprove.ClickOn();

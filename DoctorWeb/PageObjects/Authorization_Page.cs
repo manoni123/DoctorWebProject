@@ -85,11 +85,18 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementIsPresent(GroupCreate);
         }
 
+        public void EnterAuthorizationScreenProd()
+        {
+            Thread.Sleep(500);
+            Pages.Home_Page.SettingScreenProd.ClickWait();
+            Pages.Home_Page.UserAuthorizationScreen.ClickWait();
+            softAssert.VerifyElementIsPresent(GroupCreate);
+        }
+
         //create new permission group
         public void CreateGroupApplication()
         {
-            Pages.Authorization_Page.EnterAuthorizationScreen();
-
+            var countBefore = utility.ListCount("//*[@id='panelGroup']/div/div/div/ul");
             GroupCreate.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(GroupCancel, GroupCancel);
             GroupName.EnterClearText("11");
@@ -98,14 +105,12 @@ namespace DoctorWeb.PageObjects
             GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber());
             Thread.Sleep(500);
             GroupSave.ClickOn();
-           // softAssert.VerifyElementNotPresent(GroupCancel);
+            var countAfter = utility.ListCount("//*[@id='panelGroup']/div/div/div/ul");
+            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
         }
 
         public void EditGroupApplication()
         {
-            Pages.Authorization_Page.EnterAuthorizationScreen();
-            Pages.Authorization_Page.CreateGroupApplication();
-
             softAssert.VerifyElementPresentInsideWindow(GroupeEdit, GroupCancel);
             GroupeEdit.ClickOn();
             GroupName.EnterClearText("11");
@@ -118,14 +123,13 @@ namespace DoctorWeb.PageObjects
 
         public void DeleteGroupApplication()
         {
-            Pages.Authorization_Page.EnterAuthorizationScreen();
-            Pages.Authorization_Page.CreateGroupApplication();
-
+            var countBefore = utility.ListCount("//*[@id='panelGroup']/div/div/div/ul");
             var lastGroupNum = utility.ListCount("//*[@id='panelGroup']/div/div/div/ul");
             IWebElement deleteLastGroup = Browser.Driver.FindElement(By.XPath("//*[@id='panelGroup']/div/div/div/ul/li[" + lastGroupNum + "]/span[5]"));
             deleteLastGroup.ClickOn();
-            ApproveDelete.ClickOn();
-            softAssert.VerifySuccessMsg();
+            ApproveDelete.ClickWait();
+            var countAfter = utility.ListCount("//*[@id='panelGroup']/div/div/div/ul");
+            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
         }
 
         public void SecretaryPermissionApplication() {

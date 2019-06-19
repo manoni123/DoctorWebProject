@@ -149,5 +149,6 @@ namespace DoctorWeb.Utility
             return driver.FindElements(element).Count > 0
                 && driver.FindElement(element).Displayed;
         }
+
     }
 }

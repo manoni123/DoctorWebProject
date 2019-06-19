@@ -177,5 +177,10 @@ namespace DoctorWeb
             get { return GetPage<TreatmentPlan_Page>(); }
         }
 
+        public static MobileTherapist_Page MobileTherapist_Page
+        {
+            get { return GetPage<MobileTherapist_Page>(); }
+        }
+
     }
 }

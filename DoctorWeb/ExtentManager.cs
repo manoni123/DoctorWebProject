@@ -2,7 +2,7 @@
 
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Reporter.Configuration;
-
+using DoctorWeb.Utility;
 using NUnit.Framework;
 
 namespace AventStack.ExtentReports.Tests.Parallel
@@ -18,7 +18,8 @@ namespace AventStack.ExtentReports.Tests.Parallel
             DateTime date = DateTime.Now; // will give the date for today
             string dateWithFormat = date.ToString("dd"+"-"+"MM"+"-"+ "yyyy" + "-" + "HH" + "-" + "mm");
 
-            var htmlReporter = new ExtentHtmlReporter(TestContext.CurrentContext.TestDirectory + "\\Reports\\Report Date"  + dateWithFormat + ".html");
+            //TestContext.CurrentContext.TestDirectory
+            var htmlReporter = new ExtentHtmlReporter(Constant.reportDirectory + "Report Date"  + dateWithFormat + ".html");
             htmlReporter.Configuration().ChartLocation = ChartLocation.Top;
             htmlReporter.Configuration().ChartVisibilityOnOpen = true;
             htmlReporter.Configuration().DocumentTitle = "Extent/NUnit Samples";

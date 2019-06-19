@@ -67,9 +67,7 @@ namespace DoctorWeb.PageObjects
             IWebElement treatmentList = Browser.Driver.FindElement(By.Id("newItemMenu"));
             treatmentList.FindElements(By.TagName("li")).ElementAt(0).ClickOn();
             utility.ClickDropdownAndEnter(SelectTerapist);
-            utility.TextDropdownAndEnter(SelectCode, pricelistCodeID);
-            var codeSelectedDesc = Browser.Driver.FindElement(By.Id("selected_codeDescription")).Text;
-            Assert.AreEqual(pricelistCodeDesc, codeSelectedDesc);
+            utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
             Thread.Sleep(500);
             SaveTreatment.ClickWait();
             var countAfter = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + patientDataID + "']/div[2]/div[1]/table/tbody");

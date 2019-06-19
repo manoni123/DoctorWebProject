@@ -65,14 +65,6 @@ namespace DoctorWeb
                     break;
             }
             ExtentTestManager.GetTest().Log(logstatus, "Test ended with " + logstatus + stacktrace);
-
-        //    if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
-        //    {
-        //        int picNum = 0;
-        //        var screenshot = ((ITakesScreenshot)Browser.chromebDriver).GetScreenshot();
-        //        screenshot.SaveAsFile(@"C:\Temp\bugsScreenshot\bug" + picNum + ".jpg", ScreenshotImageFormat.Jpeg);
-        //        picNum++;
-        //   }
         }
 
         //wrap every class
@@ -85,9 +77,8 @@ namespace DoctorWeb
             catch (Exception e)
             {
                 Log.Error(e);
-
                 string testName = TestContext.CurrentContext.Test.MethodName.ToString();
-                string StartupPath = @"C:\Temp\bugsScreenshot\";
+                string StartupPath =  Constant.bugImageCaptured;
                 string Year = DateTime.Now.Year.ToString();
                 string Month = DateTime.Now.Month.ToString();
                 string Day = DateTime.Now.Day.ToString();
@@ -96,12 +87,12 @@ namespace DoctorWeb
 
                 var screenshot = ((ITakesScreenshot)Browser.chromebDriver).GetScreenshot();
                 var imageName =  testName +".jpg";
-                screenshot.SaveAsFile(@"C:\Temp\bugsScreenshot\" + imageName, ScreenshotImageFormat.Jpeg);
+                screenshot.SaveAsFile(StartupPath + imageName, ScreenshotImageFormat.Jpeg);
 
                 DirectoryInfo dirInfo = new DirectoryInfo(bugDirectory);
              
                 List<String> MyMusicFiles = Directory
-                                   .GetFiles("C:\\Temp\\bugsScreenshot\\", "*.jpg").ToList();
+                                   .GetFiles(StartupPath, "*.jpg").ToList();
 
                 if (new FileInfo(bugDirectory + "\\" + imageName).Exists == true)
                 {

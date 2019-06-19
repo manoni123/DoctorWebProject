@@ -116,9 +116,10 @@ namespace DoctorWeb.PageObjects
             {
                 IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + currentRow + "]/td[" + td + "]"));
                 (new Actions(Browser.chromebDriver)).DoubleClick(singleCell).Perform();
+                Thread.Sleep(500);
                 if (Pages.Home_Page.ErrorPopup.IsDisplayed("error popup"))
                 {
-                    Pages.Home_Page.ErrorPopup.ClickOn();
+                  //  Pages.Home_Page.ErrorPopup.ClickOn();
                     td++;
                     if (td == numOfCellInRow)
                     {
@@ -149,7 +150,6 @@ namespace DoctorWeb.PageObjects
             //Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
-
             Thread.Sleep(500);
             EnterStandBySchedulerList();
 

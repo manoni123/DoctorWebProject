@@ -72,14 +72,11 @@ namespace DoctorWeb.PageObjects
             PriceListTaxName.EnterText(RandomNumber.taxNumber());
             PriceListTaxApprove.ClickOn();
             int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-            softAssert.VerifySuccessMsg();
+            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
         }
 
         public void PriceListTaxDeleteApplication()
         {
-            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
-            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
-
             int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             PriceListTaxDelete.ClickOn();
             DeleteApprove.ClickOn();

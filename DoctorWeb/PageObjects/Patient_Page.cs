@@ -78,6 +78,9 @@ namespace DoctorWeb.PageObjects
         public IWebElement PatientMessages { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
+        public IWebElement PatientMessagesProd { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
         [CacheLookup]
         public IWebElement PatientTreatments { get; set; }
 
@@ -131,13 +134,13 @@ namespace DoctorWeb.PageObjects
             Assert.IsTrue(isCheck == "true");
         }
 
-        //fill patient form with MUST-only credentials
+        //fill patient  with MUST-only credentials
         public void PatientExecute()
         {
             PatientCreateBusiness();
             PatientName.SendKeys("1");
             SaveButton.ClickOn();
-            softAssert.VerifyElementIsPresent(PatientValidation);
+        //    softAssert.VerifyElementIsPresent(PatientValidation);
             PatientName.EnterClearText(PatientUseName);
             PatientLastame.EnterClearText(Constant.patientLastname);
             PatientId.SendKeys(RandomNumber.smallNumber());
@@ -216,14 +219,13 @@ namespace DoctorWeb.PageObjects
         public void EnterPatientVisits()
         {
             PatientVisits.ClickWait();
-//            softAssert.VerifyElementIsPresent(Pages.Visits_Page.TherapistDropdown);
         }
 
         public void EnterPatientMessages()
         {
             var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
             Thread.Sleep(500);
-            PatientMessages.ClickWait();
+            PatientMessagesProd.ClickWait();
             softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + patientDataID + "']/div[2]/div[1]/table/tbody")));
         }
     }

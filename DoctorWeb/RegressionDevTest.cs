@@ -13,13 +13,14 @@ namespace DoctorWeb
         readonly AssertionExtent softAssert = new AssertionExtent();
         public UtilityFunction utility = new UtilityFunction();
         public bool isActive;
-        
+
         //Each Test Category has a fixture of its own that contains a setup and tear down beforre and after each test
         //OneTimeSetUp and OnTimeTearDown reffers to BaseFixture and effects all the tests
         [SetUp]
         public void LoginBeforeEachTest()
-        {  
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + TestContext.CurrentContext.Test.MethodName + " #####" + Environment.NewLine);
+        {
+            Log.Info(Environment.NewLine + Environment.NewLine + "                          +++++++++++      "
+                + TestContext.CurrentContext.Test.MethodName + "      ++++++++++++" + Environment.NewLine);
             Pages.Login_Page.LoginApplication();
         }
 
@@ -126,11 +127,14 @@ namespace DoctorWeb
         //+++++++++++++Medical Tab Tests++++++++++++++++++//
 
         [Test, Category("Medical")]
-        public void AnamnezaCreateTest()
+        public void AnamnezaCrudTest()
         {
             UITest(() =>
             {
+                Pages.PatientMedical_Page.EnterAnamnezaTable();
                 Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
+                Pages.PatientMedical_Page.EditNewAnamnezaApplication();
+                Pages.PatientMedical_Page.DeleteNewAnamanezaApplication();
             }, Pages.PatientMedical_Page.CloseAnamnezaTable);
         }
 
@@ -141,26 +145,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.PatientMedical_Page.CreateNewAnamnezaWhenSaveApplication();
-            },  Pages.PatientMedical_Page.CloseAnamnezaTable);
-        }
-
-        [Test, Category("Medical")]
-        public void AnamnezaEditTest()
-        {
-            UITest(() =>
-            {
-                Pages.PatientMedical_Page.EditNewAnamnezaApplication();
             }, Pages.PatientMedical_Page.CloseAnamnezaTable);
-        }
-
-        [Test, Category("Medical")]
-        public void AnamnezaDeleteTest()
-        {
-            UITest(() =>
-            {
-               Pages.PatientMedical_Page.DeleteNewAnamanezaApplication();
-            }, Pages.PatientMedical_Page.CloseAnamnezaTable);
-
         }
 
         [Test, Category("Medical")]
@@ -173,65 +158,35 @@ namespace DoctorWeb
         }
 
         [Test, Category("Medical")]
-        public void NoteCreateTest()
+        public void NoteCrudTest()
         {
             UITest(() =>
             {
+                Pages.PatientMedical_Page.EnterNoteTable();
                 Pages.PatientMedical_Page.CreateNewNoteApplication();
-            }, Pages.PatientMedical_Page.CloseNotesTable);
-        }
-
-        [Test, Category("Medical")]
-        public void NoteEditTest()
-        {
-            UITest(() =>
-            {
                 Pages.PatientMedical_Page.EditNoteApplication();
-            }, Pages.PatientMedical_Page.CloseNotesTable);
-        }
-
-        [Test, Category("Medical")]
-        public void NoteDeleteTest()
-        {
-            UITest(() =>
-            {
                 Pages.PatientMedical_Page.DeleteNoteApplication();
             }, Pages.PatientMedical_Page.CloseNotesTable);
         }
-        //medicine
+
         [Test, Category("Medical")]
-        public void MedicineCreateTest()
+        public void MedicineCrudTest()
         {
             UITest(() =>
             {
+                Pages.PatientMedical_Page.EnterMedicineTable();
                 Pages.PatientMedical_Page.CreateNewMedicineApplication();
-            }, Pages.PatientMedical_Page.CancelMedicineTable);
-        }
-
-        [Test, Category("Medical")]
-        public void MedicineEditTest()
-        {
-            UITest(() =>
-            {
                 Pages.PatientMedical_Page.EditMedicineApplication();
-            }, Pages.PatientMedical_Page.CancelMedicineTable);
-        }
-
-        [Test, Category("Medical")]
-        public void MedicineDeleteTest()
-        {
-            UITest(() =>
-            {
                 Pages.PatientMedical_Page.DeleteMedicineApplication();
             }, Pages.PatientMedical_Page.CancelMedicineTable);
         }
-
 
         [Test, Category("Medical")]
         public void MedicalWarningTest()
         {
             UITest(() =>
             {
+                Pages.PatientMedical_Page.EnterMedicineTable();
                 Pages.PatientMedical_Page.CreateNewMedicineApplication();
                 Pages.PatientMedical_Page.ValidateWarningIndicator();
             }, Pages.PatientMedical_Page.CancelMedicineTable);
@@ -252,7 +207,7 @@ namespace DoctorWeb
         public void SupplierContactCreateTest()
         {
             UITest(() =>
-            {   
+            {
                 Pages.Supplier_Page.NewSupplierContactApplication();
             });
         }
@@ -278,30 +233,16 @@ namespace DoctorWeb
 
 
         [Test, Category("Settings")]
-        public void ExpertiseCreateTest()
+        public void ExpertiseCrudTest()
         {
             UITest(() =>
             {
+                Pages.Home_Page.EnterUserManagmentScreen();
+                Pages.UsersManagement_Page.EnterPracticeWindow();
                 Pages.UsersManagement_Page.CreatePracticeApplication();
-            }, Pages.UsersManagement_Page.PracticeWindowClose);
-        }
-
-        [Test, Category("Settings")]
-        public void ExpertiseEditTest()
-        {
-            UITest(() =>
-            {
                 Pages.UsersManagement_Page.EditPracticeApplication();
-            }, Pages.UsersManagement_Page.PracticeWindowClose);
-        }
-
-        [Test, Category("Settings")]
-        public void ExpertiseDeleteTest()
-        {
-            UITest(() =>
-            {
                 Pages.UsersManagement_Page.DeletePracticeApplication();
-            }, Pages.UsersManagement_Page.PracticeWindowClose);
+            }, Pages.Home_Page.PopupClose, Pages.UsersManagement_Page.PracticeWindowClose);
         }
 
         [Test, Category("Settings")]
@@ -314,19 +255,12 @@ namespace DoctorWeb
         }
 
         [Test, Category("Settings")]
-        public void DepartmentCreateTest()
+        public void DepartmentCrudTest()
         {
             UITest(() =>
             {
                 Pages.Business_Page.CreateDepartmentApplication();
-            }, Pages.Business_Page.DepartmentCloseButton);
-        }
-
-        [Test, Category("Settings")]
-        public void DepartmentDeleteTest()
-        {
-            UITest(() =>
-            {
+                Pages.Business_Page.EditDepartmentApplicaiton();
                 Pages.Business_Page.DeleteDepartmentApplication();
                 Pages.Business_Page.DepartmentCloseButton.ClickOn();
             }, Pages.Business_Page.DepartmentCloseButton);
@@ -344,40 +278,14 @@ namespace DoctorWeb
         }
 
         [Test, Category("Settings")]
-        public void DepartmentEditTest()
+        public void CategoryCrudTest()
         {
             UITest(() =>
             {
-                Pages.Business_Page.EditDepartmentApplicaiton();
-                Pages.Business_Page.DepartmentCloseButton.ClickOn();
-            }, Pages.Business_Page.DepartmentCloseButton);
-
-        }
-
-        [Test, Category("Settings")]
-        public void CategoryCreateTest()
-        {
-            UITest(() =>
-            {
+                Pages.PriceList_Page.DevEnterCategoryWindow();
                 Pages.PriceList_Page.CreateCategoryApplication();
-            });
-        }
-
-        [Test, Category("Settings")]
-        public void CategoryDeleteTest()
-        {
-            UITest(() =>
-            {
-                Pages.PriceList_Page.DeleteCategoryApplication();
-            });
-        }
-
-        [Test, Category("Settings")]
-        public void CategoryEditTest()
-        {
-            UITest(() =>
-            {
                 Pages.PriceList_Page.EditCategoryApplication();
+                Pages.PriceList_Page.DeleteCategoryApplication();
             });
         }
 
@@ -402,34 +310,20 @@ namespace DoctorWeb
         public void BranchCreateTest()
         {
             UITest(() =>
-            {   
+            {
+                Pages.Business_Page.EnterSettingScreen();
                 Pages.Business_Page.CreateBranchApplication();
             }, Pages.Business_Page.BranchCancelButton);
         }
 
         [Test, Category("Settings")]
-        public void GroupCreateTest()
+        public void GroupCRUDTest()
         {
             UITest(() =>
             {
+                Pages.Authorization_Page.EnterAuthorizationScreen();
                 Pages.Authorization_Page.CreateGroupApplication();
-            }, Pages.Authorization_Page.GroupCancel);
-        }
-
-        [Test, Category("Settings")]
-        public void GroupEditTest()
-        {
-            UITest(() =>
-            {
                 Pages.Authorization_Page.EditGroupApplication();
-            }, Pages.Authorization_Page.GroupCancel);
-        }
-
-        [Test, Category("Settings")]
-        public void GroupDeleteTest()
-        {
-            UITest(() =>
-            {
                 Pages.Authorization_Page.DeleteGroupApplication();
             }, Pages.Authorization_Page.GroupCancel);
         }
@@ -472,57 +366,26 @@ namespace DoctorWeb
             }, Pages.Home_Page.PopupClose);
         }
 
+        [Ignore("s")]
         [Test, Category("Settings")]
-        public void PriceListTypeCreateTest()
+        public void PriceListTypeCRUDTest()
         {
             UITest(() =>
             {
                 Pages.PriceListType_Page.PriceListTypeCreateApplication();
-            });
-        }
-
-        [Test, Category("Settings")]
-        public void PriceListTypeDeleteTest()
-        {
-            UITest(() =>
-            {
+                Pages.PriceListType_Page.PriceListTypeEditApplication();
                 Pages.PriceListType_Page.PriceListTypeDeleteApplication();
             });
         }
 
         [Test, Category("Settings")]
-        public void PriceListTypeEditTest()
-        {
-            UITest(() =>
-            {
-                Pages.PriceListType_Page.PriceListTypeEditApplication();
-            });
-        }
-
-        [Test, Category("Settings")]
-        public void PriceListTaxCreateTest()
+        public void PriceListTaxCRUDTest()
         {
             UITest(() =>
             {
                 Pages.PriceListTax_Page.PriceListTaxCreateApplication();
-            });
-        }
-
-        [Test, Category("Settings")]
-        public void PriceListTaxDeleteTest()
-        {
-            UITest(() =>
-            {
-                Pages.PriceListTax_Page.PriceListTaxDeleteApplication();
-            });
-        }
-
-        [Test, Category("Settings")]
-        public void PriceListTaxEditTest()
-        {
-            UITest(() =>
-            {
                 Pages.PriceListTax_Page.PriceListTaxEditApplication();
+                Pages.PriceListTax_Page.PriceListTaxDeleteApplication();
             });
         }
 
@@ -559,6 +422,7 @@ namespace DoctorWeb
         {
             UITest(() => 
             {
+                Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
                 Pages.AdditinalFields_Page.AdditionalFieldApplication();
             }, Pages.AdditinalFields_Page.CloseFieldWindow);
         }
@@ -579,6 +443,8 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Reports_Page.EnterReportScreen();
+                Pages.Reports_Page.PatientReportTab.ClickWait();
                 Pages.Reports_Page.PatientReportApplication();
             }, Pages.Reports_Page.PopupButton);
         }
@@ -588,6 +454,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Reports_Page.EnterReportScreen();
                 Pages.Reports_Page.ContactReportApplication();
             }, Pages.Reports_Page.PopupButton);
         }
@@ -597,6 +464,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Reports_Page.EnterReportScreen();
                 Pages.Reports_Page.MeetingReportApplication();
             }, Pages.Reports_Page.PopupButton);
         }
@@ -606,6 +474,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Reports_Page.EnterReportScreen();
                 Pages.Reports_Page.NotificationReportApplication();
             }, Pages.Reports_Page.PopupButton);
         }
@@ -743,6 +612,7 @@ namespace DoctorWeb
         }
 
         //Create Patient > Create MEdicine> Create Note > Search Availble Time
+        [Ignore("need fix")]
         [Test, Category("EndToEnd")]
         public void PatientMedicineNoteAppointment()
         {

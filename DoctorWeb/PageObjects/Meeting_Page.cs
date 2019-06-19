@@ -39,6 +39,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectFirstPatient { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//*[@id='createAppointmentForm']/div/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]")]
+        [CacheLookup]
+        public IWebElement PriceListProd { get; set; }
+
         [FindsBy(How = How.Id, Using = "btnTreatmentsFromPricelist")]
         [CacheLookup]
         public IWebElement PriceList { get; set; }
@@ -95,6 +99,16 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement TreatmentRadioSelect { get; set; }
 
+        public void CreateMeetingApplicationProd()
+        {
+            Thread.Sleep(500);
+            utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(500);
+            utility.ClickDropdownAndEnter(PriceListProd);
+            ApproveMeeting.ClickOn();
+            softAssert.VerifySuccessMsg();
+        }
+
         public void CreateMeetingApplication() {
             Thread.Sleep(500);
             utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
@@ -102,7 +116,7 @@ namespace DoctorWeb.PageObjects
             PriceList.ClickWait();
             CodeBroswer.ClickOn();
             CodeBroswerFirstCode.ClickOn();
-            SaveTreatmentFromPricelist.ClickOn();
+            SaveTreatmentFromPricelist.ClickWait();
             ApproveMeeting.ClickOn();
             softAssert.VerifySuccessMsg();
         }
