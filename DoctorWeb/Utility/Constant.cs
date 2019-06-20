@@ -32,7 +32,6 @@ namespace DoctorWeb.Utility
 
         public static string unauthorizedUserName = "test02@test02.co.il";
 
-
         public static string patientName = "selenium" + RandomNumber.smallNumber();
         public static string patientLastname = "test";
         public static bool patientCreated;
