@@ -69,17 +69,14 @@ namespace DoctorWeb.PageObjects
             PriceListTaxCreate.ClickOn();
             PriceListTaxApprove.ClickOn();
             softAssert.VerifyElementIsPresent(NameErrorMsg);
-            PriceListTaxName.EnterText(useName);
+            PriceListTaxName.EnterText(RandomNumber.taxNumber());
             PriceListTaxApprove.ClickOn();
             int countAfter = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
-            softAssert.WarningOnErrorMsg();
+            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
         }
 
         public void PriceListTaxDeleteApplication()
         {
-            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
-            Pages.PriceListTax_Page.PriceListTaxCreateApplication();
-
             int countBefore = utility.TableCount("//*[@id='PriceListTaxationGrid']/div[2]/table/tbody");
             PriceListTaxDelete.ClickOn();
             DeleteApprove.ClickOn();
@@ -89,13 +86,10 @@ namespace DoctorWeb.PageObjects
 
         public void PriceListTaxEditApplication()
         {
-            Pages.PriceListTax_Page.EnterPriceListTaxScreen();
             Pages.PriceListTax_Page.PriceListTaxCreateApplication();
-
             PriceListTaxEdit.ClickWait();
-            PriceListTaxName.EnterClearText(RandomNumber.taxNumber());
             PriceListTaxApprove.ClickOn();
-            softAssert.WarningOnErrorMsg();
+            softAssert.VerifySuccessMsg();
         }
     }
 }

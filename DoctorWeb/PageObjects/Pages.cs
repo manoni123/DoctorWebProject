@@ -172,5 +172,15 @@ namespace DoctorWeb
             get { return GetPage<Treatment_Page>(); }
         }
 
+        public static TreatmentPlan_Page TreatmentPlan_Page
+        {
+            get { return GetPage<TreatmentPlan_Page>(); }
+        }
+
+        public static MobileTherapist_Page MobileTherapist_Page
+        {
+            get { return GetPage<MobileTherapist_Page>(); }
+        }
+
     }
 }

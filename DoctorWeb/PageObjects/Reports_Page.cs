@@ -82,23 +82,47 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ShowAuditReport { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li.k-item.k-state-default.k-first")]
+        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(2)")]
+        [CacheLookup]
+        public IWebElement BuiltinReport { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[2]")]
         [CacheLookup]
         public IWebElement PatientReportTab { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(2)")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[3]")]
         [CacheLookup]
         public IWebElement ContactReportTab { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(3)")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='reportsTabstrip']/ul/li[2]")]
+        [CacheLookup]
+        public IWebElement ContactReportTabProd { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[4]")]
         [CacheLookup]
         public IWebElement MeetingReportTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='reportsTabstrip']/ul/li[3]")]
+        [CacheLookup]
+        public IWebElement MeetingReportTabProd { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[5]")]
+        [CacheLookup]
+        public IWebElement NotificationReportTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='reportsTabstrip']/ul/li[4]")]
+        [CacheLookup]
+        public IWebElement NotificationReportTabProd { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[6]")]
+        [CacheLookup]
+        public IWebElement AuditReportTab { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnPrintSchedulerEvents")]
         [CacheLookup]
         public IWebElement PrintDailyMeetingWindow { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//a[contains(text(), 'ת.יצירה)]")]
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(), 'שם משפחה)]")]
         [CacheLookup]
         public IWebElement MeetingReportOutput { get; set; }
 
@@ -122,14 +146,6 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement NotificationOutput { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(4)")]
-        [CacheLookup]
-        public IWebElement NotificationReportTab { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li.k-item.k-state-default.k-last")]
-        [CacheLookup]
-        public IWebElement AuditReportTab { get; set; }
-
         [FindsBy(How = How.ClassName, Using = "error-notification")]
         [CacheLookup]
         public IWebElement ErrorToast { get; set; }
@@ -142,67 +158,157 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement PopupButton { get; set; }
 
+        public void EnterReportScreenProd()
+        {
+            Thread.Sleep(500);
+            Pages.Home_Page.ReportScreenProd.ClickWait();
+        }
 
         public void EnterReportScreen() {
             Thread.Sleep(500);
             Pages.Home_Page.ReportScreen.ClickWait();
+            Pages.Reports_Page.BuiltinReport.ClickWait();
         }
 
         public void PatientReportApplication()
         {
-            Pages.Reports_Page.EnterReportScreen();
+            Thread.Sleep(500);
+            PatientReportTab.ClickOn();
+            PatientReportFromDate.EnterClearText(Constant.dateMinusMonth);
+            PatientReportExcel.ClickOn();
+            PatientReportShow.ClickWait();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.XPath("popup-btn-OK")).ClickOn();
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+        }
 
-            var tabs = Browser.chromebDriver.WindowHandles;
-
+        public void PatientReportApplicationProd()
+        {
             Thread.Sleep(500);
             PatientReportFromDate.EnterClearText(Constant.dateMinusMonth);
             PatientReportExcel.ClickOn();
             PatientReportShow.ClickWait();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.XPath("popup-btn-OK")).ClickOn();
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+        }
 
-        } 
         public void ContactReportApplication()
         {
-            Pages.Reports_Page.EnterReportScreen();
-
             Thread.Sleep(500);
             ContactReportTab.ClickOn();
             ContactReportExcel.ClickOn();
-            ContactReportShow.ClickOn();
+            ContactReportShow.ClickWait();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.XPath("popup-btn-OK")).ClickOn();
+            }
+            else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+            else {
+                softAssert.VerifyElementIsPresent(ContactOutputName);
+            }
+        }
+
+        public void ContactReportApplicationProd()
+        {
             Thread.Sleep(500);
-            softAssert.VerifyElementIsPresent(ContactOutputName);
+            ContactReportTabProd.ClickOn();
+            ContactReportExcel.ClickOn();
+            ContactReportShow.ClickOn();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.XPath("popup-btn-OK")).ClickOn();
+            }
+            else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+            else {
+                Thread.Sleep(500);
+                softAssert.VerifyElementIsPresent(ContactOutputName);
+            }
         }
 
         public void MeetingReportApplication()
         {
-            Pages.Reports_Page.EnterReportScreen();
-
-            var tabs = Browser.chromebDriver.WindowHandles;
-
             Thread.Sleep(500);
-            MeetingReportTab.ClickOn();
+            MeetingReportTab.ClickWait();
             MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth);
             MeetingReportExcel.ClickOn();
             MeetingReportShow.ClickOn();
-            softAssert.VerifyElementIsPresent(MeetingReportOutput);
-
-            if (tabs.Count > 1)
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
             {
-                Browser.chromebDriver.SwitchTo().Window(tabs[1]);
-                Browser.chromebDriver.Close();
-                Browser.chromebDriver.SwitchTo().Window(tabs[0]);
+                Browser.Driver.FindElement(By.Id("popup-btn-OK")).ClickOn();
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+            else {
+                softAssert.VerifyElementIsPresent(MeetingReportOutput);
+            }
+        }
+
+        public void MeetingReportApplicationProd()
+        {
+            Thread.Sleep(500);
+            MeetingReportTab.ClickWait();
+            MeetingReportDateFrom.EnterClearText(Constant.dateMinusMonth);
+            MeetingReportExcel.ClickOn();
+            MeetingReportShow.ClickOn();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.Id("popup-btn-OK")).ClickOn();
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+            else
+            {
+                softAssert.VerifyElementIsPresent(MeetingReportOutput);
             }
         }
 
         public void NotificationReportApplication()
         {
-            Pages.Reports_Page.EnterReportScreen();
-
             Thread.Sleep(500);
             NotificationReportTab.ClickOn();
             NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
             NotificationReportExcel.ClickOn();
             NotficationReportShow.ClickOn();
-            softAssert.VerifyElementIsPresent(NotificationOutput);
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.Id("popup-btn-OK")).ClickOn();
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
+        }
+
+        public void NotificationReportApplicationProd()
+        {
+            Thread.Sleep(500);
+            NotificationReportTabProd.ClickOn();
+            NotificationDateFrom.EnterClearText(Constant.dateMinusMonth);
+            NotificationReportExcel.ClickOn();
+            NotficationReportShow.ClickOn();
+            if (Browser.chromebDriver.PageSource.Contains("popup-message"))
+            {
+                Browser.Driver.FindElement(By.Id("popup-btn-OK")).ClickOn();
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
+            {
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
+            }
         }
 
         public void AuditReportApplication()
@@ -213,10 +319,9 @@ namespace DoctorWeb.PageObjects
             if (Pages.Home_Page.CloseTab.Displayed)
             {
                 Pages.Home_Page.CloseTab.ClickOn();
-            }
-            else
+            } else if (Browser.chromebDriver.PageSource.Contains("btnCancelSendAuditReportToEmail"))
             {
-                Assert.Fail();
+                Browser.Driver.FindElement(By.Id("btnCancelSendAuditReportToEmail")).ClickOn();
             }
         }
 

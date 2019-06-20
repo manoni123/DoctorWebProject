@@ -11,6 +11,7 @@ namespace DoctorWeb.PageObjects
     public class Patient_Page
     {
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -66,17 +67,18 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectPatient { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab2_menuCustomerExpended']/li[2]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[2]")]
         [CacheLookup]
         public IWebElement PatientDocument { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[3]/span")]
-        [CacheLookup]
         public IWebElement PatientVisits { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[5]/span")]
-        [CacheLookup]
         public IWebElement PatientMessages { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
+        public IWebElement PatientMessagesProd { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
         [CacheLookup]
@@ -104,10 +106,22 @@ namespace DoctorWeb.PageObjects
         //create or fill method to call to use in tests
         public void NewPatientApplication()
         {
-            Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewPatient.ClickOn();
-            PatientExecute();
-            PatientConfirmCreate();
+            if (Constant.patientCreated == false)
+            {
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickOn();
+                PatientExecute();
+                PatientConfirmCreate();
+                Thread.Sleep(500);
+                Constant.patientCreated = true;
+            } else if (Constant.patientCreated == true)
+            {
+                Pages.Home_Page.OpenEntityDropdown.ClickOn();
+                Pages.Home_Page.CreateNewPatient.ClickOn();
+                Pages.Patient_Page.ClosePatientTab.ClickOn();
+                utility.TextClearDropdownAndEnter(Pages.Home_Page.SearchBox, PatientUseName);
+                Thread.Sleep(500);
+            }
         }
 
         public void NewConfidentialPatientApplication()
@@ -118,20 +132,26 @@ namespace DoctorWeb.PageObjects
             PatientConfirmCreate();
             var isCheck = Browser.Driver.FindElement(By.XPath("//*[@id='tab3_Confidential']")).GetAttribute("checked");
             Assert.IsTrue(isCheck == "true");
-
         }
 
-        //fill patient form with MUST-only credentials
+        //fill patient  with MUST-only credentials
         public void PatientExecute()
         {
+            PatientCreateBusiness();
             PatientName.SendKeys("1");
             SaveButton.ClickOn();
-            softAssert.VerifyElementIsPresent(PatientValidation);
+        //    softAssert.VerifyElementIsPresent(PatientValidation);
             PatientName.EnterClearText(PatientUseName);
             PatientLastame.EnterClearText(Constant.patientLastname);
             PatientId.SendKeys(RandomNumber.smallNumber());
             PatientIDType.ClickOn();
             PatientIDType.SendKeys(Keys.ArrowDown);
+        }
+
+        public void PatientCreateBusiness() {
+            if (Browser.chromebDriver.PageSource.Contains("btnCancelBusinessSelection")) {
+                Browser.Driver.FindElement(By.XPath("//*[@id='1000']")).ClickOn();
+            }
         }
 
         public void PatientConfidentialExecute() {
@@ -140,8 +160,9 @@ namespace DoctorWeb.PageObjects
         }
 
         public void PatientConfirmCreate() {
-            SaveButton.ClickOn();
+            SaveButton.ClickWait();
             softAssert.VerifyElementIsPresent(PatientEditButton);
+            Thread.Sleep(500);
         }
 
         public void PatientCloseTab() {
@@ -198,13 +219,14 @@ namespace DoctorWeb.PageObjects
         public void EnterPatientVisits()
         {
             PatientVisits.ClickWait();
-            softAssert.VerifyElementIsPresent(Pages.Visits_Page.TherapistDropdown);
         }
 
         public void EnterPatientMessages()
         {
-            PatientMessages.ClickWait();
-            softAssert.VerifyElementIsPresent(Pages.Messages_Page.PatientValidation);
+            var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
+            Thread.Sleep(500);
+            PatientMessagesProd.ClickWait();
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + patientDataID + "']/div[2]/div[1]/table/tbody")));
         }
     }
 }

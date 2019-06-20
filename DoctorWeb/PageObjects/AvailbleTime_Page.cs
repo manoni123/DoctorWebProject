@@ -49,11 +49,8 @@ namespace DoctorWeb.PageObjects
 
         public void SearchAvailbleTimeApplication()
         {
-            Pages.Home_Page.EnterAvailbleTime();
-            Thread.Sleep(500);
             ExpertiseSelect.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
-            VisitReason.SendKeys(Keys.ArrowDown);
             var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
             SearchBtn.ClickOn();
             FirstFreeTime.ClickOn();
@@ -61,7 +58,6 @@ namespace DoctorWeb.PageObjects
             FirstFreeTimeSetMeeting.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
             softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
-            Pages.Meeting_Page.CancelMeeting.ClickOn();
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using log4net;
 using log4net.Config;
+using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -19,6 +22,12 @@ namespace DoctorWeb.Utility
         public static UtilityFunction utility = new UtilityFunction();
         private static int _time = 300;
 
+        public static IWebElement FindElementOnPage(this IWebDriver webDriver, By by)
+        {
+            RemoteWebElement element = (RemoteWebElement)webDriver.FindElement(by);
+            var hack = element.LocationOnScreenOnceScrolledIntoView;
+            return element;
+        }
 
         //enter Text method with log
         public static void WaitForElement(this IWebElement element, int time)
@@ -60,8 +69,8 @@ namespace DoctorWeb.Utility
                 string valueText = element.GetAttribute("data-tag");
                 utility.NameInElement(element, valueName, valueID, valueTag, valueText);
                 element.Click();
-
                 Thread.Sleep(_time);
+               // Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_time);
             }
             catch (Exception e) {
                 Debug.WriteLine(e);
@@ -93,7 +102,7 @@ namespace DoctorWeb.Utility
             try {
                 result = element.Displayed;
                 log.Info(ElementName + " is Displayed successfuly");
-            } catch (Exception) {
+            } catch (NoSuchElementException) {
                 result = false;
                 log.Error(ElementName + " is not displayed");
             }

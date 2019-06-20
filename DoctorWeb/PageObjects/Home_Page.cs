@@ -60,13 +60,21 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SchedularScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(2)")]
+        [FindsBy(How = How.Id, Using = "btnSettings")]
         [CacheLookup]
         public IWebElement SettingScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(3)")]
+        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(2)")]
+        [CacheLookup]
+        public IWebElement SettingScreenProd { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(2)")]
         [CacheLookup]
         public IWebElement ReportScreen { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(3)")]
+        [CacheLookup]
+        public IWebElement ReportScreenProd { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(2)")]
         [CacheLookup]
@@ -76,7 +84,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement UserAuthorizationScreen { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(5)")]
+        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(4)")]
         [CacheLookup]
         public IWebElement GeneralScreen { get; set; }
 
@@ -99,6 +107,10 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.Id, Using = "Password")]
         [CacheLookup]
         public IWebElement LockScreenPassword { get; set; }
+
+        [FindsBy(How = How.Id, Using = "logout")]
+        [CacheLookup]
+        public IWebElement LockScreenExit { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "ic-lock")]
         [CacheLookup]
@@ -185,11 +197,39 @@ namespace DoctorWeb.PageObjects
         public IWebElement SidePannelBtn { get; set; }
 
         public void LogoutApplication() {
-            Thread.Sleep(500);
-            ProfileList.ClickOn();
-            LogoutButton.ClickOn();
-            var text = Environment.NewLine;
-            Assert.IsTrue(Pages.Login_Page.LoginButton.Displayed);
+            int selectEnviornment = Constant.VersionNumber;
+            switch (selectEnviornment)
+            {
+                case 1:
+                    Log.Info(Environment.NewLine);
+                    Thread.Sleep(500);
+                    ProfileList.ClickOn();
+                    LogoutButton.ClickOn();
+                    Assert.IsTrue(Pages.Login_Page.LoginButton.Displayed);
+                    break;
+
+                case 2:
+                    Log.Info(Environment.NewLine);
+                    Thread.Sleep(500);
+                    ProfileList.ClickOn();
+                    LogoutButton.ClickOn();
+                    Assert.IsTrue(Pages.Login_Page.LoginButton.Displayed);
+                    break;
+
+                case 3:
+                    Log.Info(Environment.NewLine);
+                    Thread.Sleep(500);
+                    Pages.MobileTherapist_Page.MobileLogout();
+                    break;
+
+                case 4:
+                    Log.Info(Environment.NewLine);
+                    Thread.Sleep(500);
+                    ProfileList.ClickOn();
+                    LogoutButton.ClickOn();
+                    Assert.IsTrue(Pages.Login_Page.LoginButton.Displayed);
+                    break;
+            }
         }
 
         public void LockApplication()
@@ -215,6 +255,13 @@ namespace DoctorWeb.PageObjects
         public void EnterUserManagmentScreen() {
             Thread.Sleep(500);
             Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.UserManagementScreen.ClickWait();
+        }
+
+        public void EnterUserManagmentScreenProd()
+        {
+            Thread.Sleep(500);
+            Pages.Home_Page.SettingScreenProd.ClickWait();
             Pages.Home_Page.UserManagementScreen.ClickWait();
         }
 
@@ -261,8 +308,8 @@ namespace DoctorWeb.PageObjects
         }
         public void EnterAvailbleTime()
         {
-            Thread.Sleep(500);
             AppointmentBtn_1.ClickOn();
+            Thread.Sleep(500);
         }
 
 
@@ -277,7 +324,6 @@ namespace DoctorWeb.PageObjects
 
         public void RightBarApplication (){
             String closedBarArrow = "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg";
-          
             SidePannelBtn.ClickOn();
             LogoutApplication();
             Pages.Login_Page.LoginApplication();

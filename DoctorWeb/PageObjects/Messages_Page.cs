@@ -20,6 +20,13 @@ namespace DoctorWeb.PageObjects
         public IWebElement PatientValidation { get; set; }
 
         public void PatientMessageApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.EnterPatientMessages();
+        }
+
+        public void PatientMessageApplicationProd()
+        {
+            Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.EnterPatientMessages();
         }
     }

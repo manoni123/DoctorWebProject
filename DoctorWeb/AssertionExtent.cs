@@ -54,13 +54,13 @@ namespace DoctorWeb
         {
             try
             {
-                Assert.IsTrue(element.Displayed, Constant.stackTraceFalse);
-                Log.Info("Element IS Present");
+                Assert.IsTrue(element.Displayed);
+                Log.Info("Element is Present");
                 Thread.Sleep(_time);
             }
             catch (AssertionException e)
             {
-                Log.Error("Element IS NOT Present");
+                Log.Error("Element is not Present");
            } 
         }
 

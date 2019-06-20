@@ -45,25 +45,69 @@ namespace DoctorWeb.PageObjects
         //Login Form credentials
         public void LoginApplication()
         {
-            LanguageSelect.SendKeys(Keys.ArrowDown);
-            UserName.EnterText(Constant.adminUser);
-            UserPassword.EnterText(Constant.loginPassword);
-            Thread.Sleep(500);
-            Browser.Driver.FindElement(By.XPath("//*[@id='loginForm']/div[2]/div[4]/div/p/button")).ClickOn();
+            int selectEnviornment = Constant.VersionNumber;
+            switch (selectEnviornment)
+            {
+                case 1:
+                    LanguageSelect.SendKeys(Keys.ArrowDown);
+                    UserName.EnterText(Constant.testUser);
+                    UserPassword.EnterText(Constant.prodPassword);
+                    Thread.Sleep(500);
+                    Browser.Driver.FindElement(By.XPath("//*[@id='loginForm']/div[2]/div[4]/div/p/button")).ClickOn();
+                    Thread.Sleep(1500);
+                    if (Pages.Home_Page.AppointmentBtn_1.Displayed)
+                    {
+                        //nothing
+                    }
+                    else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
+                    {
+                        SideBarArrow.ClickOn();
+                    }
+                    break;
+                case 2:
+                    LanguageSelect.SendKeys(Keys.ArrowDown);
+                    UserName.EnterText(Constant.testUser);
+                    UserPassword.EnterText(Constant.loginPassword);
+                    Thread.Sleep(500);
+                    Browser.Driver.FindElement(By.XPath("//*[@id='loginForm']/div[2]/div[4]/div/p/button")).ClickOn();
+                    Thread.Sleep(1500);
+                    if (Pages.Home_Page.AppointmentBtn_1.Displayed)
+                    {
+                        //nothing
+                    }
+                    else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
+                    {
+                        SideBarArrow.ClickOn();
+                    }
+                    break;
+                case 3:
+                    Pages.MobileTherapist_Page.MobileLogin();
+                break;
 
-            if (Pages.Home_Page.AppointmentBtn_1.Displayed)
-            {
-            }
-            else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
-            {
-            SideBarArrow.ClickOn();
+                case 4:
+                    LanguageSelect.SendKeys(Keys.ArrowDown);
+                    UserName.EnterText(Constant.newClientUser);
+                    UserPassword.EnterText(Constant.prodPassword);
+                    Thread.Sleep(500);
+                    Browser.Driver.FindElement(By.XPath("//*[@id='loginForm']/div[2]/div[4]/div/p/button")).ClickOn();
+                    Thread.Sleep(1500);
+                    if (Pages.Home_Page.AppointmentBtn_1.Displayed)
+                    {
+                        //nothing
+                    }
+                    else if (Pages.Home_Page.AppointmentBtn_2.Displayed)
+                    {
+                        SideBarArrow.ClickOn();
+                    }
+                    break;
+
+
             }
         }
 
         public void LoginMiddleTest(string name, string password) {
             UserName.EnterText(name);
             UserPassword.EnterText(password);
-
         }
 
         public void LoginCredentials(int num) {
@@ -95,8 +139,7 @@ namespace DoctorWeb.PageObjects
         }
 
         public void TherapistLogin()
-        {
-            
+        {    
             //change language by clicking the language drop down list
             LanguageSelect.SendKeys(Keys.ArrowDown);
             //  Log.Info("pressed arrow down to select hebrew language");

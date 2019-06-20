@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using DoctorWeb.Utility;
 using NUnit.Framework;
+using System.Threading;
 
 namespace DoctorWeb.PageObjects
 {
@@ -12,7 +13,6 @@ namespace DoctorWeb.PageObjects
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
         UtilityFunction utility = new UtilityFunction();
-
 
         [FindsBy(How = How.CssSelector, Using = "#generalTabstrip > ul > li:nth-child(2)")]
         [CacheLookup]
@@ -57,8 +57,9 @@ namespace DoctorWeb.PageObjects
 
         public void EnterAdditionalFieldsScreen() {
             //call home page to enter general setting
-            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.SettingScreenProd.ClickWait();
             Pages.Home_Page.GeneralScreen.ClickWait();
+            Thread.Sleep(1500);
             AdditionalFieldsScreen.ClickWait();
         }
 
@@ -75,7 +76,6 @@ namespace DoctorWeb.PageObjects
 
         public void AdditionalFieldApplication()
         {
-            Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
             Pages.AdditinalFields_Page.OpenFieldsManager();
 
             softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
@@ -86,7 +86,7 @@ namespace DoctorWeb.PageObjects
             FieldName.EnterClearText("Field"  + RandomNumber.smallNumber());
             FieldSave.ClickOn();
             var countAfter = utility.TableCount("//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody");
-            softAssert.VerifyElementHasEqual(countBefore, countAfter);
+            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
             CloseFieldWindow.ClickOn();
         }
     }

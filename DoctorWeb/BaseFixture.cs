@@ -6,6 +6,7 @@ using System.Linq;
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Tests.Parallel;
 using DoctorWeb.Utility;
+using log4net;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
@@ -16,6 +17,7 @@ namespace DoctorWeb
     public class BaseFixture
     {
         readonly Process myProcess = new Process();
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [OneTimeSetUp]
         public void Setup()
@@ -63,27 +65,20 @@ namespace DoctorWeb
                     break;
             }
             ExtentTestManager.GetTest().Log(logstatus, "Test ended with " + logstatus + stacktrace);
-
-        //    if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
-        //    {
-        //        int picNum = 0;
-        //        var screenshot = ((ITakesScreenshot)Browser.chromebDriver).GetScreenshot();
-        //        screenshot.SaveAsFile(@"C:\Temp\bugsScreenshot\bug" + picNum + ".jpg", ScreenshotImageFormat.Jpeg);
-        //        picNum++;
-        //   }
         }
 
         //wrap every class
-        public static void UITest(Action action, IWebElement window = null)
+        public static void UITest(Action action, IWebElement window = null, IWebElement popup = null, IWebElement onTopPopup = null)
         {
             try
             {
                 action();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e);
                 string testName = TestContext.CurrentContext.Test.MethodName.ToString();
-                string StartupPath = @"C:\Temp\bugsScreenshot\";
+                string StartupPath =  Constant.bugImageCaptured;
                 string Year = DateTime.Now.Year.ToString();
                 string Month = DateTime.Now.Month.ToString();
                 string Day = DateTime.Now.Day.ToString();
@@ -92,12 +87,12 @@ namespace DoctorWeb
 
                 var screenshot = ((ITakesScreenshot)Browser.chromebDriver).GetScreenshot();
                 var imageName =  testName +".jpg";
-                screenshot.SaveAsFile(@"C:\Temp\bugsScreenshot\" + imageName, ScreenshotImageFormat.Jpeg);
+                screenshot.SaveAsFile(StartupPath + imageName, ScreenshotImageFormat.Jpeg);
 
                 DirectoryInfo dirInfo = new DirectoryInfo(bugDirectory);
              
                 List<String> MyMusicFiles = Directory
-                                   .GetFiles("C:\\Temp\\bugsScreenshot\\", "*.jpg").ToList();
+                                   .GetFiles(StartupPath, "*.jpg").ToList();
 
                 if (new FileInfo(bugDirectory + "\\" + imageName).Exists == true)
                 {
@@ -113,10 +108,14 @@ namespace DoctorWeb
                         mFile.MoveTo(bugDirectory + "\\" + imageName);
                     }
                 }
-                
-                if (window != null)
-                {
+
+                if (window != null) {
                     window.ClickOn();
+                    if (popup != null) {
+                        popup.ClickOn();
+                    } if (onTopPopup != null) {
+                        onTopPopup.ClickOn();
+                    }
                 }
 
                 Assert.Warn("Not a bug - Failed due to wrong code/compile");

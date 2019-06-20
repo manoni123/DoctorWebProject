@@ -33,7 +33,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SupplierContactTab { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#tab3_SelectSupplierContactsGrid > div.k-header.k-grid-toolbar > a")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_SelectSupplierContactsGrid']/div[1]/a")]
         [CacheLookup]
         public IWebElement CreateSupplierContact { get; set; }
 
@@ -76,7 +76,7 @@ namespace DoctorWeb.PageObjects
             //call Home Page to create supplier
             //open entity list and press the new supplier
             Pages.Home_Page.OpenEntityDropdown.ClickOn();
-            Pages.Home_Page.CreateNewSupplier.ClickOn();
+            Pages.Home_Page.CreateNewSupplier.ClickWait();
             SupplierName.SendKeys("1");
             SupplierSave.ClickOn();
             softAsserts.VerifyElementIsPresent(supplierNameValidate);

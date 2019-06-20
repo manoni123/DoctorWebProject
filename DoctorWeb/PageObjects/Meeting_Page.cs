@@ -5,7 +5,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace DoctorWeb.PageObjects
@@ -14,7 +17,7 @@ namespace DoctorWeb.PageObjects
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
-
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "btnCancelAppointment")]
         [CacheLookup]
@@ -36,9 +39,13 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectFirstPatient { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='createAppointmentForm']/div/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]/span/span[1]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='createAppointmentForm']/div/div[2]/div[1]/div[1]/div[3]/div[1]/span[1]")]
         [CacheLookup]
-        public IWebElement VisitReason { get; set; }
+        public IWebElement PriceListProd { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnTreatmentsFromPricelist")]
+        [CacheLookup]
+        public IWebElement PriceList { get; set; }
 
         [FindsBy(How = How.Id, Using = "PriceListRefID_validationMessage")]
         [CacheLookup]
@@ -52,49 +59,85 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement HourSelect { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='PriceListRefID_listbox']/li[1]")]
+        [FindsBy(How = How.XPath , Using = "//*[@id='gridTreatmentFroPrice_TreatmentsItems']/div[2]/table/tbody/tr/td[4]")]
         [CacheLookup]
-        public IWebElement SelectFirstPriceList { get; set; }
+        public IWebElement CodeSearch { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "btn_codeBrowser")]
+        [CacheLookup]
+        public IWebElement CodeBroswer { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr/td[5]/div/input")]
+        [CacheLookup]
+        public IWebElement CodeBroswerFirstCode { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='createAppointmentForm']/div/div[2]/div[1]/div[1]/div[5]/div[2]/span[1]/span/input[1]")]
         [CacheLookup]
         public IWebElement MeetingDuration { get; set; }
 
-        public void CreateMeetingApplication() {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.ClosePatientTab.ClickOn();
-            Pages.Home_Page.EnterAvailbleTime();
-            Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
+        [FindsBy(How = How.Id, Using = "btnSelectTreatmentsFromPriceListSave")]
+        [CacheLookup]
+        public IWebElement SaveTreatmentFromPricelist { get; set; }
 
+        [FindsBy(How = How.Id, Using = "btnSelectTreatmentsFromPriceListSave")]
+        [CacheLookup]
+        public IWebElement CancelTreatmentFromPricelist { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='createAppointmentForm']/div/div[2]/div[1]/div[1]/div[7]/div/span[1]")]
+        [CacheLookup]
+        public IWebElement RepeatField { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='gridTreatmentFroPrice_TreatmentsItems']/div[2]/table/tbody/tr/td[2]/span[1]")]
+        [CacheLookup]
+        public IWebElement PriceType { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='div_Sources']/label[2]")]
+        [CacheLookup]
+        public IWebElement SeriesRadioSelect { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='div_Sources']/label[1]")]
+        [CacheLookup]
+        public IWebElement TreatmentRadioSelect { get; set; }
+
+        public void CreateMeetingApplicationProd()
+        {
             Thread.Sleep(500);
-            SearchPatient.Clear();
-            SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
-            Thread.Sleep(1500);
-            SearchPatient.SendKeys(Keys.ArrowDown);
-            Thread.Sleep(1000);
-            SearchPatient.SendKeys(Keys.Enter);
+            utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
             Thread.Sleep(500);
-            SearchPatient.SendKeys(Keys.Tab);
+            utility.ClickDropdownAndEnter(PriceListProd);
+            ApproveMeeting.ClickOn();
+            softAssert.VerifySuccessMsg();
+        }
+
+        public void CreateMeetingApplication() {
             Thread.Sleep(500);
-            VisitReason.ClickOn();
-            SelectFirstPriceList.ClickOn();
+            utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
+            Thread.Sleep(500);
+            PriceList.ClickWait();
+            CodeBroswer.ClickOn();
+            CodeBroswerFirstCode.ClickOn();
+            SaveTreatmentFromPricelist.ClickWait();
+            ApproveMeeting.ClickOn();
+            softAssert.VerifySuccessMsg();
+        }
+
+        public void CreateMeetingFromAvailbleTime() {
+            PriceList.ClickWait();
+            Browser.Driver.FindElement(By.Id("Code_AutoComplete_PriceListCode")).EnterClearText(Constant.priceListExistCode);
+            utility.ClickDropdownAndEnter(CodeSearch);
+            SaveTreatmentFromPricelist.ClickOn();
+            Thread.Sleep(500);
+         //   utility.ClickDropdownAndEnter(RepeatField);
             ApproveMeeting.ClickOn();
         }
 
         public void CreateMeetingKnownPatient()
         {
+            PriceList.ClickOn();
+            Browser.Driver.FindElement(By.Id("Code_AutoComplete_PriceListCode")).EnterClearText(Constant.priceListExistCode);
+            utility.ClickDropdownAndEnter(CodeSearch);
+            SaveTreatmentFromPricelist.ClickOn();
             Thread.Sleep(500);
-            SearchPatient.Clear();
-            SearchPatient.SendKeys(Pages.Patient_Page.PatientUseName);
-            Thread.Sleep(1500);
-            SearchPatient.SendKeys(Keys.ArrowDown);
-            Thread.Sleep(1000);
-            SearchPatient.SendKeys(Keys.Enter);
-            Thread.Sleep(500);
-            SearchPatient.SendKeys(Keys.Tab);
-            Thread.Sleep(500);
-            VisitReason.ClickOn();
-            SelectFirstPriceList.ClickOn();
             ApproveMeeting.ClickOn();
         }
     }
