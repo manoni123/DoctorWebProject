@@ -25,10 +25,7 @@ namespace DoctorWeb.Utility
         public static string testUser = "test@doctorwin.co.il";
         public static string loginPassword = "zxcv1234";
         public static string prodPassword = "zxcv1234";
-
         public static string therapistUser = "therapist@doctorwin.co.il";
-
-        public static string clerkUser = "clerk@doctorwin.co.il";
 
         public static string unauthorizedUserName = "test02@test02.co.il";
 
