@@ -164,7 +164,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ErrorPopup { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "popup-close-button")]
+        [FindsBy(How = How.LinkText, Using = "X")]
         [CacheLookup]
         public IWebElement PopupClose { get; set; }
 

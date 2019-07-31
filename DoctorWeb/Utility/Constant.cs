@@ -18,6 +18,10 @@ namespace DoctorWeb.Utility
         public static string reportDirectory = "\\\\RON-PC\\Ron-Shared\\Reports\\";
         public static string bugImageCaptured = "\\\\RON-PC\\Ron-Shared\\bugsScreenshot\\";
 
+        public static string imageForTest = "\\\\RON-PC\\Ron-Shared\\AutomationUpload\\Picture.txt";
+        public static string csvForTest = "\\\\RON-PC\\Ron-Shared\\AutomationUpload\\MedicineImport.csv";
+        public static string fileForTest = "\\\\RON-PC\\Ron-Shared\\AutomationUpload\\file.txt";
+
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
         public static string groupUser = "reut@doctorwin.co.il";
@@ -49,7 +53,6 @@ namespace DoctorWeb.Utility
         public static string businessEmail = "Sanity" + RandomNumber.smallNumber() + "@test.com";
 
         public static string branchAddress = "Adress" + RandomNumber.smallNumber();
-
         public static string departmentName = "depart";
 
         public static string userName = "Doctor";
@@ -95,13 +98,9 @@ namespace DoctorWeb.Utility
         public static string stackTraceNull = "Test Failed for Startment was Not null";
 
         public static string WarningMsg = "Test failed due to step invalid";
-
         public static string uploadDocument = "importtest01.csv";
-
         public static string ICDData = "A01";
-
         public static string CancelReason = "Reason" + RandomNumber.smallNumber();
-
         public static string closeTabBeforeSave = "לא שמרת את נתוני המטופל החדש והנך עומד לסגור את טאב המטופל, האם לסגור את הטאב?";
 
         public static string CloseTable = "CloseTable";
@@ -118,7 +117,7 @@ namespace DoctorWeb.Utility
         public static string Click = "Button";
         public static string CloseWindow = "CloseWindow";
         public static string Select = "Selected From List";
-        
 
+        public static int tmpTableCount;
     }
 }

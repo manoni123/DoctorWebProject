@@ -188,6 +188,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement NameValidationError { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_SelectMedicineGrid']/div[1]/a[1]")]
+        [CacheLookup]
+        public IWebElement MedicineUploadFromFile { get; set; }
+
         public void EnterMedicalTab() {
             Browser.Driver.FindElement(By.CssSelector("#tab3_customerTabStrip > ul > li:nth-child(2)")).ClickWait();
         }
@@ -407,6 +411,6 @@ namespace DoctorWeb.PageObjects
             Pages.PatientMedical_Page.OpenMedicineTable.ClickOn();
             Pages.PatientMedical_Page.CancelMedicineTable.ClickOn();
             softAssert.VerifyElementIsPresent(MedicalWarningIcon);
-        }    
+        }
     } 
 }
