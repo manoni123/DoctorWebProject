@@ -5,6 +5,7 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 
 namespace DoctorWeb.Utility
@@ -97,6 +98,7 @@ namespace DoctorWeb.Utility
             element.SendKeys(Keys.Down);
             Thread.Sleep(500);
             element.SendKeys(Keys.Enter);
+            Thread.Sleep(500);
         }
 
         public void TextDropdownAndEnter(IWebElement element, string text)
@@ -150,5 +152,9 @@ namespace DoctorWeb.Utility
                 && driver.FindElement(element).Displayed;
         }
 
+        public void DragAndDrop() {
+ //           (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag, drop).Perform();
+
+        }
     }
 }
