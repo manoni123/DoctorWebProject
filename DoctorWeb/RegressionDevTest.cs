@@ -64,7 +64,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Visits_Page.PatientVisitsApplication();
-            }, Pages.Patient_Page.ClosePatientTab);
+            }, Pages.Patient_Page.ClosePatientTab, Pages.Meeting_Page.CancelMeeting, Pages.AvailbleTime_Page.CloseWindow);
         }
 
         [Test, Category("Patient")]
@@ -190,7 +190,6 @@ namespace DoctorWeb
                 Pages.PatientMedical_Page.CreateNewMedicineApplication();
                 Pages.PatientMedical_Page.ValidateWarningIndicator();
             }, Pages.PatientMedical_Page.CancelMedicineTable);
-
         }
         //+++++++++++++Suppliers and Contacts Tests++++++++++++++++++//
 
@@ -422,7 +421,6 @@ namespace DoctorWeb
         {
             UITest(() => 
             {
-                Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
                 Pages.AdditinalFields_Page.AdditionalFieldApplication();
             }, Pages.AdditinalFields_Page.CloseFieldWindow);
         }
@@ -497,7 +495,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.DragAndDropTemporaryList();
-            }, Pages.Scheduler_Page.CancelledMeetingWindow, Pages.Home_Page.PopupClose);
+            }, Pages.Scheduler_Page.CancelledMeetingWindow);
         }
 
         [Test, Category("Scheduler")]
@@ -507,7 +505,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.DragAndDropStandbyList();
-            }, Pages.Scheduler_Page.CancelledMeetingWindow, Pages.Home_Page.PopupClose);
+            }, Pages.Scheduler_Page.CancelledMeetingWindow, Pages.Standby_Page.CancelStandby);
          }
 
         [Test, Category("Scheduler")]
@@ -588,7 +586,7 @@ namespace DoctorWeb
                 Pages.Home_Page.EnterAvailbleTime();
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CreateMeetingApplication();
-            }, Pages.Meeting_Page.CancelMeeting);
+            }, Pages.Meeting_Page.CancelMeeting, Pages.Meeting_Page.CancelTreatmentFromPricelist);
         }
 
         [Test, Category("Scheduler")]

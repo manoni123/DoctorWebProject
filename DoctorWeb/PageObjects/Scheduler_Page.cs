@@ -159,7 +159,6 @@ namespace DoctorWeb.PageObjects
             int currentRow = 1;
             var errorPop = Browser.Driver.FindElements(By.ClassName("ic_problem"));
         //    var popupClose = Browser.Driver.FindElements(By.ClassName("popup-close-button"));
-
             for (int td = 1; td < schedulerCells;)
             {
                 IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + currentRow + "]/td[" + td + "]"));

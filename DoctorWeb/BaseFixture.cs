@@ -109,16 +109,24 @@ namespace DoctorWeb
                     }
                 }
 
-                if (window != null) {
+                if (onTopPopup != null)
+                {
                     window.ClickOn();
-                    if (popup != null) {
-                        popup.ClickOn();
-                    } if (onTopPopup != null) {
-                        onTopPopup.ClickOn();
-                    }
+                    popup.ClickOn();
+                    window.ClickOn();
                 }
+                else if (popup != null )
+                {
+                    popup.ClickOn();
+                    window.ClickOn();
+                }
+                else if(window != null)
+                {
+                    window.ClickOn();
+                }
+                
 
-                Assert.Warn("Not a bug - Failed due to wrong code/compile");
+                Assert.Warn("Not a bug - Failed due to wrong code");
                // throw;
             }
         }

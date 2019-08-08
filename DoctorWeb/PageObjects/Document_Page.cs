@@ -44,7 +44,7 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(1000);
             IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + patientDataID));
             UplaodBtn.ClickOn();
-            SelectFile.SendKeys("\\\\RON-PC\\Ron-Shared\\AutomationUpload\\file.txt");
+            SelectFile.SendKeys(Constant.fileForTest);
             UploadWindowSave.ClickOn();
             softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerDocuments_" + patientDataID + "']/div[2]/div[1]/table/tbody/tr/td[8]/a[2]")));
         }

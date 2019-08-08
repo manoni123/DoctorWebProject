@@ -27,23 +27,25 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement TherapistDropdown { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = "#tab4_menuCustomerExpended > li:nth-child(3)")]
+        [CacheLookup]
+        public IWebElement VisitButton { get; set; }
+
+        public string visitsTableCount = "//*[@id='tab4_gridCustomerEvents']/div[2]/div[1]/table/tbody";
+
         public void PatientVisitsApplication()
         {
             //Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Patient_Page.NewPatientApplication();
-            Thread.Sleep(1000);
             Pages.Patient_Page.EnterPatientVisits();
-            var countBefore = utility.TableCount("//*[@id='tab2_gridCustomerEvents']/div[2]/div[1]/table/tbody");
+            Constant.tmpTableCount = utility.TableCount(visitsTableCount);
             Pages.Patient_Page.ClosePatientTab.ClickOn();
             Pages.Home_Page.EnterAvailbleTime();
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
             Pages.Meeting_Page.CreateMeetingApplication();
             utility.TextClearDropdownAndEnter(Pages.Home_Page.SearchBox, Pages.Patient_Page.PatientUseName);
-            Thread.Sleep(1500);
-            var VisitButton = Browser.Driver.FindElement(By.CssSelector("#tab4_menuCustomerExpended > li:nth-child(3)"));
-            VisitButton.ClickOn();
-            var countAfter = utility.TableCount("//*[@id='tab4_gridCustomerEvents']/div[2]/div[1]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
+            Pages.Patient_Page.EnterPatientVisits();
+            softAssert.VerifyElementHasEqual(utility.TableCount(visitsTableCount),  Constant.tmpTableCount + 1);
         }
     }
 }

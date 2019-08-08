@@ -59,7 +59,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement HourSelect { get; set; }
 
-        [FindsBy(How = How.XPath , Using = "//*[@id='gridTreatmentFroPrice_TreatmentsItems']/div[2]/table/tbody/tr/td[4]")]
+        [FindsBy(How = How.XPath , Using = "//*[@id='TreatmentCode_AutoComplete_PriceListCode']")]
         [CacheLookup]
         public IWebElement CodeSearch { get; set; }
 
@@ -79,7 +79,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SaveTreatmentFromPricelist { get; set; }
 
-        [FindsBy(How = How.Id, Using = "btnSelectTreatmentsFromPriceListSave")]
+        [FindsBy(How = How.Id, Using = "btnSelectTreatmentsFromcustomerTreatmentCancel")]
         [CacheLookup]
         public IWebElement CancelTreatmentFromPricelist { get; set; }
 
@@ -112,11 +112,7 @@ namespace DoctorWeb.PageObjects
         public void CreateMeetingApplication() {
             Thread.Sleep(500);
             utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
-            Thread.Sleep(500);
-            PriceList.ClickWait();
-            CodeBroswer.ClickOn();
-            CodeBroswerFirstCode.ClickOn();
-            SaveTreatmentFromPricelist.ClickWait();
+            SelectCodeForMeeting();
             ApproveMeeting.ClickOn();
             softAssert.VerifySuccessMsg();
         }
@@ -139,6 +135,19 @@ namespace DoctorWeb.PageObjects
             SaveTreatmentFromPricelist.ClickOn();
             Thread.Sleep(500);
             ApproveMeeting.ClickOn();
+        }
+
+        public void SelectCodeForMeeting() {
+            try
+            {
+                Thread.Sleep(500);
+                PriceList.ClickWait();
+                CodeBroswer.ClickOn();
+                CodeBroswerFirstCode.ClickOn();
+                SaveTreatmentFromPricelist.ClickWait();
+            } catch (Exception) {
+                CancelTreatmentFromPricelist.ClickOn();
+            }
         }
     }
 }

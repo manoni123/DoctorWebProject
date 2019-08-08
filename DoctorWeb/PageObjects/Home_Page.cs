@@ -12,6 +12,7 @@ namespace DoctorWeb.PageObjects
     {
 
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
         private readonly ILog Log =
       LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -164,7 +165,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ErrorPopup { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "popup-close-button")]
+        [FindsBy(How = How.LinkText, Using = "X")]
         [CacheLookup]
         public IWebElement PopupClose { get; set; }
 
@@ -269,6 +270,8 @@ namespace DoctorWeb.PageObjects
         {
             Pages.Home_Page.SettingScreen.ClickWait();
             Pages.Home_Page.DevPricelistScreen.ClickWait();
+            Constant.tmpTableCount = utility.TableCount(Pages.PriceList_Page.priceListTableCount);
+            Constant.priceListExistCode = utility.ElementText(Pages.PriceList_Page.priceListFirstCode);
         }
 
         // blocked patient, normal patient with watch medical, patient w.o watch medical, edit patient, enter setting screen. 

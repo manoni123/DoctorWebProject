@@ -53,6 +53,8 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CapacityText { get; set; }
 
+        public string addFieldsableCount = "//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody";
+
         //create new additional Field application
 
         public void EnterAdditionalFieldsScreen() {
@@ -70,23 +72,23 @@ namespace DoctorWeb.PageObjects
             AdditionalFieldsScreen.ClickWait();
         }
 
-        public void OpenFieldsManager() {
+        public void OpenFieldsManager()
+        {
             OpenFieldManager.ClickOn();
+            Constant.tmpTableCount = utility.TableCount(addFieldsableCount);
         }
 
         public void AdditionalFieldApplication()
         {
+            Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
             Pages.AdditinalFields_Page.OpenFieldsManager();
-
             softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
-            var countBefore = utility.TableCount("//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody");
             CreateNewField.ClickOn();
             FieldSave.ClickOn();
             softAssert.VerifyErrorMsg();
             FieldName.EnterClearText("Field"  + RandomNumber.smallNumber());
             FieldSave.ClickOn();
-            var countAfter = utility.TableCount("//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
+            softAssert.VerifyElementHasEqual(utility.TableCount(addFieldsableCount), Constant.tmpTableCount + 1);
             CloseFieldWindow.ClickOn();
         }
     }
