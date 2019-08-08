@@ -144,6 +144,9 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement VisitReason { get; set; }
 
+        public string priceListTableCount = "//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody";
+        public string priceListFirstCode = "//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]";
+
         public void EnterPriceListScreen() {
             Thread.Sleep(500);
             Pages.Home_Page.SettingScreenProd.ClickWait();
@@ -259,8 +262,6 @@ namespace DoctorWeb.PageObjects
 
         public void DevCreatePriceListApplication() {
             Pages.Home_Page.EntePriceListTab();
-
-            var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
             PriceListCreateNew.ClickOn();
             PriceListSaveDev.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(ValidationError, PriceListCancelDev);
@@ -269,19 +270,13 @@ namespace DoctorWeb.PageObjects
             PriceListPrice.EnterClearText("25");
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
-            var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
-            Assert.AreNotEqual(listCountAfter, listCount);
+            softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpListCount + 1);
         }
 
        
         public void DevCreatePriceListSeriesApplicaiton() {
             Pages.Home_Page.EntePriceListTab();
-            
-            var listCount = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
-            var usedCode = utility.ElementText("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]");
             PriceListCreateNew.ClickOn();
-            PriceListSaveDev.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(ValidationError, PriceListCancelDev);
             PriceListCode.EnterText(Constant.priceListCode);
             PriceListName.EnterText(Constant.priceListName);
             Thread.Sleep(500);
@@ -289,15 +284,14 @@ namespace DoctorWeb.PageObjects
             PriceListType.SendKeys(Keys.ArrowDown);
             PriceListType.SendKeys(Keys.ArrowDown);
             PriceListType.ClickOn();
-            PriceListSubCode.EnterText(usedCode);
+            PriceListSubCode.EnterText(Constant.priceListExistCode);
             Thread.Sleep(500);
             PriceListSubCode.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
             PriceListSubCode.SendKeys(Keys.Enter);
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
-            var listCountAfter = utility.TableCount("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody");
-            Assert.AreEqual(listCountAfter, listCount + 1);
+            softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount + 1);
         }
     }
 }

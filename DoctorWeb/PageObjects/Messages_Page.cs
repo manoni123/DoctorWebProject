@@ -27,7 +27,7 @@ namespace DoctorWeb.PageObjects
         public void PatientMessageApplicationProd()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.EnterPatientMessages();
+            Pages.Patient_Page.EnterPatientMessagesProd();
         }
     }
 }

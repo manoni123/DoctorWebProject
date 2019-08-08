@@ -102,7 +102,8 @@ namespace DoctorWeb.PageObjects
 
         //patiant use name
         public string PatientUseName = Constant.patientName;
-        
+        public string patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
+
         //create or fill method to call to use in tests
         public void NewPatientApplication()
         {
@@ -162,7 +163,7 @@ namespace DoctorWeb.PageObjects
         public void PatientConfirmCreate() {
             SaveButton.ClickWait();
             softAssert.VerifyElementIsPresent(PatientEditButton);
-            Thread.Sleep(500);
+            Constant.patientDataID = patientDataID;
         }
 
         public void PatientCloseTab() {
@@ -223,10 +224,16 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPatientMessages()
         {
-            var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
+            Thread.Sleep(500);
+            PatientMessages.ClickWait();
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + Constant.patientDataID +"']")));
+        }
+
+        public void EnterPatientMessagesProd()
+        {
             Thread.Sleep(500);
             PatientMessagesProd.ClickWait();
-            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + patientDataID + "']/div[2]/div[1]/table/tbody")));
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody")));
         }
     }
 }

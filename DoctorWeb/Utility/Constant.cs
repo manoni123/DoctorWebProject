@@ -38,6 +38,7 @@ namespace DoctorWeb.Utility
         public static string patientLastname = "test";
         public static bool patientCreated;
         public static bool businessWindowSelect = false;
+        public static string patientDataID;
 
         public static string supplierName = "supplier" + RandomNumber.smallNumber();
         public static string suppContactName = "test" + RandomNumber.smallNumber();
@@ -120,5 +121,6 @@ namespace DoctorWeb.Utility
         public static string Select = "Selected From List";
 
         public static int tmpTableCount;
+        public static int tmpListCount;
     }
 }

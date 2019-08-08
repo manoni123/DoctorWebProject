@@ -52,13 +52,11 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CancelTreatment { get; set; }
 
+
         public void CreateNewSingleTreatmentApplication() {
             Actions actions = new Actions(Browser.chromebDriver);
             Pages.Home_Page.EntePriceListTab();
-            var pricelistCodeID = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
-            var pricelistCodeDesc = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[3]")).Text;
             Pages.Home_Page.SchedularScreen.ClickWait();
-
             Pages.Patient_Page.NewPatientApplication();
             var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
             Pages.Patient_Page.PatientTreatments.ClickWait();
