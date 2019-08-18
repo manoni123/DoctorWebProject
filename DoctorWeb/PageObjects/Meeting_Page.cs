@@ -114,7 +114,7 @@ namespace DoctorWeb.PageObjects
             utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
             SelectCodeForMeeting();
             ApproveMeeting.ClickOn();
-            softAssert.VerifySuccessMsg();
+//            softAssert.VerifySuccessMsg();
         }
 
         public void CreateMeetingFromAvailbleTime() {

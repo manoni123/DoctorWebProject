@@ -48,6 +48,11 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ActivityScope { get; set; }
 
+        [FindsBy(How = How.Id, Using = "btnCancelEditUser")]
+        [CacheLookup]
+        public IWebElement EditUserCancelBtn { get; set; }
+
+
 
         public void EdiProfileApplication()
         {

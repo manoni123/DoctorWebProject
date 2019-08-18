@@ -40,13 +40,12 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.NewPatientApplication();
             Thread.Sleep(1500);
             Pages.Patient_Page.PatientDocument.ClickWait();
-            var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
             Thread.Sleep(1000);
-            IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + patientDataID));
+            IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + Constant.patientDataID));
             UplaodBtn.ClickOn();
             SelectFile.SendKeys(Constant.fileForTest);
             UploadWindowSave.ClickOn();
-            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerDocuments_" + patientDataID + "']/div[2]/div[1]/table/tbody/tr/td[8]/a[2]")));
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerDocuments_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody/tr/td[8]/a[2]")));
         }
     }
 }

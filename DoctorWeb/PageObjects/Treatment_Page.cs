@@ -52,24 +52,25 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CancelTreatment { get; set; }
 
+        private string countTreatmentTable = "//*[@id='tab3_customerTreatmentsGrid_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody";
+
+        public void GoTo() {
+            Pages.Patient_Page.PatientTreatments.ClickWait();
+            Constant.tmpTableCount = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody");
+        }
+
 
         public void CreateNewSingleTreatmentApplication() {
-            Actions actions = new Actions(Browser.chromebDriver);
-            Pages.Home_Page.EntePriceListTab();
-            Pages.Home_Page.SchedularScreen.ClickWait();
             Pages.Patient_Page.NewPatientApplication();
-            var patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
-            Pages.Patient_Page.PatientTreatments.ClickWait();
-            var countBefore = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_"+patientDataID+"']/div[2]/div[1]/table/tbody");
+            GoTo();
             CreateNewTreatment.ClickOn();
-            IWebElement treatmentList = Browser.Driver.FindElement(By.Id("newItemMenu"));
-            treatmentList.FindElements(By.TagName("li")).ElementAt(0).ClickOn();
+            utility.SelectFromList("newItemMenu", 0);
             utility.ClickDropdownAndEnter(SelectTerapist);
             utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
             Thread.Sleep(500);
             SaveTreatment.ClickWait();
-            var countAfter = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + patientDataID + "']/div[2]/div[1]/table/tbody");
-            Assert.AreNotEqual(countBefore, countAfter);
+            softAssert.VerifyElementNotPresent(CancelTreatment);
+            softAssert.VerifyElemenNotHaveEqual(utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody"), Constant.tmpTableCount);
         }
 
         public void CreateNewSeriesTreatment()

@@ -147,11 +147,6 @@ namespace DoctorWeb
             get { return GetPage<CancelReason_Page>(); }
         }
 
-        public static DevPriceList_Page DevPriceList_Page
-        {
-            get { return GetPage<DevPriceList_Page>(); }
-        }
-
         public static PriceListTax_Page PriceListTax_Page
         {
             get { return GetPage<PriceListTax_Page>(); }

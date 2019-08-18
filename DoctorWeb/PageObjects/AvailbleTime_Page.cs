@@ -46,6 +46,12 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement VisitReason { get; set; }
 
+        public void GoTo() {
+            Thread.Sleep(500);
+            Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(Pages.AvailbleTime_Page.SearchBtn, Pages.AvailbleTime_Page.CloseWindow);
+        }
+
 
         public void SearchAvailbleTimeApplication()
         {

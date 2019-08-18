@@ -214,7 +214,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.PriceList_Page.EnterPriceListScreen();
+                Pages.PriceList_Page.GoTo();
                 Pages.PriceList_Page.OpenCategoryManager();
                 Pages.PriceList_Page.CreateCategoryApplication();
                 Pages.PriceList_Page.EditCategoryApplication();
@@ -257,7 +257,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Authorization_Page.EnterAuthorizationScreenProd();
+                Pages.Authorization_Page.GoTo();
                 Pages.Authorization_Page.CreateGroupApplication();
                 Pages.Authorization_Page.EditGroupApplication();
                 Pages.Authorization_Page.DeleteGroupApplication();
@@ -275,7 +275,7 @@ namespace DoctorWeb
         [Test, Category("Settings")]
         public void UserCreateTest()
         {
-            Pages.UsersManagement_Page.EnterManagementWindow();
+            Pages.UsersManagement_Page.GoTo();
             Pages.UsersManagement_Page.CreateUserApplication();
         }
 
@@ -284,7 +284,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.PriceList_Page.EnterPriceListScreen();
+                Pages.PriceList_Page.GoTo();
                 Pages.PriceList_Page.CreatePriceListApplication();
             }, Pages.PriceList_Page.PriceListCancelDev);
         }
@@ -413,7 +413,7 @@ namespace DoctorWeb
             {
                 Pages.Patient_Page.NewPatientApplication();
                 Pages.Patient_Page.ClosePatientTab.ClickOn();
-                Pages.Home_Page.EnterAvailbleTime();
+                Pages.AvailbleTime_Page.GoTo();
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CreateMeetingApplicationProd();
             }, Pages.Meeting_Page.CancelMeeting);
@@ -432,7 +432,7 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
-                Pages.Home_Page.EnterAvailbleTime();
+                Pages.AvailbleTime_Page.GoTo();
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CancelMeeting.ClickOn();
             }, Pages.AvailbleTime_Page.CloseWindow);

@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
@@ -152,9 +153,15 @@ namespace DoctorWeb.Utility
                 && driver.FindElement(element).Displayed;
         }
 
-        public void DragAndDrop() {
- //           (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag, drop).Perform();
+        public void SelectFromList(string listElement, int listNum) {
+            IWebElement treatmentList = Browser.Driver.FindElement(By.Id(listElement));
+            treatmentList.FindElements(By.TagName("li")).ElementAt(listNum).ClickOn();
+        }
 
+        public void SuperUserOnlyTest() {
+            if (Constant.VersionNumber != 2) {
+                Assert.Ignore("test is for S.U only");
+            }
         }
     }
 }

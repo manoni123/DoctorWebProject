@@ -57,7 +57,7 @@ namespace DoctorWeb.Utility
             element.Clear();
             element.SendKeys(text);
             Thread.Sleep(_time);
-            log.Info(text + " is entered in the " + element.Text);
+            log.Info(text + " is entered in the " + element.GetAttribute("name"));
         }
 
         //Time in Miliseconds for user actionss
@@ -72,8 +72,8 @@ namespace DoctorWeb.Utility
                 Thread.Sleep(_time);
                // Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_time);
             }
-            catch (Exception e) {
-                Debug.WriteLine(e);
+            catch (Exception) {
+                log.Error("Could not Click Element");
             }
         }
 
@@ -90,9 +90,9 @@ namespace DoctorWeb.Utility
                 element.Click();
                 Thread.Sleep(1500);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e);
+                log.Error("Could not Click Element");
             }
         }
 

@@ -81,7 +81,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StanByCreate { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "//*[@id='btnNewAppointment']/div/span[1]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='btnNewAppointment']/div/span[1]")]
         [CacheLookup]
         public IWebElement AvailbleTime_Btn { get; set; }
 
@@ -100,6 +100,11 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.Id, Using = "btnClose")]
         [CacheLookup]
         public IWebElement StandbyAppointmentCancel { get; set; }
+
+        public void GoTo() {
+            Pages.Home_Page.SchedularScreen.ClickOn();
+            softAssert.VerifyElementIsPresent(SchedulerMenuList);
+        }
 
         public void DragAndDropTemporaryList() {
            // //Pages.PriceList_Page.PriceListFirstCodeName();;
@@ -276,13 +281,7 @@ namespace DoctorWeb.PageObjects
         public void EnterStandBySchedulerList() {
             Thread.Sleep(500);
             StandBySchedulerTab.ClickWait();
-        }
-
-        public void EnterAvailbleTime()
-        {
-            Thread.Sleep(500);
-            AvailbleTime_Btn.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(Pages.AvailbleTime_Page.SearchBtn, Pages.AvailbleTime_Page.CloseWindow);
+            Constant.tmpListCount = utility.ListCount(Pages.Standby_Page.standbyListCount);
         }
     }
 }

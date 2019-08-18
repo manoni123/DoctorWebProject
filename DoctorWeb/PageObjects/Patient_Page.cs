@@ -102,7 +102,6 @@ namespace DoctorWeb.PageObjects
 
         //patiant use name
         public string PatientUseName = Constant.patientName;
-        public string patientDataID = Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
 
         //create or fill method to call to use in tests
         public void NewPatientApplication()
@@ -163,8 +162,8 @@ namespace DoctorWeb.PageObjects
         public void PatientConfirmCreate() {
             SaveButton.ClickWait();
             softAssert.VerifyElementIsPresent(PatientEditButton);
-            Constant.patientDataID = patientDataID;
-        }
+            Constant.patientDataID =  Browser.Driver.FindElement(By.ClassName("mainTabPrefix")).GetAttribute("data-entity-id");
+    }
 
         public void PatientCloseTab() {
             ClosePatientTab.ClickOn();
@@ -215,11 +214,6 @@ namespace DoctorWeb.PageObjects
         {
             PatientDocument.ClickWait();
             softAssert.VerifyElementIsPresent(Pages.Document_Page.UplaodFileBtn);
-        }
-
-        public void EnterPatientVisits()
-        {
-            PatientVisits.ClickWait();
         }
 
         public void EnterPatientMessages()

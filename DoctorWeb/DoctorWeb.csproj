@@ -119,7 +119,6 @@
     <Compile Include="DevBaseFixture.cs" />
     <Compile Include="DevBrowser.cs" />
     <Compile Include="MobileRegression.cs" />
-    <Compile Include="PageObjects\DevPriceList_Page.cs" />
     <Compile Include="PageObjects\MobileTherapist_Page.cs" />
     <Compile Include="PageObjects\PriceListTax_Page.cs" />
     <Compile Include="PageObjects\PriceListType_Page.cs" />

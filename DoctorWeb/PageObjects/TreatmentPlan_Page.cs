@@ -48,25 +48,23 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement TreatmentPlanPage { get; set; }
 
+        private string treatmentTableCount = "//*[@id='gridTreatmentPlanTemplates']/div[2]/table/tbody";
         public void EnterTreatmentPlanPage()
         {
             Pages.Home_Page.SettingScreen.ClickWait();
             Pages.Home_Page.DevGeneralScreen.ClickWait();
             TreatmentPlanPage.ClickWait();
+            Constant.tmpTableCount = utility.TableCount(treatmentTableCount);
         }
 
         public void CreateNewTreatmentPlanApplication() {
-            Pages.PriceList_Page.PriceListFirstCodeName();;
-            Pages.Home_Page.SettingScreen.ClickWait();
-            Pages.Home_Page.DevGeneralScreen.ClickWait();
-            TreatmentPlanPage.ClickWait();
-            var countBefore = utility.TableCount("//*[@id='gridTreatmentPlanTemplates']/div[2]/table/tbody");
+            EnterTreatmentPlanPage();
             CreateTreatmentPlan.ClickWait();
             TreatmentPlanName.EnterClearText(Constant.treatmentPlan);
             utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
             TreatmentPlanSave.ClickWait();
-            var countAfter = utility.TableCount("//*[@id='gridTreatmentPlanTemplates']/div[2]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
+            softAssert.VerifyElementHasEqual(utility.TableCount(treatmentTableCount), Constant.tmpTableCount +1);
+
         }
     }
 }

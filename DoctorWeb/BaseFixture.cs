@@ -23,7 +23,7 @@ namespace DoctorWeb
         public void Setup()
         {
             ExtentTestManager.CreateParentTest(GetType().Name);
-            ChromeOptions options = new ChromeOptions();
+            _ = new ChromeOptions();
             Browser.Initialize();
         }
 

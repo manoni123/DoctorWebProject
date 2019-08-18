@@ -10,7 +10,7 @@ namespace DoctorWeb.Utility
         public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
         public static string drwebMobileUrl = "http://test.m-staging.drweb-sys.com/login";
         //1 = drweb , 2 = stage , 3 = mobile, 4 = hotfix
-        public static int VersionNumber = 2;
+        public static int VersionNumber = 1;
 
         //stored project logs report and images
         public static string rootNetworkPath = (Path.GetPathRoot(Environment.SystemDirectory));
@@ -25,7 +25,7 @@ namespace DoctorWeb.Utility
         public static string comment = "+++++++New Test++++++" + Environment.NewLine + Environment.NewLine;
 
         public static string groupUser = "reut@doctorwin.co.il";
-        public static string newClientUser = "serg_svp@doctorwin.co.il";
+        public static string newClientUser = "rona@doctorwin.co.il";
         public static string testUser = "test@doctorwin.co.il";
         public static string loginPassword = "zxcv1234";
         public static string prodPassword = "zxcv1234";
@@ -51,6 +51,7 @@ namespace DoctorWeb.Utility
         public static string businessName = "Clinic" + RandomNumber.smallNumber();
         public static string businessNum = RandomNumber.smallNumber();
         public static string businessAddress = "Addres 101";
+        public static string businessCity = "ראשון לציון";
         public static string businessEmail = "Sanity" + RandomNumber.smallNumber() + "@test.com";
 
         public static string branchAddress = "Adress" + RandomNumber.smallNumber();
@@ -121,5 +122,9 @@ namespace DoctorWeb.Utility
 
         public static int tmpTableCount;
         public static int tmpListCount;
+
+        //images and SVG's
+        public static string filterImg = "http://drweb-sys.com//images/icons/ic-filter.svg";
+        public static string closedBarArrow = "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg";
     }
 }

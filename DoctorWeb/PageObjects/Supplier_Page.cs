@@ -73,8 +73,6 @@ namespace DoctorWeb.PageObjects
         public void NewSupplierCreateApplication()
         {
 
-            //call Home Page to create supplier
-            //open entity list and press the new supplier
             Pages.Home_Page.OpenEntityDropdown.ClickOn();
             Pages.Home_Page.CreateNewSupplier.ClickWait();
             SupplierName.SendKeys("1");

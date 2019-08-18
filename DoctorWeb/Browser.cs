@@ -24,7 +24,7 @@ namespace DoctorWeb
             Log.Info("Bug Images are Located in:" + Constant.bugImageCaptured.ToString());
             Log.Info("Log are located in: " + Constant.logDirectory.ToString());
             Log.Info("html reports are located in: " + Constant.reportDirectory.ToString());
-            Log.Info("Versions are: //1 = prod // 2 = stage // 3 = mobile // 4 = hotfix");
+            Log.Info("Versions are: //1 =  stage // 2 = stage(S.U) // 3 = mobile // 4 = hotfix");
             Log.Info("Test enviornment is:" + Constant.VersionNumber);
             Goto("");
             chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -47,8 +47,8 @@ namespace DoctorWeb
             string usedURL = "URL Used for Testing is: ";
             switch (selectEnviornment) {
                 case 1:
-                     chromebDriver.Url = BaseUrl + url;
-                     Log.Info(usedURL + BaseUrl + Environment.NewLine);
+                     chromebDriver.Url = TestUrl + url;
+                     Log.Info(usedURL + TestUrl + Environment.NewLine);
                 break;
 
                 case 2:

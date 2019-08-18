@@ -253,17 +253,40 @@ namespace DoctorWeb.PageObjects
             changePasswordBtn.ClickOn();
         }
 
+        public void EnterSchedulerWindow()
+        {
+            SchedularScreen.ClickOn();
+        }
+
+        public void EnterSettingScreen()
+        {
+            SettingScreen.ClickOn();
+        }
+
         public void EnterUserManagmentScreen() {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait();
-            Pages.Home_Page.UserManagementScreen.ClickWait();
+            SettingScreen.ClickWait();
+            UserManagementScreen.ClickWait();
+            softAssert.VerifyElementIsPresent(Pages.UsersManagement_Page.PracticesManagerButton);
         }
 
         public void EnterUserManagmentScreenProd()
         {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreenProd.ClickWait();
-            Pages.Home_Page.UserManagementScreen.ClickWait();
+            SettingScreenProd.ClickWait();
+            UserManagementScreen.ClickWait();
+        }
+
+        public void EnterPermissionScreen() {
+            SettingScreen.ClickWait();
+            UserAuthorizationScreen.ClickOn();
+            softAssert.VerifyElementIsPresent(Pages.Authorization_Page.GroupCreate);
+        }
+
+        public void EnterGeneralScreen()
+        {
+            SettingScreen.ClickWait();
+            Pages.Home_Page.DevGeneralScreen.ClickWait();
         }
 
         public void EntePriceListTab()
@@ -287,11 +310,11 @@ namespace DoctorWeb.PageObjects
             else {
                 Log.Info("create patient isnt availble - Pass test.");
             }
-            
+
         }
         public void UnaothorizedEnterSettingScreen()
         {
-            Thread.Sleep(500);      
+            Thread.Sleep(500);
             if (ReportScreen.IsDisplayed("setting screen"))
             {
                 Console.WriteLine("fail test");
@@ -309,28 +332,19 @@ namespace DoctorWeb.PageObjects
             String spanText = Browser.Driver.FindElement(By.XPath("//span[text()='אין הרשאה לצפות בפרטי המטופל !']")).ToString();
             Assert.AreEqual(spanText, "אין הרשאה לצפות בפרטי המטופל !");
         }
-        public void EnterAvailbleTime()
-        {
-            AppointmentBtn_1.ClickOn();
-            Thread.Sleep(500);
-        }
-
 
         public void FilterImageApplication() {
-            string filterImg = "http://drweb-sys.com//images/icons/ic-filter.svg";
-
             MainFilterBtn.ClickOn();
             MainFilterPhoneBook.ClickOn();
             Overlay.ClickOn();
-            softAssert.VerifyElementHasEqual(filterImg, "http://drweb-sys.com//images/icons/ic-filter.svg");
+            softAssert.VerifyElementHasEqual(Constant.filterImg, "http://drweb-sys.com//images/icons/ic-filter.svg");
         }
 
-        public void RightBarApplication (){
-            String closedBarArrow = "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg";
+        public void RightBarApplication() {
             SidePannelBtn.ClickOn();
             LogoutApplication();
             Pages.Login_Page.LoginApplication();
-            softAssert.VerifyElementHasEqual(closedBarArrow, "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg");
+            softAssert.VerifyElementHasEqual(Constant.closedBarArrow, "https://test.drweb-sys.com/images/icons/arrow-close-bar-left.svg");
             SidePannelBtn.ClickOn();
         }
     }

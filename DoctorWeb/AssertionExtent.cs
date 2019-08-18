@@ -27,7 +27,6 @@ namespace DoctorWeb
             try {
                 Assert.IsTrue(Pages.Home_Page.SuccessPopup.Enabled);
             } catch (AssertionException e) {
-                Debug.WriteLine(e);
                 Assert.Fail();
             }
         }
@@ -165,7 +164,7 @@ namespace DoctorWeb
             }
         }
 
-        public void VerifyElementHasEqualInsideWindow(IWebElement element, String str, IWebElement _window)
+        public void VerifyElementHasEqualInsideWindow(object element, object str, IWebElement _window)
         {
             try
             {
@@ -178,6 +177,20 @@ namespace DoctorWeb
                 Debug.WriteLine(e);
             }
         }
+        public void VerifyElementNotEqualInsideWindow(object element, object str, IWebElement _window)
+        {
+            try
+            {
+                Assert.AreNotEqual(element, str);
+                Thread.Sleep(_time);
+            }
+            catch (AssertionException e)
+            {
+                CloseWindowssIfDisplayed(_window);
+                Debug.WriteLine(e);
+            }
+        }
+
 
         public void VerifyElementIsNotNull(string element, IWebElement _window)
         {

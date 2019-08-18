@@ -33,19 +33,24 @@ namespace DoctorWeb.PageObjects
 
         public string visitsTableCount = "//*[@id='tab4_gridCustomerEvents']/div[2]/div[1]/table/tbody";
 
+        public void GoTo() {
+            Pages.Patient_Page.PatientVisits.ClickWait();
+            Constant.tmpTableCount = utility.TableCount(visitsTableCount);
+
+        }
+
         public void PatientVisitsApplication()
         {
             //Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Patient_Page.NewPatientApplication();
-            Pages.Patient_Page.EnterPatientVisits();
-            Constant.tmpTableCount = utility.TableCount(visitsTableCount);
+            GoTo();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
-            Pages.Home_Page.EnterAvailbleTime();
+            Pages.AvailbleTime_Page.GoTo();
             Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
             Pages.Meeting_Page.CreateMeetingApplication();
             utility.TextClearDropdownAndEnter(Pages.Home_Page.SearchBox, Pages.Patient_Page.PatientUseName);
-            Pages.Patient_Page.EnterPatientVisits();
-            softAssert.VerifyElementHasEqual(utility.TableCount(visitsTableCount),  Constant.tmpTableCount + 1);
+            GoTo();
+            softAssert.VerifyElementHasEqual(utility.TableCount(visitsTableCount),  Constant.tmpTableCount);
         }
     }
 }

@@ -192,6 +192,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement MedicineUploadFromFile { get; set; }
 
+        private string anamnezaTableCount = "//*[@id='tab3_SelectAnamnezaGrid']/div[3]/table/tbody";
+        private string medicineTableCount = "//*[@id='tab3_SelectMedicineGrid']/div[3]/table/tbody";
+        private string noteTableCount = "//*[@id='tab2_SelectNotesGrid']/div[3]/table/tbody";
+
         public void EnterMedicalTab() {
             Browser.Driver.FindElement(By.CssSelector("#tab3_customerTabStrip > ul > li:nth-child(2)")).ClickWait();
         }
@@ -208,11 +212,6 @@ namespace DoctorWeb.PageObjects
         //create new medicine applicaiton
         public void CreateNewMedicineApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-            string MedicienNewName = "Med" + RandomNumber.smallNumber();
-            var disButton = SaveMedicineTable.GetAttribute("disabled");
             CreateNewMedicine.ClickOn();
             ConfirmCreateMedicine.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(NameValidationError, CancelMedicineTable);
@@ -221,15 +220,11 @@ namespace DoctorWeb.PageObjects
             ConfirmCreateMedicine.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DeleteMedicine, CancelMedicineTable);
             CheckMedicineActive.ClickOn();
-            Constant.medicineName = MedicienNewName;
         }
 
         //edit medicine
         public void EditMedicineApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             EditMedicine.ClickOn();
             MedicalName.EnterClearText("MedEdit" + RandomNumber.smallNumber());
             ConfirmCreateMedicine.ClickOn();
@@ -238,11 +233,6 @@ namespace DoctorWeb.PageObjects
 
         //delete medicine
         public void DeleteMedicineApplication() {
-
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-
             if (DeleteMedicine.IsDisplayed("delete medicine"))
             {
                 DeleteMedicine.ClickOn();
@@ -262,18 +252,12 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             OpenAnamnezaTable.ClickWait();
             softAssert.VerifyElementIsPresent(CloseAnamnezaTable);
+            Constant.tmpTableCount = utility.TableCount(anamnezaTableCount);
         }
 
         //create new anamneza applicaiton
         public void CreateNewAnamnezaApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-            var disButton = SaveAnamnezaTable.GetAttribute("disabled");
-            string anamnezaNewName = "Anam" + RandomNumber.smallNumber();
-            //call patient page to enter medical Tab
-
             CreateNewAnamneza.ClickOn();
             AnamnezaName.EnterClearText(Constant.anamnezaName);
             AnamnezaDescription.EnterClearText(Constant.anamnezaName + RandomNumber.smallNumber());
@@ -282,8 +266,6 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(DeleteAnamneza, CloseAnamnezaTable);
             softAssert.VerifySuccessMsg();
             Thread.Sleep(500);
-        //    CloseAnamnezaTable.ClickOn();
-            Constant.anamnezaName = anamnezaNewName; 
         }
 
         public void CreateNewAnamnezaWhenSaveApplication()
@@ -309,21 +291,16 @@ namespace DoctorWeb.PageObjects
 
         //edit new anamneza application
         public void EditNewAnamnezaApplication() {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
             EditAnamneza.ClickOn();
             AnamnezaName.Clear();
             ConfirmCreateAnamneza.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(NameValidationError, CloseAnamnezaTable);
-            AnamnezaName.EnterClearText("Edit");
+            AnamnezaName.EnterClearText("Edit" + RandomNumber.smallNumber());
             ConfirmCreateAnamneza.ClickOn();
         }
 
         //delete new anamneza app
         public void DeleteNewAnamanezaApplication() {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             if (DeleteAnamneza.IsDisplayed("delete anamneza"))
             {
                 DeleteAnamneza.ClickOn();
@@ -343,6 +320,7 @@ namespace DoctorWeb.PageObjects
             ICDSearch.SendKeys(Constant.ICDData);
             ICDSearch.SendKeys(Keys.Enter);
             ICDImport.ClickOn();
+            softAssert.VerifyElementNotEqualInsideWindow(utility.TableCount(anamnezaTableCount), Constant.tmpTableCount + 1, CloseAnamnezaTable);
             CloseAnamnezaTable.ClickOn();;
         }
 
@@ -359,22 +337,14 @@ namespace DoctorWeb.PageObjects
         //create new note applicaiton
         public void CreateNewNoteApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-            string NoteNewName = "note" + RandomNumber.smallNumber();
             CreateNewNote.ClickOn();
-            NoteDescription.SendKeys(NoteNewName);
+            NoteDescription.SendKeys(Constant.noteName);
             ConfirmCreateNote.ClickOn();
             softAssert.VerifySuccessMsg();
-            Constant.noteName = NoteNewName;
         }
         //edit desc
         public void EditNoteApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             EditNote.ClickWait();
             NoteDescription.EnterClearText("Description" + RandomNumber.smallNumber());
             ConfirmCreateNote.ClickOn();
@@ -384,9 +354,6 @@ namespace DoctorWeb.PageObjects
         //delete note
         public void DeleteNoteApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             if (DeleteNote.IsDisplayed("delete note"))
             {
                 DeleteNote.ClickOn();

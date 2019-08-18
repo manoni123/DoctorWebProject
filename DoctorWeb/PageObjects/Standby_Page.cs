@@ -48,45 +48,38 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StandbyEndDate { get; set; }
 
+        public string standbyListCount = "//*[@id='wait-list']";
+
         public void CreateStandbyApplication() {
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
-
             Pages.Scheduler_Page.EnterStandBySchedulerList();
-            var CountBefore = utility.ListCount("//*[@id='wait-list']");
             Pages.Scheduler_Page.StanByCreate.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
             utility.TextClearDropdownAndEnter(StandbySearch, Pages.Patient_Page.PatientUseName);
-            CreateStandby.ClickOn();
-            softAssert.VerifyErrorMsg();
             Pages.Meeting_Page.PriceList.ClickOn();
             Pages.Meeting_Page.CodeBroswer.ClickOn();
             Pages.Meeting_Page.CodeBroswerFirstCode.ClickOn();
             Pages.Meeting_Page.SaveTreatmentFromPricelist.ClickOn();
             TherapistSearch.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
-            //  TherapistSearch.SendKeys(Keys.Enter);
             CreateStandby.ClickOn();
-            var CountAfter = utility.ListCount("//*[@id='wait-list']");
             Thread.Sleep(1000);
-            Assert.AreNotEqual(CountBefore, CountAfter);
+            softAssert.VerifyElementHasEqual(utility.ListCount(standbyListCount), Constant.tmpListCount + 1);
         }
 
         public void CreateStandbyApplicaitonProd() {
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
-
             Pages.Scheduler_Page.EnterStandBySchedulerList();
-            var countBefore = utility.ListCount("//*[@id='wait-list']");
             Pages.Scheduler_Page.StanByCreate.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(CreateStandby, CancelStandby);
             utility.TextClearDropdownAndEnter(StandbySearch, Pages.Patient_Page.PatientUseName);
             Thread.Sleep(500);
             utility.ClickDropdownAndEnter(TherapistSearch);
             CreateStandby.ClickWait();
-            var countAfter = utility.ListCount("//*[@id='wait-list']");
             Thread.Sleep(1000);
-            Assert.AreNotEqual(countBefore, countAfter);
+            softAssert.VerifyElementHasEqual(utility.ListCount(standbyListCount), Constant.tmpListCount + 1);
         }
     }
 }

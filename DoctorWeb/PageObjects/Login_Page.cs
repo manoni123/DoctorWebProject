@@ -50,8 +50,8 @@ namespace DoctorWeb.PageObjects
             {
                 case 1:
                     LanguageSelect.SendKeys(Keys.ArrowDown);
-                    UserName.EnterText(Constant.testUser);
-                    UserPassword.EnterText(Constant.prodPassword);
+                    UserName.EnterText(Constant.newClientUser);
+                    UserPassword.EnterText(Constant.loginPassword);
                     Thread.Sleep(500);
                     Browser.Driver.FindElement(By.XPath("//*[@id='loginForm']/div[2]/div[4]/div/p/button")).ClickOn();
                     Thread.Sleep(1500);
@@ -100,8 +100,6 @@ namespace DoctorWeb.PageObjects
                         SideBarArrow.ClickOn();
                     }
                     break;
-
-
             }
         }
 
@@ -164,7 +162,7 @@ namespace DoctorWeb.PageObjects
             LanguageSelect.SendKeys(Keys.ArrowDown);
             //  Log.Info("pressed arrow down to select hebrew language");
             //fill user name, pasdoword and hit LOGIN
-            UserName.EnterClearText(Constant.clerkUser);
+            UserName.EnterClearText(Constant.userEmail);
             UserPassword.EnterClearText(Constant.loginPassword);
             LoginButton.ClickOn();
             if (Pages.Home_Page.AppointmentBtn_1.Displayed)

@@ -17,7 +17,7 @@ namespace DoctorWeb.PageObjects
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
-        public UtilityFunction utility = new UtilityFunction();
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "btnAddBusiness")]
         [CacheLookup]
@@ -51,7 +51,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement BusinessEmail { get; set; }
 
-        [FindsBy(How = How.Id, Using = "CityName")]
+        [FindsBy(How = How.Name, Using = "CityID_input")]
         [CacheLookup]
         public IWebElement BusinessCity { get; set; }
 
@@ -71,7 +71,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement BranchAddress { get; set; }
 
-        [FindsBy(How = How.Id, Using = "CityName")]
+        [FindsBy(How = How.Name, Using = "CityID_input")]
         [CacheLookup]
         public IWebElement BranchCity { get; set; }
 
@@ -139,6 +139,8 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement DepartmentEnableMark { get; set; }
 
+        public string departmentTableCount = "//*[@id='DepartmentManagmentGrid']/div[2]/table/tbody";
+
 
         public void CheckDepartmentIsNull() {
             Pages.Home_Page.SettingScreen.ClickWait();
@@ -152,6 +154,7 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             DepartmentManagement.ClickOn();
             softAssert.VerifyElementIsPresent(DepartmentCloseButton);
+            Constant.tmpTableCount = utility.TableCount(departmentTableCount);
         }
 
         public void EnterSettingScreen() {
@@ -172,7 +175,7 @@ namespace DoctorWeb.PageObjects
             BusinessName.EnterClearText(Constant.businessName);
             BusinessPractinerNum.EnterClearText(Constant.businessNum);
             BusinessAddress.EnterClearText(Constant.businessAddress);
-            BusinessCity.EnterClearText(Constant.businessAddress);
+            BusinessCity.EnterClearText(Constant.businessCity);
             BusinessPhone.EnterClearText(Constant.businessNum);
             BusinessEmail.EnterClearText(Constant.businessEmail);
             BusinessSavebutton.ClickOn();
@@ -184,46 +187,34 @@ namespace DoctorWeb.PageObjects
             SelectBusinessFromList.ClickOn();
             BranchCreate.ClickOn();
             softAssert.VerifyElementIsPresent(BranchCancelButton);
-         //   BranchAddress.SendKeys("1");
             BranchSaveButton.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(BranchEmail, BusinessClose);
             BranchAddress.EnterClearText(Constant.branchAddress);
-            BranchCity.EnterText("Rishon");
+            BranchCity.EnterText(Constant.businessCity);
             BranchPhone.EnterClearText(Constant.userPhone);
             BranchEmail.EnterClearText(Constant.userEmail);
             Thread.Sleep(500);
             BranchSaveButton.ClickOn();
-         //   softAssert.VerifyElementNotPresent(BranchSaveButton);
         }
 
         public void CreateDepartmentApplication()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             Pages.Business_Page.CheckDepartmentIsNull();
             Pages.Business_Page.EnterDepaertmentWindow();
-            var countBefore = utility.TableCount("//*[@id='DepartmentManagmentGrid']/div[2]/table/tbody");
             DepartmentCreate.ClickOn();
             DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepNameValidationPopup, DepartmentCloseButton);
             DepartmentName.EnterClearText(Constant.departmentName + RandomNumber.smallNumber());
             DepartmentConfirm.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(DepartmentDelete, DepartmentCloseButton);
-            var countAfter = utility.TableCount("//*[@id='DepartmentManagmentGrid']/div[2]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
+            softAssert.VerifyElementHasEqual(utility.TableCount(departmentTableCount), Constant.tmpTableCount +1);
         }
 
         public void DeleteDepartmentApplication() {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-            var countBefore = utility.TableCount("//*[@id='DepartmentManagmentGrid']/div[2]/table/tbody");
             DepartmentDelete.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(BtnApproveDelete, BusinessClose);
             BtnApproveDelete.ClickOn();
-            var countAfter = utility.TableCount("//*[@id='DepartmentManagmentGrid']/div[2]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
+            softAssert.VerifyElementHasEqualInsideWindow(utility.TableCount(departmentTableCount), Constant.tmpTableCount, DepartmentCloseButton);
         }
 
         public void DeleteActiveDepartmentApplication()
@@ -270,9 +261,6 @@ namespace DoctorWeb.PageObjects
 
         public void EditDepartmentApplicaiton()
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             DepartmentEdit.ClickOn();
             DepartmentName.Clear();
             DepartmentConfirm.ClickOn();

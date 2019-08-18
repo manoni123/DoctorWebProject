@@ -146,19 +146,28 @@ namespace DoctorWeb.PageObjects
 
         public string priceListTableCount = "//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody";
         public string priceListFirstCode = "//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr/td[1]";
+        public string categoryTableCount = "//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody";
 
-        public void EnterPriceListScreen() {
+        public void GoToProd() {
             Thread.Sleep(500);
             Pages.Home_Page.SettingScreenProd.ClickWait();
             Pages.Home_Page.GeneralScreen.ClickWait();
             Thread.Sleep(500);
             PriceListScreen.ClickWait();
+            Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
         }
 
-        public void DevEnterCategoryWindow() {
+        public void GoTo() {
             Pages.Home_Page.SettingScreen.ClickWait();
             Pages.Home_Page.DevPricelistScreen.ClickWait();
-            DevCategoryWindow.ClickWait();
+            Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
+            Constant.tmpTableCount = utility.TableCount(priceListTableCount);
+        }
+
+        public void EnterCategoryWindow() {
+            DevCategoryWindow.ClickOn();
+            softAssert.VerifyElementIsPresent(CategoryCreateNew);
+            Constant.tmpTableCount = utility.TableCount(categoryTableCount);
         }
 
         public void OpenCategoryManager()
@@ -173,56 +182,32 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementIsPresent(PriceListCancel);
         }
 
-        public void PriceListFirstCodeName() {
-            if (Constant.priceListCreated == false)
-            {
-                Pages.Home_Page.EntePriceListTab();
-                Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
-                Pages.Home_Page.SchedularScreen.ClickWait();
-                Constant.priceListCreated = true;
-            }
-        }
-
-        public void CountPriceListApplicaiton() {
-            Pages.PriceList_Page.EnterPriceListScreen();
-            int listCount = Browser.Driver.FindElements(By.XPath("//*[@id='gridAppointmentTypes']/div[2]/div[1]/table/tbody")).Count;
-            Pages.Home_Page.EnterAvailbleTime();
+        public void CountPriceListApplication() {
+            Pages.PriceList_Page.GoTo();
+            Pages.AvailbleTime_Page.GoTo();
             Pages.PriceList_Page.VisitReason.ClickOn();
-            int visitCount = Browser.Driver.FindElements(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[8]/div/span[1]")).Count;
-            Assert.AreEqual(visitCount, listCount);
+            softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount);
             Pages.Home_Page.PopupClose.ClickOn();
         }
 
         public void CreateCategoryApplication() {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-            var listCount = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
+            EnterCategoryWindow();
             CategoryCreateNew.ClickOn();
             CategoryApprove.ClickOn();
             softAssert.VerifyElementIsPresent(CategoryNameValidation);
             CategoryName.EnterClearText(Constant.CategoryName + RandomNumber.smallNumber());
             CategoryApprove.ClickOn();
-            var listCountAfter = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(listCount, listCountAfter);
+            softAssert.VerifyElementHasEqual(utility.TableCount(categoryTableCount), Constant.tmpTableCount + 1);
         }
 
         public void DeleteCategoryApplication() {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
-            var listCount = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
             CategoryDelete.ClickOn();
             PopUpButtonApprove.ClickOn();
-            var listCountAfter = utility.TableCount("//*[@id='PriceListCategoryManagmentGrid']/div[2]/table/tbody");
             Thread.Sleep(500);
-            softAssert.VerifyElemenNotHaveEqual(listCount, listCountAfter);
+            softAssert.VerifyElementHasEqual(utility.TableCount(categoryTableCount), Constant.tmpTableCount);
         }
 
         public void EditCategoryApplication() {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            Log.Info(Environment.NewLine + Environment.NewLine + "##### " + methodName + " #####");
-
             CategoryEdit.ClickOn();
             CategoryName.Clear();
             CategoryApprove.ClickOn();
@@ -249,15 +234,13 @@ namespace DoctorWeb.PageObjects
 
         public void CreatePriceListApplication()
         {
-            var countBefore = utility.TableCount("//*[@id='gridAppointmentTypes']/div[2]/div[1]/table/tbody");
             Pages.PriceList_Page.OpenPriceListAddWindow();
             softAssert.VerifyElementPresentInsideWindow(CreateCodeCancel, CreateCodeCancel);
             PriceListCode.SendKeys(Constant.priceListCode);
             PriceListName.SendKeys(Constant.priceListName);
             Thread.Sleep(500);
             CreateCodeConfirm.ClickWait();
-            var countAfter = utility.TableCount("//*[@id='gridAppointmentTypes']/div[2]/div[1]/table/tbody");
-            softAssert.VerifyElemenNotHaveEqual(countBefore, countAfter);
+            softAssert.VerifyElemenNotHaveEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount);
         }
 
         public void DevCreatePriceListApplication() {
@@ -265,20 +248,20 @@ namespace DoctorWeb.PageObjects
             PriceListCreateNew.ClickOn();
             PriceListSaveDev.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(ValidationError, PriceListCancelDev);
-            PriceListName.EnterText(Constant.priceListName);
-            PriceListCode.EnterText(Constant.priceListCode);
+            PriceListName.EnterText(Constant.priceListName + RandomNumber.smallNumber());
+            PriceListCode.EnterText(Constant.priceListCode + RandomNumber.smallNumber());
             PriceListPrice.EnterClearText("25");
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
-            softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpListCount + 1);
+            softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount + 1);
         }
 
        
         public void DevCreatePriceListSeriesApplicaiton() {
             Pages.Home_Page.EntePriceListTab();
             PriceListCreateNew.ClickOn();
-            PriceListCode.EnterText(Constant.priceListCode);
-            PriceListName.EnterText(Constant.priceListName);
+            PriceListCode.EnterText(Constant.priceListCode + RandomNumber.smallNumber());
+            PriceListName.EnterText(Constant.priceListName + RandomNumber.smallNumber());
             Thread.Sleep(500);
             PriceListType.ClickOn();
             PriceListType.SendKeys(Keys.ArrowDown);
