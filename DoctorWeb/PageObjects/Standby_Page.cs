@@ -36,7 +36,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StandbyBranch { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='waitingListForm']/div/div[2]/div[1]/div/div[4]/div/span[1]/span/input")]
+        [FindsBy(How = How.Name, Using = "SchedulerID_input")]
         [CacheLookup]
         public IWebElement TherapistSearch { get; set; }
 

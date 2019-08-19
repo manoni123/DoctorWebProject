@@ -26,7 +26,7 @@ namespace DoctorWeb
             Pages.Home_Page.LogoutApplication();
         }
 
-        [Test]
+//       [Test]
         public void Testytestss() {
             Pages.MobileTherapist_Page.TestTest();
         }
