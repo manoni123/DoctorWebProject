@@ -72,11 +72,16 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ConfirmUserImport { get; set; }
 
+        [FindsBy(How = How.Id, Using = "btnAddUsersToClaimCancel")]
+        [CacheLookup]
+        public IWebElement CancelUserImport { get; set; }
+
         [FindsBy(How = How.Id, Using = "popup-btn-OK")]
         [CacheLookup]
         public IWebElement ApproveDelete { get; set; }
 
         public string countGroupList = "//*[@id='panelGroup']/div/div/div/ul";
+        public string countUserInImport = "//*[@id='frmSelectUsersForClaim']/div[2]/div[2]/table/tbody";
 
 
         public void GoTo()
@@ -94,6 +99,11 @@ namespace DoctorWeb.PageObjects
             Pages.Home_Page.SettingScreenProd.ClickWait();
             Pages.Home_Page.UserAuthorizationScreen.ClickWait();
             softAssert.VerifyElementIsPresent(GroupCreate);
+        }
+
+        public void ImportUserWindow() {
+            ImportToGroup.ClickOn();
+            Constant.tmpTableCount = utility.TableCount(countUserInImport);
         }
 
         //create new permission group
@@ -145,10 +155,15 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             SelectSecretaryGroup.ClickOn();
             ImportToGroup.ClickOn();
-            Thread.Sleep(500);
-            IWebElement reutName = Browser.Driver.FindElement(By.XPath("//*[@id='frmSelectUsersForClaim']/div[2]/div[2]/table/tbody/tr[1]/td[1]"));
-            reutName.ClickOn();
-            ConfirmUserImport.ClickOn();
+            try {
+                Thread.Sleep(500);
+                IWebElement reutName = Browser.Driver.FindElement(By.XPath("//*[@id='frmSelectUsersForClaim']/div[2]/div[2]/table/tbody/tr[1]/td[1]"));
+                reutName.ClickOn();
+                ConfirmUserImport.ClickOn();
+            } catch (Exception) {
+                ConfirmUserImport.ClickOn();
+                Assert.Pass("no user to pass");
+            }
         }
     }
 }

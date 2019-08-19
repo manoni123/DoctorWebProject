@@ -49,7 +49,8 @@ namespace DoctorWeb.PageObjects
             switch (selectEnviornment)
             {
                 case 1:
-                    LanguageSelect.SendKeys(Keys.ArrowDown);
+                    //             LanguageSelect.SendKeys(Keys.ArrowDown);
+                    Thread.Sleep(1500);
                     UserName.EnterText(Constant.newClientUser);
                     UserPassword.EnterText(Constant.loginPassword);
                     Thread.Sleep(500);
@@ -65,7 +66,8 @@ namespace DoctorWeb.PageObjects
                     }
                     break;
                 case 2:
-                    LanguageSelect.SendKeys(Keys.ArrowDown);
+                    //       LanguageSelect.SendKeys(Keys.ArrowDown);
+                    Thread.Sleep(1500);
                     UserName.EnterText(Constant.testUser);
                     UserPassword.EnterText(Constant.loginPassword);
                     Thread.Sleep(500);
@@ -85,7 +87,8 @@ namespace DoctorWeb.PageObjects
                 break;
 
                 case 4:
-                    LanguageSelect.SendKeys(Keys.ArrowDown);
+                    //        LanguageSelect.SendKeys(Keys.ArrowDown);
+                    Thread.Sleep(1500);
                     UserName.EnterText(Constant.newClientUser);
                     UserPassword.EnterText(Constant.prodPassword);
                     Thread.Sleep(500);

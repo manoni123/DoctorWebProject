@@ -24,8 +24,7 @@ namespace AventStack.ExtentReports.Tests.Parallel
             htmlReporter.Configuration().ChartVisibilityOnOpen = true;
             htmlReporter.Configuration().DocumentTitle = "Extent/NUnit Samples";
             htmlReporter.Configuration().ReportName = "Extent/NUnit Samples";
-            htmlReporter.Configuration().Theme = Theme.Standard;
-
+            htmlReporter.Configuration().Theme = Theme.Dark;
             Instance.AttachReporter(htmlReporter);
         }
 

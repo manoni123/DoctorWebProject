@@ -222,7 +222,7 @@ namespace DoctorWeb.PageObjects
         public void StandbySetMeetingApplication() {
             Pages.Standby_Page.CreateStandbyApplication();
             Thread.Sleep(1500);
-            Pages.Scheduler_Page.EnterStanbyWindow();
+           Pages.Scheduler_Page.EnterStanbyWindow();
             StandbyAppointmentSelect.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(StandbyAppointmentCancel, StandbyAppointmentCancel);
             StanbyAppointmentBtn.ClickWait();

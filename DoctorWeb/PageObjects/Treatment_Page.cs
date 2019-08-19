@@ -69,7 +69,6 @@ namespace DoctorWeb.PageObjects
             utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
             Thread.Sleep(500);
             SaveTreatment.ClickWait();
-            softAssert.VerifyElementNotPresent(CancelTreatment);
             softAssert.VerifyElemenNotHaveEqual(utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody"), Constant.tmpTableCount);
         }
 

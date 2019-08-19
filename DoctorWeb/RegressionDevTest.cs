@@ -336,7 +336,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Authorization_Page.ImportUsersToSecretaryGroupApplication();
-            });
+            }, Pages.Authorization_Page.CancelUserImport);
         }
 
         [Test, Category("Settings")]
@@ -516,7 +516,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.StandbySetMeetingApplication();
-            }, Pages.Standby_Page.CancelStandby);
+            }, Pages.Standby_Page.CancelStandby, Pages.Home_Page.PopupCloseClass);
         }
 
         [Test, Category("Scheduler")]
