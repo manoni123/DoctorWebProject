@@ -59,7 +59,6 @@ namespace DoctorWeb.PageObjects
             Constant.tmpTableCount = utility.TableCount("//*[@id='tab3_customerTreatmentsGrid_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody");
         }
 
-
         public void CreateNewSingleTreatmentApplication() {
             Pages.Patient_Page.NewPatientApplication();
             GoTo();
