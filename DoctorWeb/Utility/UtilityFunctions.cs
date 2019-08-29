@@ -15,6 +15,7 @@ namespace DoctorWeb.Utility
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
+        IList logs;
 
 
         public int TableCount(string element) {
@@ -122,22 +123,18 @@ namespace DoctorWeb.Utility
 
         public void ServerErrorCheck()
         {
-            ChromeOptions options = new ChromeOptions();
-            options.SetLoggingPreference(LogType.Browser, LogLevel.Severe);
-            Browser.chromebDriver = new ChromeDriver(options);
-
             IList logs;
             logs = Browser.chromebDriver.Manage().Logs.GetLog(LogType.Browser);
             try
             {
-                Assert.True(logs.Count == 0);
+                Assert.False(logs.Count != 0);
             }
             catch (AssertionException e)
             {
-                Console.WriteLine("Assert Failed: " + e.Message);
+                Log.Debug("Test Failed Due To Errors in console");
                 foreach (LogEntry log in logs)
                 {
-                    Console.WriteLine(log.Message);
+                    Log.Error("Assert Failed: " + e.Message);
                 }
             }
         }

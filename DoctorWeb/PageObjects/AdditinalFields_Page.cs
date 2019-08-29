@@ -74,7 +74,7 @@ namespace DoctorWeb.PageObjects
 
         public void OpenFieldsManager()
         {
-            OpenFieldManager.ClickOn();
+            OpenFieldManager.ClickWait();
             Constant.tmpTableCount = utility.TableCount(addFieldsableCount);
         }
 
@@ -84,12 +84,12 @@ namespace DoctorWeb.PageObjects
             Pages.AdditinalFields_Page.OpenFieldsManager();
             softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
             CreateNewField.ClickOn();
-            FieldSave.ClickOn();
+            FieldSave.Click();
             softAssert.VerifyErrorMsg();
             FieldName.EnterClearText("Field"  + RandomNumber.smallNumber());
-            FieldSave.ClickOn();
+            FieldSave.ClickWait();
             softAssert.VerifyElementHasEqual(utility.TableCount(addFieldsableCount), Constant.tmpTableCount + 1);
-            CloseFieldWindow.ClickOn();
+            CloseFieldWindow.Click();
         }
     }
 }

@@ -101,6 +101,9 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement StandbyAppointmentCancel { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = "#gridWaitList > div.k-grid-content.k-auto-scrollable > div.k-virtual-scrollable-wrap > table > tbody > tr:nth-child(1) > td.text-align-center.k-command-cell > a.k-button.k-button-icontext.k-grid-CreateAppoiintment.k-button.btn-red-white-toolbox.k-state-disabled")]
+        public IWebElement DisabledSetMeetingBtn { get; set; }
+
         public void GoTo() {
             Pages.Home_Page.SchedularScreen.ClickOn();
             softAssert.VerifyElementIsPresent(SchedulerMenuList);
@@ -111,6 +114,7 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
             Thread.Sleep(500);
+            Constant.tmpListCount = utility.ListCount("//*[@id='temp-wait-list']");
             EnterStandBySchedulerList();
 
             var schedulerRows = utility.TableCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
@@ -155,6 +159,7 @@ namespace DoctorWeb.PageObjects
             //Pages.PriceList_Page.PriceListFirstCodeName();;
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
+            Constant.tmpListCount = utility.ListCount("//*[@id='wait-list']");
             Thread.Sleep(500);
             EnterStandBySchedulerList();
 
@@ -162,7 +167,6 @@ namespace DoctorWeb.PageObjects
             var schedulerCells = utility.TableDataCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             int numOfCellInRow = schedulerCells / schedulerRows;
             int currentRow = 1;
-            var errorPop = Browser.Driver.FindElements(By.ClassName("ic_problem"));
         //    var popupClose = Browser.Driver.FindElements(By.ClassName("popup-close-button"));
             for (int td = 1; td < schedulerCells;)
             {
@@ -200,38 +204,44 @@ namespace DoctorWeb.PageObjects
 
         public void dragAndDropStandbyAction() {
             IWebElement drag = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/div[2]"));
+            Thread.Sleep(500);
             IWebElement drop = Browser.Driver.FindElement(By.XPath("//*[@id='waitListPanelBar']/li/div"));
-            var CountBefore = utility.ListCount("//*[@id='wait-list']");
+            Thread.Sleep(500);
             (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag, drop).Perform();
+            Thread.Sleep(1500);
             Pages.Standby_Page.StandbyEndDate.EnterClearText(Constant.datePlusMonth);
             Pages.Standby_Page.CreateStandby.ClickWait();
-            var CountAfter = utility.ListCount("//*[@id='wait-list']");
-            Assert.AreNotEqual(CountBefore, CountAfter);
+            softAssert.VerifyElementHasEqual(utility.ListCount("//*[@id='wait-list']"), Constant.tmpListCount + 1);
         }
 
         public void dragAndDropWaitListAction() {
             IWebElement drag = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/div[2]"));
-            IWebElement drop = Browser.Driver.FindElement(By.XPath("//*[@id='tempWaitListPanelBar']/li/div"));
-            var CountBefore = utility.ListCount("//*[@id='temp-wait-list']");
-            (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag, drop).Perform();
             Thread.Sleep(500);
-            var CountAfter = utility.ListCount("//*[@id='temp-wait-list']");
-            Assert.AreNotEqual(CountBefore, CountAfter);
+            IWebElement drop = Browser.Driver.FindElement(By.XPath("//*[@id='tempWaitListPanelBar']/li/div"));
+            Thread.Sleep(500);
+            (new Actions(Browser.chromebDriver)).ClickAndHold(drag).MoveToElement(drop).DragAndDrop(drag, drop).Perform();
+            Thread.Sleep(1500);
+            softAssert.VerifyElementHasEqual(utility.ListCount("//*[@id='temp-wait-list']"), Constant.tmpListCount + 1);
         }
 
-        public void StandbySetMeetingApplication() {
+        public void StandbySetMeetingApplication()
+        {
             Pages.Standby_Page.CreateStandbyApplication();
             Thread.Sleep(1500);
-           Pages.Scheduler_Page.EnterStanbyWindow();
-            StandbyAppointmentSelect.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(StandbyAppointmentCancel, StandbyAppointmentCancel);
-            StanbyAppointmentBtn.ClickWait();
-            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
-            Pages.Meeting_Page.PriceList.ClickOn();
-            Pages.Meeting_Page.CodeSearch.SendKeys(Constant.priceListExistCode);
-            Pages.Meeting_Page.ApproveMeeting.ClickOn();
-            softAssert.VerifySuccessMsg();
-            Pages.Home_Page.PopupClose.ClickOn();
+            Pages.Scheduler_Page.EnterStanbyWindow();
+            if (DisabledSetMeetingBtn.Displayed == true)
+            {
+                Pages.Home_Page.PopupCloseClass.ClickOn();
+            }
+            else
+            {
+                StandbyAppointmentSelect.ClickOn();
+                softAssert.VerifyElementPresentInsideWindow(StandbyAppointmentCancel, StandbyAppointmentCancel);
+                StanbyAppointmentBtn.ClickWait();
+                softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+                Pages.Meeting_Page.ApproveMeeting.ClickWait();
+                softAssert.VerifySuccessMsg();
+            }
         }
 
         public void EnterLateYear() {

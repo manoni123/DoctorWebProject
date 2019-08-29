@@ -42,9 +42,9 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.PatientDocument.ClickWait();
             Thread.Sleep(1000);
             IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + Constant.patientDataID));
-            UplaodBtn.ClickOn();
+            UplaodBtn.ClickWait();
             SelectFile.SendKeys(Constant.fileForTest);
-            UploadWindowSave.ClickOn();
+            UploadWindowSave.ClickWait();
             softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerDocuments_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody/tr/td[8]/a[2]")));
         }
     }

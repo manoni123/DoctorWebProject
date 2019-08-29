@@ -264,7 +264,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterSettingScreen()
         {
-            SettingScreen.ClickOn();
+            SettingScreen.ClickWait();
         }
 
         public void EnterUserManagmentScreen() {

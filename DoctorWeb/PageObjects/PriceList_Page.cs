@@ -136,7 +136,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement PopUpButtonApprove { get; set; }
 
-        [FindsBy(How = How.Id, Using = "Name_validationMessage")]
+        [FindsBy(How = How.Id, Using = "Code-error")]
         [CacheLookup]
         public IWebElement ValidationError { get; set; }
 
@@ -252,7 +252,15 @@ namespace DoctorWeb.PageObjects
             PriceListCode.EnterText(Constant.priceListCode + RandomNumber.smallNumber());
             PriceListPrice.EnterClearText("25");
             PriceListSaveDev.ClickOn();
-            PriceListSaveDev.ClickOn();
+            if (Browser.Driver.FindElement(By.XPath("//*[@id='createCodeWizardNumber']/label[2]/span[1]")).Displayed)
+            {
+                PriceListSaveDev.ClickOn();
+                PriceListSaveDev.ClickOn();
+            }
+            else {
+                PriceListSaveDev.ClickOn();
+            }
+            softAssert.VerifySuccessMsg();
             softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount + 1);
         }
 

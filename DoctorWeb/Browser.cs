@@ -1,5 +1,6 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
+
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -13,8 +14,6 @@ namespace DoctorWeb
         private static readonly string TestUrl = Constant.drWebTestUrl;
         private static readonly string MobileUrl = Constant.drwebMobileUrl;
         private static readonly string newClient = Constant.newClientUrl;
-
-
         public static IWebDriver chromebDriver = new ChromeDriver();
 
         // public static IWebDriver firefoxDriver = new FirefoxDriver();

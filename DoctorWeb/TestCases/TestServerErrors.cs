@@ -41,6 +41,7 @@ namespace DoctorWeb.TestCases
                 Console.WriteLine("Assert Failed: " + e.Message);
                 foreach (LogEntry log in logs) {
                     Console.WriteLine(log.Message);
+                    logs.Clear();
                 }
             }
         }

@@ -30,10 +30,8 @@ namespace DoctorWeb.Utility
         }
 
         //enter Text method with log
-        public static void WaitForElement(this IWebElement element, int time)
+        public static void WaitElementClickble(By by, IWebElement element, int time)
         {
-            Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(time);
-            element.Click();
         }
 
         public static void EnterText(this IWebElement element, string text)
@@ -62,15 +60,16 @@ namespace DoctorWeb.Utility
 
         //Time in Miliseconds for user actionss
         public static void ClickOn(this IWebElement element) {
-            try {
+            try
+            {
                 string valueName = element.Text;
                 string valueID = element.GetAttribute("name");
                 string valueTag = element.GetAttribute("id");
                 string valueText = element.GetAttribute("data-tag");
                 utility.NameInElement(element, valueName, valueID, valueTag, valueText);
                 element.Click();
-                Thread.Sleep(_time);
-               // Browser.chromebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_time);
+                Task.Delay(_time).Wait();
+         //       Thread.Sleep(_time);
             }
             catch (Exception) {
                 log.Error("Could not Click Element");
@@ -88,7 +87,8 @@ namespace DoctorWeb.Utility
                 string valueText = element.Text;
                 utility.NameInElement(element, valueName, valueID, valueTag, valueText);
                 element.Click();
-                Thread.Sleep(1500);
+                Task.Delay(1500).Wait();
+ //               Thread.Sleep(1500);
             }
             catch (Exception)
             {
@@ -133,6 +133,40 @@ namespace DoctorWeb.Utility
                 return wait.Until(drv => (drv.FindElements(by).Count > 0) ? drv.FindElements(by) : null);
             }
             return driver.FindElements(by);
+        }
+
+        //test elementWait
+        public static void WaitForElementNotPresent(this ISearchContext driver, By locator) {
+            driver.TimerLoop(() => driver.FindElement(locator).Displayed, true, "Timeout: Elemenot didnt go away at: " + locator);
+        }
+
+        public static void WaitForElementToApepar(this ISearchContext driver, By locator) {
+            driver.TimerLoop(() => driver.FindElement(locator).Displayed, false, "Element Not Visible at: " +locator);
+        }
+
+        public static void TimerLoop(this ISearchContext driver, Func<bool> isComplete, bool exceptionCompleteResult, string timeoutMsg)
+        {
+
+            const int timeoutinteger = 10;
+
+            for (int second = 0; ; second++)
+            {
+                try
+                {
+                    if (isComplete())
+                        return;
+                    if (second >= timeoutinteger)
+                        throw new TimeoutException(timeoutMsg);
+                }
+                catch (Exception ex)
+                {
+                    if (exceptionCompleteResult)
+                        return;
+                    if (second >= timeoutinteger)
+                        throw new TimeoutException(timeoutMsg, ex);
+                }
+                Thread.Sleep(100);
+            }
         }
     }
 }

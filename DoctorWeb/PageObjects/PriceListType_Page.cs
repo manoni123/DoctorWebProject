@@ -51,35 +51,33 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement DeleteCancel { get; set; }
 
+        public string priceListTable = "//*[@id='PriceListIndexGrid']/div[2]/table/tbody";
+
         public void EnterPriceLisTypeScreen()
         {
             Pages.Home_Page.EntePriceListTab();
             PriceListTypeScreen.ClickWait();
             softAssert.VerifyElementIsPresent(PriceListTypeCreate);
+            Constant.tmpTableCount = utilityFunction.TableCount(priceListTable);
         }
 
         public void PriceListTypeCreateApplication()
         {
             Pages.PriceListType_Page.EnterPriceLisTypeScreen();
-
-            int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeCreate.ClickOn();
             PriceListTypeApprove.ClickOn();
             softAssert.VerifyElementIsPresent(NameErrorMsg);
             PriceListTypeName.EnterText(Constant.priceListName);
             PriceListTypeApprove.ClickOn();
-            int priceListCountAfter = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
-            Assert.AreNotEqual(priceListCount, priceListCountAfter);
+            Assert.AreEqual(utilityFunction.TableCount(priceListTable), Constant.tmpTableCount + 1);
         }
 
         public void PriceListTypeDeleteApplication()
         {
-            int priceListCount = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             PriceListTypeDelete.ClickOn();
             DeleteApprove.ClickOn();
-            int priceListCountAfter = utilityFunction.TableCount("//*[@id='PriceListIndexGrid']/div[2]/table/tbody");
             Thread.Sleep(500);
-            Assert.AreNotEqual(priceListCount, priceListCountAfter);
+            Assert.AreEqual(utilityFunction.TableCount(priceListTable), Constant.tmpTableCount);
 
         }
 

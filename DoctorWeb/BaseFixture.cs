@@ -23,7 +23,6 @@ namespace DoctorWeb
         public void Setup()
         {
             ExtentTestManager.CreateParentTest(GetType().Name);
-            _ = new ChromeOptions();
             Browser.Initialize();
         }
 
@@ -126,7 +125,7 @@ namespace DoctorWeb
                 }
                 
 
-                Assert.Warn("Not a bug - Failed due to wrong code");
+                Assert.Fail("Not a bug - Failed due to wrong code");
                // throw;
             }
         }
