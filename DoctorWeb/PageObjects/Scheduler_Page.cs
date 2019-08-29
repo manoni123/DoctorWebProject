@@ -114,8 +114,10 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.NewPatientApplication();
             Pages.Patient_Page.ClosePatientTab.ClickOn();
             Thread.Sleep(500);
-            Constant.tmpListCount = utility.ListCount("//*[@id='temp-wait-list']");
             EnterStandBySchedulerList();
+            Constant.tmpListCount = utility.ListCount("//*[@id='temp-wait-list']");
+            var test = Browser.Driver.FindElement(By.XPath("//*[@id='tempWaitListPanelBar']/li/span/span[3]")).Text;
+
 
             var schedulerRows = utility.TableCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             var schedulerCells = utility.TableDataCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
@@ -198,6 +200,7 @@ namespace DoctorWeb.PageObjects
             else if (!Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
             {
                 Pages.Meeting_Page.CreateMeetingApplication();
+                Thread.Sleep(1000);
                 dragAndDropStandbyAction();
             }
         }

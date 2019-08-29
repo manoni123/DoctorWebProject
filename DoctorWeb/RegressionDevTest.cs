@@ -497,7 +497,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Scheduler_Page.DragAndDropTemporaryList();
-            }, Pages.Scheduler_Page.CancelledMeetingWindow);
+            }, Pages.Meeting_Page.CancelMeeting);
         }
 
         [Test, Category("Scheduler")]

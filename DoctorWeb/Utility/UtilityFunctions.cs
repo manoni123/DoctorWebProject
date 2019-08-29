@@ -96,9 +96,9 @@ namespace DoctorWeb.Utility
         {
             Thread.Sleep(500);
             element.EnterClearText(text);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             element.SendKeys(Keys.Down);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             element.SendKeys(Keys.Enter);
             Thread.Sleep(500);
         }
