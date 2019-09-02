@@ -1,15 +1,7 @@
-﻿using DoctorWeb.PageObjects;
-using DoctorWeb.Utility;
+﻿using DoctorWeb.Utility;
 using log4net;
-using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DoctorWeb.PageObjects
 {

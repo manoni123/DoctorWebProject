@@ -105,7 +105,8 @@ namespace DoctorWeb.PageObjects
         public IWebElement DisabledSetMeetingBtn { get; set; }
 
         public void GoTo() {
-            Pages.Home_Page.SchedularScreen.ClickOn();
+            Browser.chromebDriver.FindElement(By.XPath("//*[@id='homeNavItems']/li[1]")).ClickOn();
+        //    Pages.Home_Page.SchedularScreen.ClickOn();
             softAssert.VerifyElementIsPresent(SchedulerMenuList);
         }
 
@@ -232,19 +233,13 @@ namespace DoctorWeb.PageObjects
             Pages.Standby_Page.CreateStandbyApplication();
             Thread.Sleep(1500);
             Pages.Scheduler_Page.EnterStanbyWindow();
-            if (DisabledSetMeetingBtn.Displayed == true)
-            {
-                Pages.Home_Page.PopupCloseClass.ClickOn();
-            }
-            else
-            {
-                StandbyAppointmentSelect.ClickOn();
-                softAssert.VerifyElementPresentInsideWindow(StandbyAppointmentCancel, StandbyAppointmentCancel);
-                StanbyAppointmentBtn.ClickWait();
-                softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
-                Pages.Meeting_Page.ApproveMeeting.ClickWait();
-                softAssert.VerifySuccessMsg();
-            }
+            StandbyAppointmentSelect.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(StandbyAppointmentCancel, StandbyAppointmentCancel);
+            StanbyAppointmentBtn.ClickWait();
+            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+            Pages.Meeting_Page.ApproveMeeting.ClickWait();
+            softAssert.VerifySuccessMsg();
+            Pages.Home_Page.PopupCloseClass.ClickOn();
         }
 
         public void EnterLateYear() {

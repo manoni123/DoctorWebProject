@@ -1,16 +1,9 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
-using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DoctorWeb.PageObjects
 {
@@ -162,8 +155,6 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.Id, Using = "divSendAuditReportByEmail")]
         [CacheLookup]
         public IWebElement LargeReportWindow { get; set; }
-
-
 
         public void EnterReportScreenProd()
         {

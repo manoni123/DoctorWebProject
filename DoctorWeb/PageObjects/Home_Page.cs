@@ -77,6 +77,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ReportScreenProd { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = "#homeNavItems > li:nth-child(3)")]
+        [CacheLookup]
+        public IWebElement FormsScreen { get; set; }
+
         [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(2)")]
         [CacheLookup]
         public IWebElement UserManagementScreen { get; set; }
@@ -92,10 +96,6 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(4)")]
         [CacheLookup]
         public IWebElement DevPricelistScreen { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li:nth-child(5)")]
-        [CacheLookup]
-        public IWebElement DevGeneralScreen { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#settingsTabstrip > ul > li.k-item.k-state-default.k-last")]
         [CacheLookup]
@@ -201,6 +201,9 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SidePannelBtn { get; set; }
 
+        public static By SettingButton = By.Id("btnSettings");
+        public static By DevGeneralScreen = By.CssSelector("#settingsTabstrip > ul > li:nth-child(5)");
+
         public void LogoutApplication() {
             int selectEnviornment = Constant.VersionNumber;
             switch (selectEnviornment)
@@ -264,13 +267,14 @@ namespace DoctorWeb.PageObjects
 
         public void EnterSettingScreen()
         {
-            SettingScreen.ClickWait();
+            Browser.chromebDriver.FindElement(SettingButton).ClickOn();
         }
 
         public void EnterUserManagmentScreen() {
             Thread.Sleep(500);
-            SettingScreen.ClickWait();
-            UserManagementScreen.ClickWait();
+            EnterSettingScreen();
+            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(2)")).ClickOn();
+         //   UserManagementScreen.ClickWait();
             softAssert.VerifyElementIsPresent(Pages.UsersManagement_Page.PracticesManagerButton);
         }
 
@@ -282,20 +286,20 @@ namespace DoctorWeb.PageObjects
         }
 
         public void EnterPermissionScreen() {
-            SettingScreen.ClickWait();
+            EnterSettingScreen();
             UserAuthorizationScreen.ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Authorization_Page.GroupCreate);
         }
 
         public void EnterGeneralScreen()
         {
-            SettingScreen.ClickWait();
-            Pages.Home_Page.DevGeneralScreen.ClickWait();
+            EnterSettingScreen();
+            Browser.chromebDriver.FindElement(DevGeneralScreen, 500).ClickOn();
         }
 
         public void EntePriceListTab()
         {
-            Pages.Home_Page.SettingScreen.ClickWait();
+            EnterSettingScreen();
             Pages.Home_Page.DevPricelistScreen.ClickWait();
             Constant.tmpTableCount = utility.TableCount(Pages.PriceList_Page.priceListTableCount);
             Constant.priceListExistCode = utility.ElementText(Pages.PriceList_Page.priceListFirstCode);

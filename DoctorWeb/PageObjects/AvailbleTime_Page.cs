@@ -47,8 +47,9 @@ namespace DoctorWeb.PageObjects
         public IWebElement VisitReason { get; set; }
 
         public void GoTo() {
-            Thread.Sleep(500);
-            Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
+            // Thread.Sleep(500);
+            Browser.chromebDriver.FindElement(By.XPath("//*[@id='btnNewAppointment']/div/span[1]")).ClickOn();
+         //   Pages.Scheduler_Page.AvailbleTime_Btn.ClickOn();
             softAssert.VerifyElementPresentInsideWindow(Pages.AvailbleTime_Page.SearchBtn, Pages.AvailbleTime_Page.CloseWindow);
         }
 

@@ -55,7 +55,7 @@ namespace DoctorWeb.PageObjects
                     UserPassword.EnterText(Constant.loginPassword);
                     Thread.Sleep(500);
                     Browser.Driver.FindElement(By.XPath("//*[@id='loginForm']/div[2]/div[4]/div/p/button")).ClickOn();
-                    Thread.Sleep(1500);
+                //    Thread.Sleep(1500);
                     if (Pages.Home_Page.AppointmentBtn_1.Displayed)
                     {
                         //nothing

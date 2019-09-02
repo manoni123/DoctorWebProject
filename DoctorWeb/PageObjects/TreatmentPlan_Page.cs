@@ -44,16 +44,12 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CodeSearch { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='generalTabstrip']/ul/li[7]/span")]
-        [CacheLookup]
-        public IWebElement TreatmentPlanPage { get; set; }
-
+        public static By TreatmentPlanPage = By.XPath("//*[@id='generalTabstrip']/ul/li[7]/span");
         private string treatmentTableCount = "//*[@id='gridTreatmentPlanTemplates']/div[2]/table/tbody";
         public void EnterTreatmentPlanPage()
         {
-            Pages.Home_Page.SettingScreen.ClickWait();
-            Pages.Home_Page.DevGeneralScreen.ClickWait();
-            TreatmentPlanPage.ClickWait();
+            Pages.Home_Page.EnterGeneralScreen();
+            Browser.chromebDriver.FindElement(TreatmentPlanPage, 1000).Click();
             Constant.tmpTableCount = utility.TableCount(treatmentTableCount);
         }
 

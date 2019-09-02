@@ -186,8 +186,8 @@ namespace DoctorWeb.PageObjects
 
         public void GoTo()
         {
-            Pages.Home_Page.SettingScreen.ClickWait();
-            Pages.Home_Page.UserManagementScreen.ClickWait();
+            Pages.Home_Page.EnterSettingScreen();
+            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(2)")).ClickOn();
         }
 
         //create a create user 

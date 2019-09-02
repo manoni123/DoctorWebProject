@@ -87,8 +87,9 @@ namespace DoctorWeb.PageObjects
         public void GoTo()
         {
             Thread.Sleep(500);
-            Pages.Home_Page.SettingScreen.ClickWait();
-            Pages.Home_Page.UserAuthorizationScreen.ClickWait();
+            Pages.Home_Page.EnterSettingScreen();
+            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(3)")).ClickOn();
+          //  Pages.Home_Page.UserAuthorizationScreen.ClickWait();
             Constant.tmpListCount = utility.ListCount(countGroupList);
             softAssert.VerifyElementIsPresent(GroupCreate);
         }

@@ -143,6 +143,7 @@
     <Compile Include="DevBaseFixture.cs" />
     <Compile Include="DevBrowser.cs" />
     <Compile Include="MobileRegression.cs" />
+    <Compile Include="PageObjects\Froms_Page.cs" />
     <Compile Include="PageObjects\MobileTherapist_Page.cs" />
     <Compile Include="PageObjects\PriceListTax_Page.cs" />
     <Compile Include="PageObjects\PriceListType_Page.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Scheduler.cs" />
     <Compile Include="TestCases\TestServerErrors.cs" />
     <Compile Include="Utility\Constant.cs" />
+    <Compile Include="Utility\Elements.cs" />
     <Compile Include="Utility\Element_Extension.cs" />
     <Compile Include="Utility\UtilityFunctions.cs" />
     <Compile Include="Utility\RandomNumber.cs" />

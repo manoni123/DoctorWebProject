@@ -19,7 +19,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement NewPatiantTabClick { get; set; }
 
-        [FindsBy(How = How.PartialLinkText, Using = "העלאת קובץ")]
+        [FindsBy(How = How.ClassName, Using = "btn-blue-white")]
         [CacheLookup]
         public IWebElement UplaodFileBtn { get; set; }
 
@@ -39,8 +39,7 @@ namespace DoctorWeb.PageObjects
         {
             Pages.Patient_Page.NewPatientApplication();
             Thread.Sleep(1500);
-            Pages.Patient_Page.PatientDocument.ClickWait();
-            Thread.Sleep(1000);
+            Pages.Patient_Page.EnterPatientDocument();
             IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + Constant.patientDataID));
             UplaodBtn.ClickWait();
             SelectFile.SendKeys(Constant.fileForTest);

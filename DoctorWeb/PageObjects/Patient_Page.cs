@@ -67,15 +67,10 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SelectPatient { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[2]")]
-        [CacheLookup]
-        public IWebElement PatientDocument { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[3]/span")]
         public IWebElement PatientVisits { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[5]/span")]
-        public IWebElement PatientMessages { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='tab3_menuCustomerExpended']/li[4]/span")]
         public IWebElement PatientMessagesProd { get; set; }
@@ -102,6 +97,8 @@ namespace DoctorWeb.PageObjects
 
         //patiant use name
         public string PatientUseName = Constant.patientName;
+        public static By PatientMessages = By.XPath("//*[@id='tab3_menuCustomerExpended']/li[5]/span");
+        public static By PatientDocument = By.XPath("//*[@id='tab3_menuCustomerExpended']/li[2]/span");
 
         //create or fill method to call to use in tests
         public void NewPatientApplication()
@@ -179,7 +176,7 @@ namespace DoctorWeb.PageObjects
             //press create new patient causes the drop down to close
             //needed to create a JS press command (not human) in order to click the list for it to work propertly
             IWebElement element = Browser.Driver.FindElement(By.CssSelector("#menuItemNewPatient"));
-            IJavaScriptExecutor js = (IJavaScriptExecutor)Browser.Driver; js.ExecuteScript("arguments[0].click();", element);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Browser.Driver; js.ExecuteScript("arguments[0].ClickOn();", element);
             Thread.Sleep(500);
             Log.Info("Create new patient pressed OK");
 
@@ -212,14 +209,14 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPatientDocument()
         {
-            PatientDocument.ClickWait();
+            Browser.chromebDriver.FindElement(PatientDocument, 1000).Click();
             softAssert.VerifyElementIsPresent(Pages.Document_Page.UplaodFileBtn);
         }
 
         public void EnterPatientMessages()
         {
             Thread.Sleep(500);
-            PatientMessages.ClickWait();
+            Browser.chromebDriver.FindElement(PatientMessages, 1000).Click();
             softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + Constant.patientDataID +"']")));
         }
 

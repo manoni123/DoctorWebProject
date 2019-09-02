@@ -158,8 +158,9 @@ namespace DoctorWeb.PageObjects
         }
 
         public void GoTo() {
-            Pages.Home_Page.SettingScreen.ClickWait();
-            Pages.Home_Page.DevPricelistScreen.ClickWait();
+            Pages.Home_Page.EnterSettingScreen();
+            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(4)")).ClickOn();
+          //  Pages.Home_Page.DevPricelistScreen.ClickWait();
             Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
             Constant.tmpTableCount = utility.TableCount(priceListTableCount);
         }

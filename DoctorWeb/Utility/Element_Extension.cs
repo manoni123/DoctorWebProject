@@ -115,14 +115,11 @@ namespace DoctorWeb.Utility
             log.Info(text + " is the Value Selected On " + ElementName);
         }
 
-        public static IWebElement FindElement(this IWebDriver driver, By by, int timeoutInSeconds)
+        public static IWebElement FindElement(this IWebDriver driver, By by, int timeInMiliseconds)
         {
-            if (timeoutInSeconds > 0)
-            {
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds));
-                return wait.Until(drv => drv.FindElement(by));
-            }
-            return driver.FindElement(by);
+            Thread.Sleep(timeInMiliseconds);
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            return wait.Until(drv => drv.FindElement(by));
         }
 
         public static ReadOnlyCollection<IWebElement> FindElements(this IWebDriver driver, By by, int timeoutInSeconds)
@@ -136,11 +133,11 @@ namespace DoctorWeb.Utility
         }
 
         //test elementWait
-        public static void WaitForElementNotPresent(this ISearchContext driver, By locator) {
+        public static void FindElementNotPresent(this ISearchContext driver, By locator) {
             driver.TimerLoop(() => driver.FindElement(locator).Displayed, true, "Timeout: Elemenot didnt go away at: " + locator);
         }
 
-        public static void WaitForElementToApepar(this ISearchContext driver, By locator) {
+        public static void FindElementToApepar(this ISearchContext driver, By locator) {
             driver.TimerLoop(() => driver.FindElement(locator).Displayed, false, "Element Not Visible at: " +locator);
         }
 

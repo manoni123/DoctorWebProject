@@ -28,6 +28,7 @@ namespace DoctorWeb
         public void LogoutAfterEachTest()
         {
             Pages.Home_Page.LogoutApplication();
+            Log.Info("Test outcome: " + TestContext.CurrentContext.Result.Outcome);
         }
         //+++++++++++++Patient Tests++++++++++++++++++//
 
@@ -647,6 +648,17 @@ namespace DoctorWeb
                 Pages.AvailbleTime_Page.GoTo();
                 Pages.AvailbleTime_Page.CloseWindow.ClickOn();
             },Pages.Home_Page.PopupClose, Pages.Home_Page.PopupClose);
+        }
+
+        [Test]
+        public void FormsCategoryCRUDTest() {
+            UITest(()=> {
+                Pages.Forms_Page.GoTo();
+                Pages.Forms_Page.OpenFormsCategory();
+                Pages.Forms_Page.CreateFormsCategoryApplication();
+                Pages.Forms_Page.EditFormsCategoryApplication();
+                Pages.Forms_Page.DeleteFormsCategoryApplication();
+            },Pages.Home_Page.PopupCloseClass);
         }
     }
 }

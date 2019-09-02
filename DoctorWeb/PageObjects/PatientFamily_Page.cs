@@ -54,7 +54,7 @@ namespace DoctorWeb.PageObjects
             //click on the dropdown cell to enbable the dropdown
             IWebElement element = Browser.Driver.FindElement(By.CssSelector("#SelectFamilyMembersGrid > div.k-grid-content.k-auto-scrollable > table > tbody > tr > td:nth-child(5)"));
             IJavaScriptExecutor js = (IJavaScriptExecutor)Browser.Driver;
-            js.ExecuteScript("arguments[0].click();", element);
+            js.ExecuteScript("arguments[0].ClickOn();", element);
             Thread.Sleep(500);
             //press down on keyboard to select a value
             Actions actions = new Actions(Browser.chromebDriver);
