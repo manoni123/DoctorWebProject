@@ -117,9 +117,14 @@ namespace DoctorWeb.Utility
 
         public static IWebElement FindElement(this IWebDriver driver, By by, int timeInMiliseconds)
         {
-            Thread.Sleep(timeInMiliseconds);
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            return wait.Until(drv => drv.FindElement(by));
+            try
+            {
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                return wait.Until(drv => drv.FindElement(by));
+            }
+            finally {
+                Thread.Sleep(timeInMiliseconds);
+            }
         }
 
         public static ReadOnlyCollection<IWebElement> FindElements(this IWebDriver driver, By by, int timeoutInSeconds)

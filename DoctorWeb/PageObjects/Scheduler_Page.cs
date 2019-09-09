@@ -73,10 +73,6 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CreateMeetingSchedulerBtn { get; set; }
 
-        [FindsBy(How = How.Id, Using = "tabPageWaitingListContainer")]
-        [CacheLookup]
-        public IWebElement StandBySchedulerTab { get; set; }
-
         [FindsBy(How = How.ClassName, Using = "ic-add-standby")]
         [CacheLookup]
         public IWebElement StanByCreate { get; set; }
@@ -104,9 +100,11 @@ namespace DoctorWeb.PageObjects
         [FindsBy(How = How.CssSelector, Using = "#gridWaitList > div.k-grid-content.k-auto-scrollable > div.k-virtual-scrollable-wrap > table > tbody > tr:nth-child(1) > td.text-align-center.k-command-cell > a.k-button.k-button-icontext.k-grid-CreateAppoiintment.k-button.btn-red-white-toolbox.k-state-disabled")]
         public IWebElement DisabledSetMeetingBtn { get; set; }
 
+        public static By AvailbleTimeBtn = By.XPath("//*[@id='btnNewAppointment']/div/span[1]");
+        public static By StandbySchedulerTab = By.Id("tabPageWaitingListContainer");
+
         public void GoTo() {
-            Browser.chromebDriver.FindElement(By.XPath("//*[@id='homeNavItems']/li[1]")).ClickOn();
-        //    Pages.Home_Page.SchedularScreen.ClickOn();
+            Pages.Home_Page.EnterSchedulerWindow();
             softAssert.VerifyElementIsPresent(SchedulerMenuList);
         }
 
@@ -118,20 +116,18 @@ namespace DoctorWeb.PageObjects
             EnterStandBySchedulerList();
             Constant.tmpListCount = utility.ListCount("//*[@id='temp-wait-list']");
             var test = Browser.Driver.FindElement(By.XPath("//*[@id='tempWaitListPanelBar']/li/span/span[3]")).Text;
-
-
             var schedulerRows = utility.TableCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             var schedulerCells = utility.TableDataCount("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody");
             int numOfCellInRow = schedulerCells / schedulerRows;
             int currentRow = 1;
             for (int td = 1; td < schedulerCells;)
             {
-                IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + currentRow + "]/td[" + td + "]"));
-                (new Actions(Browser.chromebDriver)).DoubleClick(singleCell).Perform();
-                Thread.Sleep(500);
+            IWebElement singleCell = Browser.Driver.FindElement(By.XPath("//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[" + currentRow + "]/td[" + td + "]"));
+            (new Actions(Browser.chromebDriver)).DoubleClick(singleCell).Perform();
+            Thread.Sleep(500);
                 if (Pages.Home_Page.ErrorPopup.IsDisplayed("error popup"))
                 {
-                  //  Pages.Home_Page.ErrorPopup.ClickOn();
+                    //  Pages.Home_Page.ErrorPopup.ClickOn();
                     td++;
                     if (td == numOfCellInRow)
                     {
@@ -143,6 +139,7 @@ namespace DoctorWeb.PageObjects
                 {
                     break;
                 }
+                
             }
             if (Browser.Driver.FindElement(By.XPath("//*[@id='btnCreateAppointmentSave']")).GetAttribute("aria-disabled").Equals("true"))
             {
@@ -287,8 +284,7 @@ namespace DoctorWeb.PageObjects
         }
 
         public void EnterStandBySchedulerList() {
-            Thread.Sleep(500);
-            StandBySchedulerTab.ClickWait();
+            Browser.chromebDriver.FindElement(StandbySchedulerTab).ClickOn();
             Constant.tmpListCount = utility.ListCount(Pages.Standby_Page.standbyListCount);
         }
     }

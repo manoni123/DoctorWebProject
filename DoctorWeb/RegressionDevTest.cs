@@ -132,6 +132,8 @@ namespace DoctorWeb
         {
             UITest(() =>
             {
+                Pages.Patient_Page.NewPatientApplication();
+                Pages.Patient_Page.EnterMedicalTab();
                 Pages.PatientMedical_Page.EnterAnamnezaTable();
                 Pages.PatientMedical_Page.CreateNewAnamnezaApplication();
                 Pages.PatientMedical_Page.EditNewAnamnezaApplication();

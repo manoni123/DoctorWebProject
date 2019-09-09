@@ -99,6 +99,11 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement TreatmentRadioSelect { get; set; }
 
+        public static By priceList = By.Id("btnTreatmentsFromPricelist");
+        public static By codeBrowser = By.ClassName("btn_codeBrowser");
+        public static By codeBrowserFirst = By.XPath("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr/td[5]/div/input");
+        public static By saveTreatmentFromBrowser = By.Id("btnSelectTreatmentsFromPriceListSave");
+
         public void CreateMeetingApplicationProd()
         {
             Thread.Sleep(500);
@@ -113,7 +118,7 @@ namespace DoctorWeb.PageObjects
             Thread.Sleep(500);
             utility.TextClearDropdownAndEnter(SearchPatient, Pages.Patient_Page.PatientUseName);
             SelectCodeForMeeting();
-            ApproveMeeting.ClickOn();
+            ApproveMeeting.ClickWait();
             softAssert.VerifySuccessMsg();
         }
 
@@ -140,13 +145,18 @@ namespace DoctorWeb.PageObjects
         public void SelectCodeForMeeting() {
             try
             {
-                Thread.Sleep(500);
-                PriceList.ClickWait();
-                CodeBroswer.ClickOn();
-                CodeBroswerFirstCode.ClickOn();
-                SaveTreatmentFromPricelist.ClickWait();
+                Browser.chromebDriver.FindElement(priceList).Click();
+                Browser.chromebDriver.FindElement(codeBrowser).Click();
+                Browser.chromebDriver.FindElement(codeBrowserFirst).Click();
+                Browser.chromebDriver.FindElement(saveTreatmentFromBrowser).Click();
+               // Thread.Sleep(500);
+               // PriceList.ClickWait();
+               // CodeBroswer.ClickOn();
+               // CodeBroswerFirstCode.ClickOn();
+               // SaveTreatmentFromPricelist.ClickWait();
             } catch (Exception) {
-                CancelTreatmentFromPricelist.ClickOn();
+                Browser.chromebDriver.FindElement(saveTreatmentFromBrowser).Click();
+              //  CancelTreatmentFromPricelist.ClickOn();
             }
         }
     }

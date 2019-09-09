@@ -140,6 +140,7 @@ namespace DoctorWeb.PageObjects
         public IWebElement DepartmentEnableMark { get; set; }
 
         public string departmentTableCount = "//*[@id='DepartmentManagmentGrid']/div[2]/table/tbody";
+        public static By DepartmentManagementWindow = By.Id("btnManageDepartments");
 
 
         public void CheckDepartmentIsNull() {
@@ -151,14 +152,13 @@ namespace DoctorWeb.PageObjects
         }
 
         public void EnterDepaertmentWindow() {
-            Thread.Sleep(500);
-            DepartmentManagement.ClickOn();
+            Browser.chromebDriver.FindElement(DepartmentManagementWindow);
             softAssert.VerifyElementIsPresent(DepartmentCloseButton);
             Constant.tmpTableCount = utility.TableCount(departmentTableCount);
         }
 
         public void EnterSettingScreen() {
-            Pages.Home_Page.SettingScreen.ClickWait();
+            Pages.Home_Page.EnterSettingScreen();
             softAssert.VerifyElementIsPresent(BusinessCreate);
         }
 

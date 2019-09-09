@@ -55,10 +55,6 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ClosePatientTab { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#tab3_customerTabStrip > ul > li:nth-child(2)")]
-        [CacheLookup]
-        public IWebElement OpenMedicalTab { get; set; }
-
         [FindsBy(How = How.CssSelector, Using = "#tab4_customerTabStrip > ul > li.k-item.k-state-default.k-last")]
         [CacheLookup]
         public IWebElement RelationFamilyTab { get; set; }
@@ -97,8 +93,9 @@ namespace DoctorWeb.PageObjects
 
         //patiant use name
         public string PatientUseName = Constant.patientName;
-        public static By PatientMessages = By.XPath("//*[@id='tab3_menuCustomerExpended']/li[5]/span");
+        public static By PatientMessages = By.XPath("//*[@id='tab3_menuCustomerExpended']/li[5]");
         public static By PatientDocument = By.XPath("//*[@id='tab3_menuCustomerExpended']/li[2]/span");
+        public static By MedicalTab = By.CssSelector("#tab3_customerTabStrip > ul > li:nth-child(2)");
 
         //create or fill method to call to use in tests
         public void NewPatientApplication()
@@ -200,6 +197,12 @@ namespace DoctorWeb.PageObjects
             }
         }
 
+        public void EnterMedicalTab()
+        {
+            Browser.chromebDriver.FindElement(MedicalTab, 1000).ClickOn();
+        }
+
+
         public void BlockedPatientCreate() {
             PatientName.EnterClearText(PatientUseName);
             PatientLastame.EnterClearText(Constant.patientLastname);
@@ -209,15 +212,14 @@ namespace DoctorWeb.PageObjects
 
         public void EnterPatientDocument()
         {
-            Browser.chromebDriver.FindElement(PatientDocument, 1000).Click();
+            Browser.chromebDriver.FindElement(PatientDocument, 1500).ClickOn();
             softAssert.VerifyElementIsPresent(Pages.Document_Page.UplaodFileBtn);
         }
 
         public void EnterPatientMessages()
         {
-            Thread.Sleep(500);
-            Browser.chromebDriver.FindElement(PatientMessages, 1000).Click();
-            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + Constant.patientDataID +"']")));
+            Browser.chromebDriver.FindElement(PatientMessages, 1000).ClickWait();
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + Constant.patientDataID +"']/div[2]/div[1]")));
         }
 
         public void EnterPatientMessagesProd()

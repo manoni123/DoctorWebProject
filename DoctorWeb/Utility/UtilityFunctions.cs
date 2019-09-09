@@ -106,9 +106,9 @@ namespace DoctorWeb.Utility
         public void TextDropdownAndEnter(IWebElement element, string text)
         {
             element.SendKeys(text);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             element.SendKeys(Keys.Down);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             element.SendKeys(Keys.Enter);
         }
 

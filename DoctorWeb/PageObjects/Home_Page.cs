@@ -203,6 +203,7 @@ namespace DoctorWeb.PageObjects
 
         public static By SettingButton = By.Id("btnSettings");
         public static By DevGeneralScreen = By.CssSelector("#settingsTabstrip > ul > li:nth-child(5)");
+        public static By DevPriceListScreen = By.CssSelector("#settingsTabstrip > ul > li:nth-child(4)");
 
         public void LogoutApplication() {
             int selectEnviornment = Constant.VersionNumber;
@@ -262,12 +263,12 @@ namespace DoctorWeb.PageObjects
 
         public void EnterSchedulerWindow()
         {
-            SchedularScreen.ClickOn();
+            SchedularScreen.ClickWait();
         }
 
         public void EnterSettingScreen()
         {
-            Browser.chromebDriver.FindElement(SettingButton).ClickOn();
+            Browser.chromebDriver.FindElement(SettingButton).ClickWait();
         }
 
         public void EnterUserManagmentScreen() {
@@ -300,7 +301,7 @@ namespace DoctorWeb.PageObjects
         public void EntePriceListTab()
         {
             EnterSettingScreen();
-            Pages.Home_Page.DevPricelistScreen.ClickWait();
+            Browser.chromebDriver.FindElement(DevPriceListScreen).ClickOn();
             Constant.tmpTableCount = utility.TableCount(Pages.PriceList_Page.priceListTableCount);
             Constant.priceListExistCode = utility.ElementText(Pages.PriceList_Page.priceListFirstCode);
         }

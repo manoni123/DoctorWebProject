@@ -159,7 +159,7 @@ namespace DoctorWeb.PageObjects
 
         public void GoTo() {
             Pages.Home_Page.EnterSettingScreen();
-            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(4)")).ClickOn();
+            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(4)")).Click();
           //  Pages.Home_Page.DevPricelistScreen.ClickWait();
             Constant.priceListExistCode = Browser.Driver.FindElement(By.XPath("//*[@id='gridPriceListPrices']/div[2]/div[1]/table/tbody/tr[1]/td[1]")).Text;
             Constant.tmpTableCount = utility.TableCount(priceListTableCount);
@@ -275,12 +275,8 @@ namespace DoctorWeb.PageObjects
             PriceListType.ClickOn();
             PriceListType.SendKeys(Keys.ArrowDown);
             PriceListType.SendKeys(Keys.ArrowDown);
-            PriceListType.ClickOn();
-            PriceListSubCode.EnterText(Constant.priceListExistCode);
-            Thread.Sleep(500);
-            PriceListSubCode.SendKeys(Keys.ArrowDown);
-            Thread.Sleep(500);
-            PriceListSubCode.SendKeys(Keys.Enter);
+     //       PriceListType.ClickWait();
+            utility.TextDropdownAndEnter(PriceListSubCode, Constant.priceListExistCode);
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
             softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount + 1);

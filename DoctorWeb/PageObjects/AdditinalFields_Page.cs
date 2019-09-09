@@ -19,10 +19,6 @@ namespace DoctorWeb.PageObjects
         public IWebElement AdditionalFieldsScreen { get; set; }
 
         public static By aditionalFields = By.CssSelector("#generalTabstrip > ul > li:nth-child(2)");
-        
-        [FindsBy(How = How.Id, Using = "btnManageMoreFields")]
-        [CacheLookup]
-        public IWebElement OpenFieldManager { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnMoreFieldsManagerCreateNew")]
         [CacheLookup]
@@ -55,6 +51,8 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement CapacityText { get; set; }
 
+
+        public static By OpenFieldManager = By.Id("btnManageMoreFields");
         public string addFieldsableCount = "//*[@id='moreFieldsManagmentGrid2']/div[2]/table/tbody";
         public string AdditionalFieldScreen = "#generalTabstrip > ul > li:nth-child(2)";
 
@@ -71,12 +69,13 @@ namespace DoctorWeb.PageObjects
         public void DevEnterAdditionalFieldsScreen()
         {
             Pages.Home_Page.EnterGeneralScreen();
-            Browser.chromebDriver.FindElement(aditionalFields, 1000).Click();
+            Browser.chromebDriver.FindElement(aditionalFields, 1000).ClickOn();
         }
 
         public void OpenFieldsManager()
         {
-            OpenFieldManager.ClickWait();
+            Browser.chromebDriver.FindElement(OpenFieldManager).ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
             Constant.tmpTableCount = utility.TableCount(addFieldsableCount);
         }
 
@@ -84,7 +83,6 @@ namespace DoctorWeb.PageObjects
         {
             Pages.AdditinalFields_Page.DevEnterAdditionalFieldsScreen();
             Pages.AdditinalFields_Page.OpenFieldsManager();
-            softAssert.VerifyElementPresentInsideWindow(CreateNewField, CloseFieldWindow);
             CreateNewField.ClickOn();
             FieldSave.ClickOn();
             softAssert.VerifyErrorMsg();

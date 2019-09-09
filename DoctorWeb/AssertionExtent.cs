@@ -25,9 +25,9 @@ namespace DoctorWeb
 
         public void VerifySuccessMsg() {
             try {
-                Assert.IsTrue(Pages.Home_Page.SuccessPopup.Enabled);
+                Assert.IsTrue(Pages.Home_Page.SuccessPopup.Displayed);
             } catch (AssertionException e) {
-                Assert.Fail();
+                Log.Error("popup did not show" + e);
             }
         }
 
@@ -145,7 +145,7 @@ namespace DoctorWeb
             }
             catch (AssertionException e)
             {
-                Log.Info("Verify Element HAS Equal (fail)");
+                Log.Info("Element HAS Equal (fail)");
 
             }
         }

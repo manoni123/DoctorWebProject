@@ -14,6 +14,8 @@ namespace DoctorWeb.PageObjects
         AssertionExtent softAssert = new AssertionExtent();
       
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                UtilityFunction utility = new UtilityFunction();
+
       
         [FindsBy(How = How.XPath, Using = "//*[@id=\"mainTabStrip\"]/ul/li[2]")]
         [CacheLookup]
@@ -43,8 +45,7 @@ namespace DoctorWeb.PageObjects
             IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + Constant.patientDataID));
             UplaodBtn.ClickWait();
             SelectFile.SendKeys(Constant.fileForTest);
-            UploadWindowSave.ClickWait();
-            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerDocuments_" + Constant.patientDataID + "']/div[2]/div[1]/table/tbody/tr/td[8]/a[2]")));
+            UploadWindowSave.ClickOn();
         }
     }
 }

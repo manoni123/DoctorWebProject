@@ -49,7 +49,7 @@ namespace DoctorWeb.PageObjects
         public void EnterTreatmentPlanPage()
         {
             Pages.Home_Page.EnterGeneralScreen();
-            Browser.chromebDriver.FindElement(TreatmentPlanPage, 1000).Click();
+            Browser.chromebDriver.FindElement(TreatmentPlanPage, 1000).ClickOn();
             Constant.tmpTableCount = utility.TableCount(treatmentTableCount);
         }
 

@@ -78,10 +78,6 @@ namespace DoctorWeb.PageObjects
 
         //Anamneza Table Page Elements
 
-        [FindsBy(How = How.Id, Using = "tab3_AddAnamneza")]
-        [CacheLookup]
-        public IWebElement OpenAnamnezaTable { get; set; }
-
         [FindsBy(How = How.XPath, Using = "//*[@id=\"tab3_SelectAnamnezaGrid\"]/div[1]/a[2]")]
         [CacheLookup]
         public IWebElement CreateNewAnamneza { get; set; }
@@ -196,14 +192,12 @@ namespace DoctorWeb.PageObjects
         private string medicineTableCount = "//*[@id='tab3_SelectMedicineGrid']/div[3]/table/tbody";
         private string noteTableCount = "//*[@id='tab2_SelectNotesGrid']/div[3]/table/tbody";
 
-        public void EnterMedicalTab() {
-            Browser.Driver.FindElement(By.CssSelector("#tab3_customerTabStrip > ul > li:nth-child(2)")).ClickWait();
-        }
+        public static By OpenAnamnezaTable = By.Id("tab3_AddAnamneza");
 
         public void EnterMedicineTable() {
             Pages.Patient_Page.NewPatientApplication();
             Thread.Sleep(500);
-            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.Patient_Page.EnterMedicalTab();
             Thread.Sleep(1000);
             OpenMedicineTable.ClickOn();
             softAssert.VerifyElementIsPresent(SaveMedicineTable);
@@ -247,10 +241,7 @@ namespace DoctorWeb.PageObjects
 
         public void EnterAnamnezaTable()
         {
-            Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
-            Thread.Sleep(500);
-            OpenAnamnezaTable.ClickWait();
+            Browser.chromebDriver.FindElement(OpenAnamnezaTable, 500).ClickOn();
             softAssert.VerifyElementIsPresent(CloseAnamnezaTable);
             Constant.tmpTableCount = utility.TableCount(anamnezaTableCount);
         }
@@ -263,15 +254,15 @@ namespace DoctorWeb.PageObjects
             AnamnezaDescription.EnterClearText(Constant.anamnezaName + RandomNumber.smallNumber());
             CheckAnamnezaWarning.ClickOn();
             ConfirmCreateAnamneza.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(DeleteAnamneza, CloseAnamnezaTable);
             softAssert.VerifySuccessMsg();
+            softAssert.VerifyElementHasEqual(utility.TableCount(anamnezaTableCount), Constant.tmpTableCount + 1);
             Thread.Sleep(500);
         }
 
         public void CreateNewAnamnezaWhenSaveApplication()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.Patient_Page.EnterMedicalTab();
             Pages.PatientMedical_Page.EnterAnamnezaTable();
 
             var disButton = SaveAnamnezaTable.GetAttribute("disabled");
@@ -301,25 +292,21 @@ namespace DoctorWeb.PageObjects
 
         //delete new anamneza app
         public void DeleteNewAnamanezaApplication() {
-            if (DeleteAnamneza.IsDisplayed("delete anamneza"))
-            {
-                DeleteAnamneza.ClickOn();
-                softAssert.VerifyElementIsPresent(ConfirmDelete);
-                ConfirmDelete.ClickOn();
-                CloseAnamnezaTable.ClickOn();
-            }
-            else {
-                CloseAnamnezaTable.ClickOn();
-            }
+            DeleteAnamneza.ClickOn();
+            ConfirmDelete.ClickOn();
+            softAssert.VerifyElementHasEqual(utility.TableCount(anamnezaTableCount), Constant.tmpTableCount);
+            CloseAnamnezaTable.ClickOn();
         }
 
         public void AddICDApplication() {
+            Pages.Patient_Page.NewPatientApplication();
+            Pages.Patient_Page.EnterMedicalTab();
             Pages.PatientMedical_Page.EnterAnamnezaTable();
-            ICDWindow.ClickOn();
+            ICDWindow.ClickWait();
             softAssert.VerifyElementInPopupOverWindow(ICDImport, ICDCancel, CloseAnamnezaTable);
             ICDSearch.SendKeys(Constant.ICDData);
             ICDSearch.SendKeys(Keys.Enter);
-            ICDImport.ClickOn();
+            ICDImport.ClickWait();
             softAssert.VerifyElementNotEqualInsideWindow(utility.TableCount(anamnezaTableCount), Constant.tmpTableCount + 1, CloseAnamnezaTable);
             CloseAnamnezaTable.ClickOn();;
         }
@@ -328,7 +315,7 @@ namespace DoctorWeb.PageObjects
         public void EnterNoteTable()
         {
             Pages.Patient_Page.NewPatientApplication();
-            Pages.PatientMedical_Page.EnterMedicalTab();
+            Pages.Patient_Page.EnterMedicalTab();
             Thread.Sleep(1000);
             OpenNotesTable.ClickOn();
             softAssert.VerifyElementIsPresent(SaveNotesTable);
