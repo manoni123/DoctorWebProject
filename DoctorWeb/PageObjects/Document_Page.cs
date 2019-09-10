@@ -14,7 +14,7 @@ namespace DoctorWeb.PageObjects
         AssertionExtent softAssert = new AssertionExtent();
       
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-                UtilityFunction utility = new UtilityFunction();
+        UtilityFunction utility = new UtilityFunction();
 
       
         [FindsBy(How = How.XPath, Using = "//*[@id=\"mainTabStrip\"]/ul/li[2]")]
@@ -23,7 +23,7 @@ namespace DoctorWeb.PageObjects
 
         [FindsBy(How = How.ClassName, Using = "btn-blue-white")]
         [CacheLookup]
-        public IWebElement UplaodFileBtn { get; set; }
+        public IWebElement UploadFileBtn { get; set; }
 
         [FindsBy(How = How.Name, Using = "fileUploader")]
         [CacheLookup]
@@ -42,8 +42,7 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.NewPatientApplication();
             Thread.Sleep(1500);
             Pages.Patient_Page.EnterPatientDocument();
-            IWebElement UplaodBtn = Browser.Driver.FindElement(By.Id("tab3_btnAddCustomerDocument_" + Constant.patientDataID));
-            UplaodBtn.ClickWait();
+            UploadFileBtn.ClickOn();
             SelectFile.SendKeys(Constant.fileForTest);
             UploadWindowSave.ClickOn();
         }

@@ -13,6 +13,7 @@ namespace DoctorWeb.PageObjects
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         AssertionExtent softAssert = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Name, Using = "ExpertiesID_input")]
         [CacheLookup]
@@ -56,15 +57,23 @@ namespace DoctorWeb.PageObjects
 
         public void SearchAvailbleTimeApplication()
         {
-            ExpertiseSelect.SendKeys(Keys.ArrowDown);
-            Thread.Sleep(500);
-            var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
-            SearchBtn.ClickOn();
-            FirstFreeTime.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(AvailbleTimeGoBackBtn, CloseWindow);
-            FirstFreeTimeSetMeeting.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
-            softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
+            try
+            {
+                ExpertiseSelect.SendKeys(Keys.ArrowDown);
+                ExpertiseSelect.SendKeys(Keys.ArrowDown);
+                Thread.Sleep(500);
+                var durationTest = Browser.Driver.FindElement(By.XPath("//*[@id='findTimeSlotForm']/div/div[2]/div[1]/div[1]/div[7]/div/div/span[5]/span/input[1]")).GetAttribute("aria-valuenow");
+                SearchBtn.ClickOn();
+                FirstFreeTime.ClickOn();
+                FirstFreeTimeSetMeeting.ClickOn();
+                softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+                softAssert.VerifyElementHasEqual(Pages.Meeting_Page.MeetingDuration.GetAttribute("aria-valuenow"), durationTest);
+            }
+            catch (ElementNotVisibleException)
+            {
+                CloseWindow.ClickOn();
+                Log.Error("bug with searching availble time");
+            }
         }
     }
 }

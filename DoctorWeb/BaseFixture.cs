@@ -110,7 +110,7 @@ namespace DoctorWeb
 
                 if (onTopPopup != null)
                 {
-                    window.ClickOn();
+                    onTopPopup.ClickOn();
                     popup.ClickOn();
                     window.ClickOn();
                 }

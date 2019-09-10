@@ -213,13 +213,13 @@ namespace DoctorWeb.PageObjects
         public void EnterPatientDocument()
         {
             Browser.chromebDriver.FindElement(PatientDocument, 1500).ClickOn();
-            softAssert.VerifyElementIsPresent(Pages.Document_Page.UplaodFileBtn);
+            softAssert.VerifyElementIsPresent(Pages.Document_Page.UploadFileBtn);
         }
 
         public void EnterPatientMessages()
         {
             Browser.chromebDriver.FindElement(PatientMessages, 1000).ClickWait();
-            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_gridCustomerMessages_" + Constant.patientDataID +"']/div[2]/div[1]")));
+            softAssert.VerifyElementIsPresent(Browser.Driver.FindElement(By.XPath("//*[@id='tab3_menuCustomerExpended_mn_active']")));
         }
 
         public void EnterPatientMessagesProd()

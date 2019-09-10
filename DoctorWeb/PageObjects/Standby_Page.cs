@@ -63,8 +63,8 @@ namespace DoctorWeb.PageObjects
             Pages.Meeting_Page.SaveTreatmentFromPricelist.ClickOn();
             TherapistSearch.SendKeys(Keys.ArrowDown);
             Thread.Sleep(500);
-            CreateStandby.ClickOn();
-            Thread.Sleep(1000);
+            CreateStandby.ClickWait();
+            softAssert.VerifySuccessMsg();
             softAssert.VerifyElementHasEqual(utility.ListCount(standbyListCount), Constant.tmpListCount + 1);
         }
 

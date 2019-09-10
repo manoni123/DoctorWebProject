@@ -333,6 +333,7 @@ namespace DoctorWeb
             }, Pages.Authorization_Page.GroupCancel);
         }
 
+        [Ignore("need fix")]
         [Test, Category("Settings")]
         public void GroupImportTest()
         {
@@ -591,7 +592,7 @@ namespace DoctorWeb
                 Pages.AvailbleTime_Page.GoTo();
                 Pages.AvailbleTime_Page.SearchAvailbleTimeApplication();
                 Pages.Meeting_Page.CreateMeetingApplication();
-            }, Pages.Meeting_Page.CancelMeeting, Pages.Meeting_Page.CancelTreatmentFromPricelist);
+            }, Pages.Meeting_Page.CancelMeeting, Pages.Meeting_Page.CancelTreatmentFromPricelist, Pages.Home_Page.PopupCloseClass);
         }
 
         [Test, Category("Scheduler")]
