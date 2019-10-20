@@ -139,8 +139,6 @@
     <Compile Include="AssertionExtent.cs" />
     <Compile Include="BaseFixture.cs" />
     <Compile Include="Browser.cs" />
-    <Compile Include="DBConnect.cs" />
-    <Compile Include="DevBaseFixture.cs" />
     <Compile Include="DevBrowser.cs" />
     <Compile Include="MobileRegression.cs" />
     <Compile Include="PageObjects\Forms_Page.cs" />
@@ -189,7 +187,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scheduler.cs" />
     <Compile Include="TestCases\TestServerErrors.cs" />
     <Compile Include="Utility\ClickDropdownAndEnter.cs" />
     <Compile Include="Utility\Constant.cs" />
