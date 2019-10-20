@@ -126,9 +126,9 @@ namespace DoctorWeb
         public void VerifyElementHasEqual(object element, object expected) {
             try
             {
+                Thread.Sleep(_time);
                 Assert.AreEqual(element, expected);
                 Log.Info("Verify Element HAS Equal");
-                Thread.Sleep(_time);
             }
             catch (AssertionException e) {
                 Log.Info("Verify DOES NOT Has Equal");

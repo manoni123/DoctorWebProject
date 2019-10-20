@@ -18,23 +18,23 @@ namespace DoctorWeb.PageObjects
 
       
         [FindsBy(How = How.XPath, Using = "//*[@id=\"mainTabStrip\"]/ul/li[2]")]
-        [CacheLookup]
+        
         public IWebElement NewPatiantTabClick { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "btn-blue-white")]
-        [CacheLookup]
+        
         public IWebElement UploadFileBtn { get; set; }
 
         [FindsBy(How = How.Name, Using = "fileUploader")]
-        [CacheLookup]
+        
         public IWebElement SelectFile { get; set; }
 
         [FindsBy(How = How.Name, Using = "btnCancelUploadDocuments")]
-        [CacheLookup]
+        
         public IWebElement btnCancelUploadDocuments { get; set; }
 
         [FindsBy(How = How.Name, Using = "btnUploadDocuments")]
-        [CacheLookup]
+        
         public IWebElement UploadWindowSave { get; set; }
 
         public void UploadFileApplication()

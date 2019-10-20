@@ -75,5 +75,13 @@ namespace DoctorWeb.PageObjects
                 Log.Error("bug with searching availble time");
             }
         }
+
+        public void SearchAvailbleTimeFromTreatmentApplication()
+        {
+            SearchBtn.ClickOn();
+            FirstFreeTime.ClickOn();
+            FirstFreeTimeSetMeeting.ClickOn();
+            softAssert.VerifyElementPresentInsideWindow(Pages.Meeting_Page.ApproveMeeting, Pages.Meeting_Page.CancelMeeting);
+        }
     }
 }

@@ -253,14 +253,7 @@ namespace DoctorWeb.PageObjects
             PriceListCode.EnterText(Constant.priceListCode + RandomNumber.smallNumber());
             PriceListPrice.EnterClearText("25");
             PriceListSaveDev.ClickOn();
-            if (Browser.Driver.FindElement(By.XPath("//*[@id='createCodeWizardNumber']/label[2]/span[1]")).Displayed)
-            {
-                PriceListSaveDev.ClickOn();
-                PriceListSaveDev.ClickOn();
-            }
-            else {
-                PriceListSaveDev.ClickOn();
-            }
+            PriceListSaveDev.ClickOn();
             softAssert.VerifySuccessMsg();
             softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount + 1);
         }
@@ -275,10 +268,11 @@ namespace DoctorWeb.PageObjects
             PriceListType.ClickOn();
             PriceListType.SendKeys(Keys.ArrowDown);
             PriceListType.SendKeys(Keys.ArrowDown);
-     //       PriceListType.ClickWait();
-            utility.TextDropdownAndEnter(PriceListSubCode, Constant.priceListExistCode);
+            PriceListType.SendKeys(Keys.Enter);
+            utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
             PriceListSaveDev.ClickOn();
             PriceListSaveDev.ClickOn();
+            softAssert.VerifySuccessMsg();
             softAssert.VerifyElementHasEqual(utility.TableCount(priceListTableCount), Constant.tmpTableCount + 1);
         }
     }

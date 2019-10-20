@@ -7,7 +7,8 @@ namespace DoctorWeb.Utility
     {
         public static string drWebUrl = "http://drweb-sys.com/Account/Login";
         public static string newClientUrl = "https://hotfix1.drweb-sys.com/Account/Login";
-        public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
+           public static string drWebTestUrl = "http://test.drweb-sys.com/Account/Login";
+        //    public static string drWebTestUrl = "http://test-convert03.drweb-sys.com/Account/Login";
         public static string drwebMobileUrl = "http://test.m-staging.drweb-sys.com/login";
         //1 = stage , 2 = stage(s.u) , 3 = mobile, 4 = hotfix
         public static int VersionNumber = 1;
@@ -83,6 +84,8 @@ namespace DoctorWeb.Utility
         public static string priceListCode = "K" + RandomNumber.smallNumber();
         public static string priceListExistCode;
         public static bool priceListCreated;
+
+        public static string ReportName = "Report";
 
         public static string priceListTax = RandomNumber.taxNumber();
 

@@ -288,6 +288,7 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(NameValidationError, CloseAnamnezaTable);
             AnamnezaName.EnterClearText("Edit" + RandomNumber.smallNumber());
             ConfirmCreateAnamneza.ClickOn();
+            softAssert.VerifySuccessMsg();
         }
 
         //delete new anamneza app
@@ -318,6 +319,7 @@ namespace DoctorWeb.PageObjects
             Pages.Patient_Page.EnterMedicalTab();
             Thread.Sleep(1000);
             OpenNotesTable.ClickOn();
+            Constant.tmpTableCount = utility.TableCount(noteTableCount);
             softAssert.VerifyElementIsPresent(SaveNotesTable);
         }
 
@@ -341,17 +343,11 @@ namespace DoctorWeb.PageObjects
         //delete note
         public void DeleteNoteApplication()
         {
-            if (DeleteNote.IsDisplayed("delete note"))
-            {
-                DeleteNote.ClickOn();
-                softAssert.VerifyElementIsPresent(ConfirmDelete);
-                ConfirmDelete.ClickOn();
-                CloseNotesTable.ClickOn();
-            }
-            else
-            {
-                CloseNotesTable.ClickOn();
-            }
+            DeleteNote.ClickOn();
+            softAssert.VerifyElementIsPresent(ConfirmDelete);
+            ConfirmDelete.ClickOn();
+            CloseNotesTable.ClickOn();
+            softAssert.VerifyElementHasEqualInsideWindow(utility.TableCount(noteTableCount), Constant.tmpTableCount, CloseNotesTable);
         }
 
         public void ValidateWarningIndicator()

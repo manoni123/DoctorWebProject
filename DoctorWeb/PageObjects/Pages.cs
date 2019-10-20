@@ -181,5 +181,10 @@ namespace DoctorWeb
             get { return GetPage<Forms_Page>(); }
         }
 
+        public static ReportGenerator_Page reportGenerator_Page
+        {
+            get { return GetPage<ReportGenerator_Page>(); }
+        }
+
     }
 }

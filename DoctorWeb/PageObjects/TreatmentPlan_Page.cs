@@ -55,11 +55,14 @@ namespace DoctorWeb.PageObjects
 
         public void CreateNewTreatmentPlanApplication() {
             EnterTreatmentPlanPage();
-            CreateTreatmentPlan.ClickWait();
+            Browser.chromebDriver.WaitFindElement(CreateTreatmentPlan);
+        //    CreateTreatmentPlan.ClickWait();
             TreatmentPlanName.EnterClearText(Constant.treatmentPlan);
             utility.SelectCodeOnCodeBroswer("//*[@id='gridCodeBrowser']/div[2]/table/tbody/tr[1]/td[5]/div/input");
-            TreatmentPlanSave.ClickWait();
-            softAssert.VerifyElementHasEqual(utility.TableCount(treatmentTableCount), Constant.tmpTableCount +1);
+            Browser.chromebDriver.WaitFindElement(TreatmentPlanSave);
+        //   TreatmentPlanSave.ClickWait();
+            softAssert.VerifySuccessMsg();
+            softAssert.VerifyElementHasEqual(utility.TableCount(treatmentTableCount), Constant.tmpTableCount + 1);
 
         }
     }

@@ -41,6 +41,7 @@ namespace DoctorWeb
             }, Pages.Patient_Page.ClosePatientTab);
         }
 
+        [Ignore("not ready")]
         [Test, Category("Patient")]
         public void PatientConfidentialCreateTest()
         {
@@ -60,7 +61,8 @@ namespace DoctorWeb
         }
 
         [Test, Category("Patient")]
-        public void PatientVisitsTest()
+
+            public void PatientVisitsTest()
         {
             UITest(() =>
             {
@@ -113,6 +115,24 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Treatment_Page.CreateNewSingleTreatmentApplication();
+            }, Pages.TreatmentPlan_Page.TreatmentPlanCancel);
+        }
+
+        [Test, Category("Treatments")]
+        public void TreatmentDeleteSingleTest()
+        {
+            UITest(() =>
+            {
+                Pages.Treatment_Page.DeleteTreatmentApplication();
+            }, Pages.TreatmentPlan_Page.TreatmentPlanCancel);
+        }
+
+        [Test, Category("Treatments")]
+        public void TreatmentCreateSeriesTest()
+        {
+            UITest(() =>
+            {
+                Pages.Treatment_Page.CreateNewSeriesTreatmentApplication();
             }, Pages.TreatmentPlan_Page.TreatmentPlanCancel);
         }
 
@@ -344,7 +364,7 @@ namespace DoctorWeb
         }
 
         [Test, Category("Settings")]
-        public void TreatmentPlanCreate()
+        public void PricelistTreatmentPlanCreate()
         {
             UITest(() =>
             {
@@ -409,7 +429,7 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.PriceList_Page.DevCreatePriceListSeriesApplicaiton();
-            }, Pages.PriceList_Page.PriceListCancelDev);
+            }, Pages.PriceList_Page.PriceListCancelDev, Pages.Home_Page.PopupCloseClass);
         }
 
         [Test, Category("Settings")]
@@ -448,7 +468,6 @@ namespace DoctorWeb
             UITest(() =>
             {
                 Pages.Reports_Page.EnterReportScreen();
-                Pages.Reports_Page.PatientReportTab.ClickWait();
                 Pages.Reports_Page.PatientReportApplication();
             }, Pages.Reports_Page.PopupButton);
         }
@@ -483,7 +502,24 @@ namespace DoctorWeb
             }, Pages.Reports_Page.PopupButton);
         }
 
+        [Test, Category("Reports")]
+        public void ReportGeneratorTest()
+        {
+            UITest(()=> {
+            Pages.reportGenerator_Page.ReportGenerationCreateApplication();
+            Pages.reportGenerator_Page.ExecuteReport();
+            }, Pages.Home_Page.PopupCloseClass ,Pages.reportGenerator_Page.ReportManagementWindowClose);
+        }
 
+        [Test, Category("Reports")]
+        public void ReportGeneratorCRUDTest()
+        {
+            UITest(() => {
+                Pages.reportGenerator_Page.ReportGenerationCreateApplication();
+                Pages.reportGenerator_Page.ReportGenerationEditApplication();
+                Pages.reportGenerator_Page.ReportGenerationDeleteApplication();
+            }, Pages.reportGenerator_Page.ReportManagementWindowClose);
+        }
         //+++++++++++++Scheduler Tests++++++++++++++++++//
 
         [Test, Category("Scheduler")]
@@ -662,6 +698,21 @@ namespace DoctorWeb
                 Pages.Forms_Page.EditFormsCategoryApplication();
                 Pages.Forms_Page.DeleteFormsCategoryApplication();
             },Pages.Home_Page.PopupCloseClass);
+        }
+
+        [Test]
+        public void FormCreateNewTest() {
+            Pages.Forms_Page.GoTo();
+            Pages.Forms_Page.EnterNewPatientForm();
+            Pages.Forms_Page.CreateNewPatientForm();
+        }
+
+        [Ignore("cant use for now")]
+        [Test]
+        public void FormCreateNewInteractiveTest()
+        {
+            Pages.Forms_Page.GoTo();
+            Pages.Forms_Page.CreateNewInteractiveForm();
         }
     }
 }

@@ -179,6 +179,7 @@ namespace DoctorWeb.PageObjects
             BusinessPhone.EnterClearText(Constant.businessNum);
             BusinessEmail.EnterClearText(Constant.businessEmail);
             BusinessSavebutton.ClickOn();
+            softAssert.VerifySuccessMsg();
         }
 
         public void CreateBranchApplication()
@@ -195,6 +196,7 @@ namespace DoctorWeb.PageObjects
             BranchEmail.EnterClearText(Constant.userEmail);
             Thread.Sleep(500);
             BranchSaveButton.ClickOn();
+            softAssert.VerifySuccessMsg();
         }
 
         public void CreateDepartmentApplication()

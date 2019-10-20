@@ -88,8 +88,8 @@ namespace DoctorWeb.PageObjects
         {
             Thread.Sleep(500);
             Pages.Home_Page.EnterSettingScreen();
-            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(3)")).ClickWait();
-          //  Pages.Home_Page.UserAuthorizationScreen.ClickWait();
+         //   Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(3)")).ClickWait();
+            Pages.Home_Page.UserAuthorizationScreen.ClickOn();
             Constant.tmpListCount = utility.ListCount(countGroupList);
             softAssert.VerifyElementIsPresent(GroupCreate);
         }
@@ -130,7 +130,8 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(GroupNameError, GroupCancel);
             GroupName.EnterClearText(Constant.groupName + RandomNumber.smallNumber());
             GroupEditSave.ClickOn();
-           // softAssert.VerifyElementNotPresent(GroupCancel);
+            softAssert.VerifySuccessMsg();
+            // softAssert.VerifyElementNotPresent(GroupCancel);
         }
 
         public void DeleteGroupApplication()

@@ -140,7 +140,7 @@ namespace DoctorWeb.Utility
         }
 
         public void SelectCodeOnCodeBroswer(string element) {
-            Browser.Driver.FindElement(By.ClassName("btn_codeBrowser")).ClickOn();
+            Browser.chromebDriver.FindElement(By.ClassName("btn_codeBrowser")).ClickOn();
             Browser.Driver.FindElement(By.XPath(element)).ClickOn();
         }
 

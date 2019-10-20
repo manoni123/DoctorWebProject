@@ -114,7 +114,7 @@ namespace DoctorWeb
                     popup.ClickOn();
                     window.ClickOn();
                 }
-                else if (popup != null )
+                else if (popup != null)
                 {
                     popup.ClickOn();
                     window.ClickOn();

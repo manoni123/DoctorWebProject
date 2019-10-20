@@ -122,14 +122,16 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifySuccessMsg();
         }
 
-        public void CreateMeetingFromAvailbleTime() {
+        public void CreateMeetingFromAvailbleTime()
+        {
             PriceList.ClickWait();
             Browser.Driver.FindElement(By.Id("Code_AutoComplete_PriceListCode")).EnterClearText(Constant.priceListExistCode);
             utility.ClickDropdownAndEnter(CodeSearch);
             SaveTreatmentFromPricelist.ClickOn();
             Thread.Sleep(500);
-         //   utility.ClickDropdownAndEnter(RepeatField);
+            //   utility.ClickDropdownAndEnter(RepeatField);
             ApproveMeeting.ClickOn();
+            softAssert.VerifySuccessMsg();
         }
 
         public void CreateMeetingKnownPatient()

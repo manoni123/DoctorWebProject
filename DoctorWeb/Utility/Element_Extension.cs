@@ -72,7 +72,28 @@ namespace DoctorWeb.Utility
          //       Thread.Sleep(_time);
             }
             catch (Exception) {
-                log.Error("Could not Click Element");
+                log.Error("Could not Click Element : " + element.Text);
+            }
+        }
+
+        //if elemtn doesnt click, it will click the close window button
+        public static void ClickElementInWindow(this IWebElement element, IWebElement window)
+        {
+            try
+            {
+                string valueName = element.Text;
+                string valueID = element.GetAttribute("name");
+                string valueTag = element.GetAttribute("id");
+                string valueText = element.GetAttribute("data-tag");
+                utility.NameInElement(element, valueName, valueID, valueTag, valueText);
+                element.Click();
+                Task.Delay(_time).Wait();
+                //       Thread.Sleep(_time);
+            }
+            catch (Exception)
+            {
+                window.ClickOn();
+                log.Error("Could not Click Element : " + element.Text);
             }
         }
 
@@ -92,7 +113,7 @@ namespace DoctorWeb.Utility
             }
             catch (Exception)
             {
-                log.Error("Could not Click Element");
+                log.Error("Could not Click Element : " + element.Text);
             }
         }
 
@@ -125,6 +146,13 @@ namespace DoctorWeb.Utility
             finally {
                 Thread.Sleep(timeInMiliseconds);
             }
+        }
+
+        //wait for element to be clickable
+        public static void WaitFindElement(this IWebDriver driver, IWebElement element)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                        .Until(ExpectedConditions.ElementToBeClickable(element)).ClickOn();
         }
 
         public static ReadOnlyCollection<IWebElement> FindElements(this IWebDriver driver, By by, int timeoutInSeconds)

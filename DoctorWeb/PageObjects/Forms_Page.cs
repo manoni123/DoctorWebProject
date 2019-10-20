@@ -1,7 +1,10 @@
 ﻿using DoctorWeb.Utility;
 using log4net;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
+using System.Linq;
+using System.Threading;
 
 namespace DoctorWeb.PageObjects
 {
@@ -13,48 +16,77 @@ namespace DoctorWeb.PageObjects
    
 
         [FindsBy(How = How.XPath, Using = "//[contains(text(), 'מועד שליחה)]")]
-        [CacheLookup]
+        
         public IWebElement PatientValidation { get; set; }
 
         [FindsBy(How = How.Id, Using = "txtFilterForms")]
-        [CacheLookup]
+        
         public IWebElement FormsSearchField { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnFormCategories")]
-        [CacheLookup]
+        
         public IWebElement FormsCategoryBtn { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnFormCategoryManagerCreateNew")]
-        [CacheLookup]
+        
         public IWebElement CreateNewCategory { get; set; }
         
         [FindsBy(How = How.Id, Using = "Name")]
-        [CacheLookup]
+        
         public IWebElement CategoryName { get; set; }
 
         [FindsBy(How = How.Id, Using = "Name_validationMessage")]
-        [CacheLookup]
+        
         public IWebElement NameValidation { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='FormCategoryManagmentGrid']/div[2]/table/tbody/tr[1]/td[3]/a[1]")]
-        [CacheLookup]
+        
         public IWebElement SaveCategory { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='FormCategoryManagmentGrid']/div[2]/table/tbody/tr[1]/td[3]/a[2]")]
-        [CacheLookup]
+        
         public IWebElement CancelSaveCategory { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='FormCategoryManagmentGrid']/div[2]/table/tbody/tr[1]/td[3]/a[1]")]
-        [CacheLookup]
+        
         public IWebElement EditCategory { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='FormCategoryManagmentGrid']/div[2]/table/tbody/tr[1]/td[3]/a[2]")]
-        [CacheLookup]
+        
         public IWebElement DeleteCategory { get; set; }
 
         [FindsBy(How = How.Id, Using = "popup-btn-OK")]
-        [CacheLookup]
+        
         public IWebElement PopupApprove { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnCreateNewForm")]
+        
+        public IWebElement CreateNewForm { get; set; }
+
+        [FindsBy(How = How.Id, Using = "FormName")]
+        
+        public IWebElement FormName { get; set; }
+
+        [FindsBy(How = How.Id, Using = "FormTitle")]
+        
+        public IWebElement FormTitle { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='create-form-header-box']/div[2]/div/div[2]/span")]
+        
+        public IWebElement FormSelectDepartment { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='create-form-header-box']/div[2]/div/div[3]/span")]
+        
+        public IWebElement FormSelectCategory { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnSaveForm")]
+        
+        public IWebElement SaveForm { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='pages-container']/div")]
+        
+        public IWebElement FormComponentAreaDrop { get; set; }
 
         public string formsCategoryTableCount = "//*[@id='FormCategoryManagmentGrid']/div[2]/table/tbody";
 
@@ -85,7 +117,7 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(NameValidation, Pages.Home_Page.PopupCloseClass);
             CategoryName.SendKeys(Constant.Edit + RandomNumber.smallNumber());
             SaveCategory.ClickOn();
-            softAssert.VerifyElementPresentInsideWindow(DeleteCategory, Pages.Home_Page.PopupCloseClass);
+            softAssert.VerifySuccessMsg();
         }
 
         public void DeleteFormsCategoryApplication() {
@@ -95,5 +127,42 @@ namespace DoctorWeb.PageObjects
             Pages.Home_Page.PopupCloseClass.ClickOn() ;
         }
 
+        public void EnterNewPatientForm() {
+            CreateNewForm.ClickOn();
+            IWebElement formList = Browser.Driver.FindElement(By.Id("nmuCreateNewForm"));
+            formList.FindElements(By.TagName("li")).ElementAt(0).ClickOn();
+            softAssert.VerifyElementIsPresent(FormName);
+        }
+        public void CreateNewInteractiveForm()
+        {
+            CreateNewForm.ClickOn();
+            IWebElement formList = Browser.Driver.FindElement(By.Id("nmuCreateNewForm"));
+            formList.FindElements(By.TagName("li")).ElementAt(1).SendKeys(Constant.fileForTest);
+            Thread.Sleep(500);
+            softAssert.VerifyElementIsPresent(FormName);
+        }
+
+        public void CreateNewPatientForm() {
+            FormName.SendKeys(Constant.fieldName);
+            utility.ClickDropdownAndEnter(FormSelectDepartment);
+            utility.ClickDropdownAndEnter(FormSelectCategory);
+            FormTitle.SendKeys(Constant.fieldName);
+            FillFormWithComponents();
+            SaveForm.ClickOn();
+            softAssert.VerifySuccessMsg();
+        }
+
+        public void FillFormWithComponents() {
+            int totalComponent = 5;
+        
+            for (int i = 1; i <= totalComponent; i++)
+            {
+                IWebElement FormComponentDrag = Browser.Driver.FindElement(By.XPath("//*[@id='form-builder-toolbox']/div[" + i + "]/div"));
+
+                (new Actions(Browser.chromebDriver)).ClickAndHold(FormComponentDrag).MoveToElement(FormComponentAreaDrop)
+                    .DragAndDrop(FormComponentDrag, FormComponentAreaDrop).Perform();
+                Thread.Sleep(500);
+            }
+        }
     }
 }

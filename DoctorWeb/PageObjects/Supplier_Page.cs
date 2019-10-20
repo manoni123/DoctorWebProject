@@ -16,6 +16,8 @@ namespace DoctorWeb.PageObjects
     public class Supplier_Page
     {
         AssertionExtent softAsserts = new AssertionExtent();
+        UtilityFunction utility = new UtilityFunction();
+
 
         [FindsBy(How = How.Id, Using = "tab2_Name")]
         [CacheLookup]
@@ -69,6 +71,8 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement SupplierContactEdit { get; set; }
 
+        private string supplierContactTable  = "//*[@id='tab3_SelectSupplierContactsGrid']/div[3]/table/tbody";
+
         //create new supplier
         public void NewSupplierCreateApplication()
         {
@@ -88,17 +92,16 @@ namespace DoctorWeb.PageObjects
         public void NewSupplierContactApplication()
         {
             Pages.Supplier_Page.NewSupplierCreateApplication();
-
+            Constant.tmpTableCount = utility.TableCount(supplierContactTable);
             CreateSupplierContact.ClickOn();
-            softAsserts.VerifyElementIsPresent(SuppContName);
             SuppContName.SendKeys("1");
             SaveNewSupplierContact.ClickOn();
             softAsserts.VerifyElementIsPresent(supplierContactNameValidate);
             SuppContName.EnterClearText(Constant.suppContactName);
             SuppContLast.EnterClearText(Constant.suppContactLast);
             SuppContPhone.EnterClearText(Constant.suppContactPhone);
-            SaveNewSupplierContact.ClickOn();
-            softAsserts.VerifyElementIsPresent(SupplierContactEdit);
+            SaveNewSupplierContact.ClickWait();
+            softAsserts.VerifyElementHasEqual(utility.TableCount(supplierContactTable), Constant.tmpTableCount + 1);
            
         }
     }

@@ -119,7 +119,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement PracticeApprove { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"ManageUserPractiseGrid\"]/div[2]/table/tbody/tr[2]/td[3]/a[1]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"ManageUserPractiseGrid\"]/div[2]/table/tbody/tr[1]/td[3]/a[1]")]
         [CacheLookup]
         public IWebElement EditPracticeApprove { get; set; }
 
@@ -187,7 +187,7 @@ namespace DoctorWeb.PageObjects
         public void GoTo()
         {
             Pages.Home_Page.EnterSettingScreen();
-            Browser.chromebDriver.FindElement(By.CssSelector("#settingsTabstrip > ul > li:nth-child(2)")).ClickOn();
+            Pages.Home_Page.UserManagementScreen.ClickOn();
         }
 
         //create a create user 
@@ -235,13 +235,13 @@ namespace DoctorWeb.PageObjects
             var lastValue = practiceList[practiceList.Count - 1];
             lastValue.ClickOn();
             UserContinueBtn.ClickOn();
-            SelectBusinessOnUserCreate.ClickOn();
+            SelectBusinessOnUserCreate.Click();
             var branchID = BranchIdOnUserCreate.GetAttribute("value");
             Browser.Driver.FindElement(By.CssSelector("#branchID" + branchID + " > label")).ClickOn();
-            UserContinueBtn.ClickOn();
+            UserContinueBtn.Click();
             softAssert.VerifyElementPresentInsideWindow(Pages.Home_Page.ErrorPopup, UserCancelBtn);
-            SelectDepartmentOnUserCreate.ClickOn();
-            UserContinueBtn.ClickOn();
+            SelectDepartmentOnUserCreate.Click();
+            UserContinueBtn.Click();
             therapistSchedulerSetup();
             UserContinueBtn.ClickOn();
             softAssert.VerifySuccessMsg();
@@ -256,6 +256,7 @@ namespace DoctorWeb.PageObjects
             softAssert.VerifyElementPresentInsideWindow(Pages.UserProfile_Page.GeneralSettingCheckbox, Pages.Home_Page.PopupClose);
             Pages.UserProfile_Page.ActivityScope.ClickWait();
             Pages.UserProfile_Page.EditUserCancelBtn.ClickOn();
+
         }
 
         public void EnterPracticeWindow()
@@ -288,9 +289,9 @@ namespace DoctorWeb.PageObjects
         public void DeletePracticeApplication()
         {
             PracticeDelete.ClickOn();
-            DeletePopup.ClickOn();
-            softAssert.VerifyElemenNotHaveEqual(utility.TableCount(expertiseTableCount), Constant.tmpTableCount);
-            softAssert.VerifyElementPresentInsideWindow(PracticeWindowClose, PracticeWindowClose);
+            DeletePopup.ClickWait();
+            softAssert.VerifyElementHasEqualInsideWindow(utility.TableCount(expertiseTableCount), Constant.tmpTableCount, PracticeWindowClose);
+          //  softAssert.VerifyElementPresentInsideWindow(PracticeWindowClose, PracticeWindowClose);
             PracticeWindowClose.ClickOn();
         }
 

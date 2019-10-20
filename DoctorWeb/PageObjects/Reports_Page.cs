@@ -78,13 +78,17 @@ namespace DoctorWeb.PageObjects
 
         [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li:nth-child(2)")]
         [CacheLookup]
-        public IWebElement BuiltinReport { get; set; }
+        public IWebElement SavedReportsScreen { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#reportsTabstrip > ul > li.k-item.k-state-default.k-last")]
+        [CacheLookup]
+        public IWebElement ReportGeneatorScreen { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[2]")]
         [CacheLookup]
         public IWebElement PatientReportTab { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[3]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[2]")]
         [CacheLookup]
         public IWebElement ContactReportTab { get; set; }
 
@@ -92,7 +96,7 @@ namespace DoctorWeb.PageObjects
         [CacheLookup]
         public IWebElement ContactReportTabProd { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[4]")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='builtInReports_SubMenu_TabStrip']/ul/li[3]")]
         [CacheLookup]
         public IWebElement MeetingReportTab { get; set; }
 
@@ -165,18 +169,15 @@ namespace DoctorWeb.PageObjects
         public void EnterReportScreen() {
             Thread.Sleep(500);
             Pages.Home_Page.ReportScreen.ClickWait();
-            Pages.Reports_Page.BuiltinReport.ClickWait();
         }
 
         public void PatientReportApplication()
         {
             Thread.Sleep(500);
-            PatientReportTab.ClickOn();
             PatientReportFromDate.EnterClearText(Constant.dateMinusMonth);
             PatientReportExcel.ClickOn();
             PatientReportShow.ClickWait();
             ReportResultEmptyOrLarge();
-
         }
 
         public void PatientReportApplicationProd()

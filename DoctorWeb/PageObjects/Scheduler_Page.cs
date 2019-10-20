@@ -22,79 +22,79 @@ namespace DoctorWeb.PageObjects
         UtilityFunction utility = new UtilityFunction();
 
         [FindsBy(How = How.Id, Using = "schedulerHeaderMenuButton")]
-        [CacheLookup]
+        
         public IWebElement SchedulerMenuList { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#schedulerHeaderMenu_mn_active > span")]
-        [CacheLookup]
+        
         public IWebElement DailyReportWindow { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnSchedulerEventsPrint_Closeancel")]
-        [CacheLookup]
+        
         public IWebElement SchedulerEventPrintCancel { get; set; }
 
         [FindsBy(How = How.LinkText, Using = "דוח פגישות מבוטלות")]
-        [CacheLookup]
+        
         public IWebElement CancelledMeetingWindow { get; set; }
 
         [FindsBy(How = How.LinkText, Using = "רשימת פתיחות וחסימות")]
-        [CacheLookup]
+        
         public IWebElement OpenBlockWindow { get; set; }
 
         [FindsBy(How = How.LinkText, Using = "רשימת סטנד ביי")]
-        [CacheLookup]
+        
         public IWebElement StandbyWindow { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='schedulerHeader']/span[3]/span")]
-        [CacheLookup]
+        
         public IWebElement CalendarBranchList { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='mainCalendar']/div[1]/a[2]")]
-        [CacheLookup]
+        
         public IWebElement CalandarMonthHeader { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='mainCalendar']/table/tbody/tr[3]/td[3]/a")]
-        [CacheLookup]
+        
         public IWebElement CalanderSelectDate { get; set; }
 
         [FindsBy(How = How.Id, Using = "nextWeekButton")]
-        [CacheLookup]
+        
         public IWebElement NextWeekCalendar { get; set; }
 
         [FindsBy(How = How.Id, Using = "//*[@id='schedulerUserList']/li[1]/span/label/span[2]")]
-        [CacheLookup]
+        
         public IWebElement SelectFirstSchedulerOnList { get; set; }
 
         [FindsBy(How = How.Id, Using = "//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[1]/td[3]")]
-        [CacheLookup]
+        
         public IWebElement ClickOnScheduler { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='appointment - menu_mn_active']")]
-        [CacheLookup]
+        
         public IWebElement CreateMeetingSchedulerBtn { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "ic-add-standby")]
-        [CacheLookup]
+        
         public IWebElement StanByCreate { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='btnNewAppointment']/div/span[1]")]
-        [CacheLookup]
+        
         public IWebElement AvailbleTime_Btn { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='scheduler']/table/tbody/tr[2]/td[2]/div/table/tbody/tr[1]/td[4]")]
-        [CacheLookup]
+        
         public IWebElement FirstCellToday { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='standbyOptionsGridName']/div[2]/table/tbody/tr[1]/td[7]/a")]
-        [CacheLookup]
+        
         public IWebElement StanbyAppointmentBtn { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='gridWaitList']/div[2]/div[1]/table/tbody/tr[1]/td[9]/a[3]")]
-        [CacheLookup]
+        
         public IWebElement StandbyAppointmentSelect { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnClose")]
-        [CacheLookup]
+        
         public IWebElement StandbyAppointmentCancel { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#gridWaitList > div.k-grid-content.k-auto-scrollable > div.k-virtual-scrollable-wrap > table > tbody > tr:nth-child(1) > td.text-align-center.k-command-cell > a.k-button.k-button-icontext.k-grid-CreateAppoiintment.k-button.btn-red-white-toolbox.k-state-disabled")]
